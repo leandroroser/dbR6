@@ -340,7 +340,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
     force(output)
 
     # iterator
-    fun <- function() {
+    iter_fun <- function() {
       if(x == 1)  self$add_empty_table(output, shape = input,  overwrite =  TRUE)
       this_query <- self$send_query(paste0("SELECT * FROM ", input,
                                            " WHERE id IN (SELECT id FROM ", input, " WHERE ", "id >= ", x,
@@ -364,7 +364,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
     j <- 1
     this_time <- system.time({
       while(j != 0) {
-        j <- fun()
+        j <- iter_fun()
         if(j != 0) cat(paste0("Yield ", j, "\n"))
       }
     })
