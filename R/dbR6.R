@@ -38,8 +38,10 @@
 #' \item{create_index}{lorem ipsum}
 #' \item{drop_index}{lorem ipsum}
 #' \item{get_indices}{lorem ipsum}
+#' \item{transaction}{lorem ipsum}
 #' \item{filter}{lorem ipsum}
 #' \item{exist_table}{lorem ipsum}
+#' \item{statement_chunk}{lorem ipsum}
 #' \item{streamer}{lorem ipsum}
 #' }
 #' @export
@@ -203,6 +205,7 @@ send_query = function(query) {
 send_statement = function(statement) {
     this_statement <- RSQLite::dbSendStatement(super$get_where()$data,  statement)
     on.exit(RSQLite::dbClearResult(this_statement))
+    RSQLite::dbGetRowsAffected(this_statement)
   },
 
   #----------------------
@@ -296,6 +299,25 @@ get_indices = function() {
   self$send_query("SELECT name FROM sqlite_master WHERE type='index' ORDER BY name;")
 },
 
+# pass unquoted arguments in transaction
+# example:
+# a$transaction("CREATE TABLE t1(a, b PRIMARY KEY)")
+# a$transaction("CREATE TABLE t2(a, b PRIMARY KEY)", "DROP TABLE t1")
+
+
+transaction = function(...) {
+
+  fun <- function(...) {
+    args <- as.list(substitute(list(...)))[-1]
+    x<-lapply(args, function(x) as.expression(bquote(RSQLite::dbExecute(self$get_where()$data, .(x)))))
+    as.expression(unlist(x))
+  }
+
+  what <- fun(...)
+  RSQLite::dbWithTransaction(super$get_where()$data, eval(what))
+},
+
+
 # R commands to be evaluated in the condition
 # are indicated witihin %rs& and %re% as in:  %rs% my_command %re%
 
@@ -319,6 +341,16 @@ exist_table = function(name) {
   RSQLite::dbExistsTable(super$get_where()$data, name)
 },
 
+statement_chunk = function(what, n) {
+ t_s <- dbSendStatement(super$get_where()$data, what)
+while (!dbHasCompleted(t_s)) {
+  chunk <- dbFetch(t_s, n = n)
+  print(nrow(chunk))
+}
+dbClearResult(t_s)
+},
+
+
 # TODO
 # ---> sql constructor
 # # create sql constructor able to create statement with:
@@ -329,6 +361,9 @@ exist_table = function(name) {
 # -> operators, AND - ON, like, NOT, NOT-IN
 # -> joins
 #----> check if transactions are relevant to be added
+
+# sql_constructor = function()
+
 
 #----------------------
 
@@ -346,7 +381,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
                                            " WHERE id IN (SELECT id FROM ", input, " WHERE ", "id >= ", x,
                                            " AND id < ", x + n, ")"))
 
-      ## create temporal table, copy to db, move to output and remove in each cycle
+      ## move to output and remove in each cycle
 
       self$add_table(new_name = output, new_df = my_fun(this_query), append = TRUE)
 
