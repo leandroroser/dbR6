@@ -315,6 +315,7 @@ transaction = function(...) {
 
   what <- fun(...)
   RSQLite::dbWithTransaction(super$get_where()$data, eval(what))
+  invisible(self)
 },
 
 
@@ -348,6 +349,7 @@ while (!dbHasCompleted(t_s)) {
   print(nrow(chunk))
 }
 dbClearResult(t_s)
+invisible(self)
 },
 
 
