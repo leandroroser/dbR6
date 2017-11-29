@@ -62,7 +62,7 @@ private = list(
 public = list(
 
   #---------------------
-initialize = function(filename, overwrite = FALSE) {
+initialize = function(filename = ":memory:", overwrite = FALSE) {
     super$initialize(filename, overwrite)
     private$metadata <- new.env(parent = super$get_where(), hash = FALSE)
     self$set_metadata()
@@ -142,7 +142,7 @@ print = function() {
 
     palette <- function(before, after, space)add_space_color(before, after, space, bgCyan$bold, bgCyan, bgMagenta)
     tables <- self$list_tables()
-    if(tables == "") {
+    if(all(tables %in% "")) {
       print_tables <- "[[empty db]]"
     } else {
       print_tables <- paste(tables, collapse = ", ")
