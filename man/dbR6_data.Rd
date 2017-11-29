@@ -23,10 +23,10 @@ dbR6_data class
 \section{Methods}{
 
 \describe{
-\item{initialize}{ipsus lorum}
-\item{finalize}{ipsus lorum}
-\item{get_where}{ipsus lorum}
-\item{set_data}{ipsus lorum}
+\item{initialize}{lorem ipsum}
+\item{finalize}{lorem ipsum}
+\item{get_where}{lorem ipsum}
+\item{set_data}{lorem ipsum}
 }
 }
 

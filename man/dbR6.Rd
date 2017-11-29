@@ -25,29 +25,36 @@ dbR6 class
 \section{Methods}{
 
 \describe{
-\item{deep_clone}{ipsus lorum}
-\item{initialize}{ipsus lorum}
-\item{finalize}{ipsus lorum}
-\item{get_where}{(inherited from R6_data class) ipsus lorum}
-\item{set_data}{(inherited from R6_data class) ipsus lorum}
-\item{get_metadata}{ipsus lorum}
-\item{set_metadata}{ipsus lorum}
-\item{set_metadata_single}{ipsus lorum}
-\item{list_tables}{ipsus lorum}
-\item{set_metadata}{ipsus lorum}
-\item{colnames}{ipsus lorum}
-\item{nrow}{ipsus lorum}
-\item{ncol}{ipsus lorum}
-\item{print}{ipsus lorum}
-\item{get_table}{ipsus lorum}
-\item{send_query}{ipsus lorum}
-\item{send_statement}{ipsus lorum}
-\item{add_table}{ipsus lorum}
-\item{remove_table}{ipsus lorum}
-\item{add_empty_table}{ipsus lorum}
-\item{save}{ipsus lorum}
-\item{clone_db}{ipsus lorum}
-\item{streamer}{ipsus lorum}
+\item{deep_clone}{lorem ipsum}
+\item{initialize}{lorem ipsum}
+\item{finalize}{lorem ipsum}
+\item{get_where}{(inherited from R6_data class) lorem ipsum}
+\item{set_data}{(inherited from R6_data class) lorem ipsum}
+\item{get_metadata}{lorem ipsum}
+\item{set_metadata}{lorem ipsum}
+\item{set_metadata_single}{lorem ipsum}
+\item{list_tables}{lorem ipsum}
+\item{set_metadata}{lorem ipsum}
+\item{colnames}{lorem ipsum}
+\item{nrow}{lorem ipsum}
+\item{ncol}{lorem ipsum}
+\item{dim}{lorem ipsum}
+\item{print}{lorem ipsum}
+\item{get_table}{lorem ipsum}
+\item{send_query}{lorem ipsum}
+\item{send_statement}{lorem ipsum}
+\item{add_table}{lorem ipsum}
+\item{remove_table}{lorem ipsum}
+\item{add_empty_table}{lorem ipsum}
+\item{save}{lorem ipsum}
+\item{clone_db}{lorem ipsum}
+\item{sort}{lorem ipsum}
+\item{create_index}{lorem ipsum}
+\item{drop_index}{lorem ipsum}
+\item{get_indices}{lorem ipsum}
+\item{filter}{lorem ipsum}
+\item{exist_table}{lorem ipsum}
+\item{streamer}{lorem ipsum}
 }
 }
 

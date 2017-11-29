@@ -11,33 +11,38 @@
 #' @field metadata Environment storing object metadata
 #' @section Methods:
 #' \describe{
-#' \item{deep_clone}{ipsus lorum}
-#' \item{initialize}{ipsus lorum}
-#' \item{finalize}{ipsus lorum}
-#' \item{get_where}{(inherited from R6_data class) ipsus lorum}
-#' \item{set_data}{(inherited from R6_data class) ipsus lorum}
-#' \item{get_metadata}{ipsus lorum}
-#' \item{set_metadata}{ipsus lorum}
-#' \item{set_metadata_single}{ipsus lorum}
-#' \item{list_tables}{ipsus lorum}
-#' \item{set_metadata}{ipsus lorum}
-#' \item{colnames}{ipsus lorum}
-#' \item{nrow}{ipsus lorum}
-#' \item{ncol}{ipsus lorum}
-#' \item{print}{ipsus lorum}
-#' \item{get_table}{ipsus lorum}
-#' \item{send_query}{ipsus lorum}
-#' \item{send_statement}{ipsus lorum}
-#' \item{add_table}{ipsus lorum}
-#' \item{remove_table}{ipsus lorum}
-#' \item{add_empty_table}{ipsus lorum}
-#' \item{save}{ipsus lorum}
-#' \item{clone_db}{ipsus lorum}
-#' \item{streamer}{ipsus lorum}
+#' \item{deep_clone}{lorem ipsum}
+#' \item{initialize}{lorem ipsum}
+#' \item{finalize}{lorem ipsum}
+#' \item{get_where}{(inherited from R6_data class) lorem ipsum}
+#' \item{set_data}{(inherited from R6_data class) lorem ipsum}
+#' \item{get_metadata}{lorem ipsum}
+#' \item{set_metadata}{lorem ipsum}
+#' \item{set_metadata_single}{lorem ipsum}
+#' \item{list_tables}{lorem ipsum}
+#' \item{set_metadata}{lorem ipsum}
+#' \item{colnames}{lorem ipsum}
+#' \item{nrow}{lorem ipsum}
+#' \item{ncol}{lorem ipsum}
+#' \item{dim}{lorem ipsum}
+#' \item{print}{lorem ipsum}
+#' \item{get_table}{lorem ipsum}
+#' \item{send_query}{lorem ipsum}
+#' \item{send_statement}{lorem ipsum}
+#' \item{add_table}{lorem ipsum}
+#' \item{remove_table}{lorem ipsum}
+#' \item{add_empty_table}{lorem ipsum}
+#' \item{save}{lorem ipsum}
+#' \item{clone_db}{lorem ipsum}
+#' \item{sort}{lorem ipsum}
+#' \item{create_index}{lorem ipsum}
+#' \item{drop_index}{lorem ipsum}
+#' \item{get_indices}{lorem ipsum}
+#' \item{filter}{lorem ipsum}
+#' \item{exist_table}{lorem ipsum}
+#' \item{streamer}{lorem ipsum}
 #' }
 #' @export
-
-# retornando invisible(self) el objeto es encadenable
 
 dbR6 <- R6::R6Class("dbR6",
 
@@ -114,7 +119,7 @@ list_tables = function() {
     out <- out[out != "metadata"]
     if(length(out) == 0)  {
       return("")
-    } else return(out)
+    } else return(sort(out))
   },
 
   #---------------------
@@ -125,17 +130,21 @@ colnames = function(what) {
 
   #--------------------
 ncol = function(what) {
-    if(!what %in% self$list_tables()) return(paste0("Table '", what,   "' not found in database"))
+    if(!what %in% self$list_tables()) stop(paste0("Table '", what,   "' not found in database"))
     out <- RSQLite::dbListFields(super$get_where()$data, what)
     length(out)
   },
 
   #---------------------
 nrow = function(what) {
-    if(!what %in% self$list_tables()) return(paste0("Table '", what,   "' not found in database"))
+    if(!what %in% self$list_tables()) stop(paste0("Table '", what,   "' not found in database"))
     out <- self$send_query(paste0("SELECT COUNT(*) FROM ", what))
     out[[1]]
   },
+
+dim = function(what) {
+  c(self$nrow(what), self$ncol(what))
+},
 
   #----------------------
 print = function() {
@@ -161,7 +170,7 @@ print = function() {
     cat(bgMagenta(" <-> ")); palette(" Data frames:", print_tables, 37); cat("\n");
     cat(bgMagenta(" <-> ")); palette(" Size of R object:", print_obj_size, 37); cat("\n");
     cat(bgMagenta(" <-> ")); palette(" Size of db on disk:", print_db_size, 37); cat("\n");
-
+    invisible(self)
   },
 
   # poner un from----to y usar LIMITS de sql
@@ -197,15 +206,17 @@ send_statement = function(statement) {
   },
 
   #----------------------
-add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE) {
+add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
+                     row.names = FALSE, ...) {
     if(new_name %in% self$list_tables() && !overwrite && !append) {
       stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
     }
     names <- self$get_metadata()$df_names
     self$set_metadata_single("df_names", c(names, new_name))
-    RSQLite::dbWriteTable(super$get_where()$data, new_name, new_df, overwrite = overwrite, append = append)
+    RSQLite::dbWriteTable(super$get_where()$data, new_name, new_df, overwrite = overwrite,
+                          append = append, row.names = row.names, ...)
     self$set_metadata()
-    invisible(NULL)
+    invisible(self)
   },
 
 remove_table = function(what) {
@@ -214,7 +225,7 @@ remove_table = function(what) {
       #this_statement <- RSQLite::dbSendStatement(super$get_where()$data,  paste0("DROP TABLE ", to_remove))
       #on.exit(RSQLite::dbClearResult(this_statement))
       self$set_metadata()
-    invisible(NULL)
+      invisible(self)
   },
 
   #--------------------
@@ -227,7 +238,7 @@ add_empty_table = function(new_name, shape, overwrite) {
       }
     }
     self$send_statement(paste0("CREATE TABLE ", new_name, " AS SELECT * FROM ", shape, " WHERE 1=2"))
-    invisible(NULL)
+    invisible(self)
   },
 
   #--------------------
@@ -240,7 +251,7 @@ save = function(to) {
     super$set_data(db)
     self$set_metadata()
     message("object saved on disk")
-    self
+    invisible(self)
   },
 
 clone_db = function(to) {
@@ -248,10 +259,78 @@ clone_db = function(to) {
     RSQLite::sqliteCopyDatabase(from = super$get_where()$data, to = db)
     copy <- self$clone(deep = TRUE)
     copy$set_data(db)
-    copy
+    invisible(copy)
   },
 
-  #----------------------
+sort = function(what, column, ...) {
+  dots <- as.character(unlist(list(...)))
+  if(length(dots) > 0) column <- paste(c(column, dots), collapse = ", ")
+
+  # > cost of time (create index before?)
+  #self$send_statement(paste0("CREATE INDEX idx_temp ON ", what, " (", column, ")"))
+
+  tempname <- paste("temp_", paste(sample(c(letters, 0:9, 20)), collapse = ""), sep = "")
+  self$add_empty_table(tempname, what, overwrite = TRUE)
+  self$send_statement(paste0("INSERT INTO ", tempname, " SELECT * FROM ", what, " ORDER BY ", column))
+  self$remove_table(what)
+  self$send_statement(paste0("ALTER TABLE ", tempname, " RENAME TO ", what))
+
+  #self$send_statement("DROP INDEX IF EXISTS idx_temp") # but is previously removed when drop
+
+  invisible(self)
+},
+
+create_index = function(what, column, unique = FALSE, ...) {
+  dots <- as.character(unlist(list(...)))
+  if(length(dots) > 0) column <- paste(c(column, dots), collapse = ", ")
+  self$send_statement(paste0("CREATE ", ifelse(unique, "UNIQUE", ""),  " INDEX idx_temp ON ", what, " (", column, ")"))
+  invisible(self)
+},
+
+drop_index = function(index) {
+  self$send_statement(paste0("DROP INDEX IF EXISTS ", index))
+  invisible(self)
+},
+
+get_indices = function() {
+  self$send_query("SELECT name FROM sqlite_master WHERE type='index' ORDER BY name;")
+},
+
+# R commands to be evaluated in the condition
+# are indicated witihin %rs& and %re% as in:  %rs% my_command %re%
+
+filter = function(table, conditions, r_commands = FALSE) {
+
+  if(r_commands) {
+  my_pattern <- gregexpr("(?<=%rs%).*?(?=%re%)", conditions, perl = TRUE)
+  get_pattern <- regmatches(conditions, my_pattern)[[1]]
+  input<-list()
+  input[[1]] <-  unlist(lapply(get_pattern, function(x) eval(parse(text = x))))
+  regmatches(conditions, my_pattern) <- input
+  conditions <- gsub("%rs%|%re%", "", conditions)
+  }
+
+  conditions <- gsub("[|]+|[||]+", "OR", conditions)
+  conditions <- gsub("[&]+|[&&]+", "AND", conditions)
+  self$send_query(paste0("SELECT * FROM ", table, " WHERE ", conditions))
+},
+
+exist_table = function(name) {
+  RSQLite::dbExistsTable(super$get_where()$data, name)
+},
+
+# TODO
+# ---> sql constructor
+# # create sql constructor able to create statement with:
+# -> create, alter - rename to, drop
+# -> insert, update - set, delete
+# -> select
+# -> where, limit -offset - between, distinct,  group by, having, order by,in
+# -> operators, AND - ON, like
+# -> joins
+#----> check if transactions are relevant to be added
+
+#----------------------
 
 streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
@@ -289,7 +368,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
       }
     })
     cat("Process finished in ", this_time[3], " seconds")
-    invisible(NULL)
+    invisible(self)
   }
 
 )
