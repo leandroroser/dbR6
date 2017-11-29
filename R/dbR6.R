@@ -326,12 +326,13 @@ exist_table = function(name) {
 # -> insert, update - set, delete
 # -> select
 # -> where, limit -offset - between, distinct,  group by, having, order by,in
-# -> operators, AND - ON, like
+# -> operators, AND - ON, like, NOT, NOT-IN
 # -> joins
 #----> check if transactions are relevant to be added
 
 #----------------------
 
+## it is assuming an id in the table, may be changed
 streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
     force(x <- 1)
