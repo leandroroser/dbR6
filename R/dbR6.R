@@ -343,13 +343,13 @@ exist_table = function(name) {
 },
 
 statement_chunk = function(what, n) {
- t_s <- dbSendStatement(super$get_where()$data, what)
-while (!dbHasCompleted(t_s)) {
-  chunk <- dbFetch(t_s, n = n)
-  print(nrow(chunk))
-}
-dbClearResult(t_s)
-invisible(self)
+  t_s <- dbSendStatement(super$get_where()$data, what)
+  while (!dbHasCompleted(t_s)) {
+   chunk <- dbFetch(t_s, n = n)
+   print(nrow(chunk))
+  }
+ dbClearResult(t_s)
+ invisible(self)
 },
 
 
