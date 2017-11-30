@@ -299,16 +299,17 @@ get_indices = function() {
   self$send_query("SELECT name FROM sqlite_master WHERE type='index' ORDER BY name;")
 },
 
-# pass unquoted arguments in transaction
+# pass a list of unquoted arguments in transaction
 # example:
-# a$transaction("CREATE TABLE t1(a, b PRIMARY KEY)")
-# a$transaction("CREATE TABLE t2(a, b PRIMARY KEY)", "DROP TABLE t1")
+# mylis <- list(a$transaction("CREATE TABLE t1(a, b PRIMARY KEY)"),
+# a$transaction("CREATE TABLE t2(a, b PRIMARY KEY)", "DROP TABLE t1"))
+# obj$transaction(mylist)
 
 
 transaction = function(...) {
 
   fun <- function(...) {
-    args <- as.list(substitute(list(...)))[-1]
+    args <- as.list(substitute(...))[-1]
     x<-lapply(args, function(x) as.expression(bquote(RSQLite::dbExecute(self$get_where()$data, .(x)))))
     as.expression(unlist(x))
   }
