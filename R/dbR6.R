@@ -146,7 +146,7 @@ nrow = function(what) {
 
 dim = function(what) {
   c(self$nrow(what), self$ncol(what))
-},
+  },
 
   #----------------------
 print = function() {
@@ -320,7 +320,7 @@ parse_transaction = function(...) {
 },
 
 
-# R commands to be evaluated in the condition
+# R commands to be evaluated in the condition ('where' query)
 # are indicated witihin %rs& and %re% as in:  %rs% my_command %re%
 
 filter = function(table, conditions, r_commands = FALSE) {
