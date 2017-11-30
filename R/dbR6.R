@@ -20,6 +20,7 @@
 #' \item{set_metadata}{lorem ipsum}
 #' \item{set_metadata_single}{lorem ipsum}
 #' \item{list_tables}{lorem ipsum}
+#' \item{n_tables}{lorem ipsum}
 #' \item{set_metadata}{lorem ipsum}
 #' \item{colnames}{lorem ipsum}
 #' \item{nrow}{lorem ipsum}
@@ -124,6 +125,15 @@ list_tables = function() {
     } else return(sort(out))
   },
 
+n_tables = function() {
+  out <- RSQLite::dbListTables(super$get_where()$data)
+  length(out[out != "metadata"])
+},
+
+location = function() {
+  super$get_where()$data@dbname
+},
+
   #---------------------
 colnames = function(what) {
     if(!what %in% self$list_tables()) return(paste0("Table '", what,   "' not found in database"))
@@ -151,27 +161,64 @@ dim = function(what) {
   #----------------------
 print = function() {
 
-    palette <- function(before, after, space)add_space_color(before, after, space, bgCyan$bold, bgCyan, bgMagenta)
+  # detect EStudio session color (if using RStudio)
+  col_bg<- try(rstudioapi::getThemeInfo()$dark, silent = TRUE)
+  # patch for Dracula
+  col_bg2 <-  try(rstudioapi::getThemeInfo()$editor == "Dracula", silent = TRUE)
+  col_bg <- col_bg || col_bg2
+
+  ### colors if object in R session###
+
+  bgCol <- crayon::make_style("skyblue4", bg = TRUE)
+  palette <- function(before, after, space)add_space_color(before, after, space,
+                                                           crayon::bgCyan$white, crayon::bgCyan, crayon::bgMagenta$white)
+  topCol <- bgCol$white
+  if(!is.null(col_bg))
+  {
+    if(col_bg == "TRUE") {
+    palette <- function(before, after, space)add_space_color(before, after, space,
+                                                             crayon::bgCyan$black, crayon::bgCyan, crayon::bgMagenta$black)
+    topCol <- bgCol$black
+    }
+  }
+
     tables <- self$list_tables()
     if(all(tables %in% "")) {
-      print_tables <- "[[empty db]]"
+      print_tables <- " [[empty db]] "
     } else {
-      print_tables <- paste(tables, collapse = ", ")
+      print_tables <- paste(" ", tables, collapse = ", ")
+      if(nchar(print_tables) > 33) {
+      print_tables <- paste0(" ", substr(print_tables, 1, 17), " ... (", self$n_tables(), " tables) ")
+
+      }
     }
 
-    print_obj_size <- paste0(self$get_metadata()$Robject_size,  " Kb")
+    print_obj_size <- paste0(" ", self$get_metadata()$Robject_size,  " Kb ")
 
     in_memory <- super$get_where()$data@dbname == ":memory:"
     if(in_memory) {
-    print_db_size <- "[[in memory]]"
+    print_db_size <- " [[in memory]] "
     } else {
-    print_db_size <- paste0(self$get_metadata()$db_size, " Kb")
+    print_db_size <- paste0(" ", self$get_metadata()$db_size, " Kb ")
     }
-    cat(bgCyan$bold("            dbR6 object                   \n"))
-    cat("                                                              \n")
-    cat(bgMagenta(" <-> ")); palette(" Data frames:", print_tables, 37); cat("\n");
-    cat(bgMagenta(" <-> ")); palette(" Size of R object:", print_obj_size, 37); cat("\n");
-    cat(bgMagenta(" <-> ")); palette(" Size of db on disk:", print_db_size, 37); cat("\n");
+
+    print_location <- paste0(" ", self$location(), " ")
+    if(nchar(print_location) > 33) {
+      end <- nchar(print_location)
+      start <- end - 30
+      print_tables <- paste0(" ...", substr(print_location, start, nchar), "... ")
+
+    }
+
+
+
+    cat("\n")
+    cat(topCol("                  dbR6 object                          "),  "\n\n")
+    cat(crayon::bgMagenta(" <-> ")); palette(" Data frames: ", print_tables, 50); cat("\n")
+    cat(crayon::bgMagenta(" <-> ")); palette(" Size of R object: ", print_obj_size, 50); cat("\n")
+    cat(crayon::bgMagenta(" <-> ")); palette(" Size of db on disk: ", print_db_size, 50); cat("\n")
+    cat(crayon::bgMagenta(" <-> ")); palette(" Location: ", print_location, 50); cat("\n")
+    cat("                                                                      \n")
     invisible(self)
   },
 

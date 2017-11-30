@@ -34,6 +34,7 @@ dbR6 class
 \item{set_metadata}{lorem ipsum}
 \item{set_metadata_single}{lorem ipsum}
 \item{list_tables}{lorem ipsum}
+\item{n_tables}{lorem ipsum}
 \item{set_metadata}{lorem ipsum}
 \item{colnames}{lorem ipsum}
 \item{nrow}{lorem ipsum}
@@ -52,8 +53,10 @@ dbR6 class
 \item{create_index}{lorem ipsum}
 \item{drop_index}{lorem ipsum}
 \item{get_indices}{lorem ipsum}
+\item{transaction}{lorem ipsum}
 \item{filter}{lorem ipsum}
 \item{exist_table}{lorem ipsum}
+\item{statement_chunk}{lorem ipsum}
 \item{streamer}{lorem ipsum}
 }
 }
