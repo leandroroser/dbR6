@@ -306,7 +306,7 @@ get_indices = function() {
 # obj$transaction(mylist)
 
 
-transaction = function(...) {
+parse_transaction = function(...) {
 
   fun <- function(...) {
     args <- as.list(substitute(...))[-1]
@@ -344,12 +344,12 @@ exist_table = function(name) {
 },
 
 statement_chunk = function(what, n) {
-  t_s <- dbSendStatement(super$get_where()$data, what)
-  while (!dbHasCompleted(t_s)) {
-   chunk <- dbFetch(t_s, n = n)
+  t_s <- RSQLite::dbSendStatement(super$get_where()$data, what)
+  while (!RSQLite::dbHasCompleted(t_s)) {
+   chunk <- RSQLite::dbFetch(t_s, n = n)
    print(nrow(chunk))
   }
- dbClearResult(t_s)
+  RSQLite::dbClearResult(t_s)
  invisible(self)
 },
 
