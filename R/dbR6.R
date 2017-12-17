@@ -44,6 +44,8 @@
 #' \item{exist_table}{lorem ipsum}
 #' \item{statement_chunk}{lorem ipsum}
 #' \item{streamer}{lorem ipsum}
+#'  \item{read_write_in_chunks}{lorem ipsum}
+#'
 #' }
 #' @export
 
@@ -455,6 +457,81 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
     })
     cat("Process finished in ", this_time[3], " seconds")
     invisible(self)
+}
+
+#----------
+
+read_write_in_chunks =  function(infile, out_name, my_db, header, chunksize, sep, fun = NULL,...) {
+
+    skip <- 0
+
+    if(header) {
+      true_header <- as.character(read.table(infile, nrows  = 1, stringsAsFactors = FALSE)[1, ])
+      skip <- 1
+    }
+
+    data <- read.table(infile,
+                       header = FALSE,
+                       sep = sep,
+                       na.strings = "NA",
+                       colClasses = c("character"),
+                       strip.white = TRUE,
+                       comment.char="",
+                       stringsAsFactors = FALSE,
+                       nrows = chunksize,
+                       skip = skip,
+                       row.names = 1,
+                       ... )
+
+    if(header) {
+      colnames(data) <- true_header
+    }
+    skip <- skip + nrow(data)
+
+    if(!is.null(fun)){
+      data <- fun(data)
+    }
+
+    my_db$add_table(out_name, data, overwrite = TRUE )
+
+    while(nrow(data) > 0) {
+
+      tryCatch(data <- read.table(infile,
+                                  header = header,
+                                  sep = sep,
+                                  na.strings = "NA",
+                                  colClasses = c("character"),
+                                  strip.white = TRUE,
+                                  comment.char="",
+                                  stringsAsFactors = FALSE,
+                                  nrows = chunksize,
+                                  skip = skip,
+                                  row.names = 1,
+                                  ... ),
+               error = function(e) {
+                 data <<-data.frame()
+                 if(length(grep("no lines available in input", e$message) == 0)) {
+                   print(e$message)
+                   file.remove(out_name)
+                 }
+               })
+
+      if(nrow(data) > 0) {
+        if(header) {
+          colnames(data) <- true_header
+        }
+        skip <- skip + nrow(data)
+
+        if(!is.null(fun)){
+          data <- fun(data)
+        }
+
+        my_db$add_table(out_name, data, append = TRUE )
+      }
+    }
+
+    cat("Written ", skip, " lines into database")
+    invisible(NULL)
   }
 
 )
