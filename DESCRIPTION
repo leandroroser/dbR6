@@ -1,12 +1,16 @@
 Package: dbR6
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Databases Manipulation with the dbR6 Class
+Collate: 'ZZZ.R' 'auxiliar.R' 'dbR6_data.R' 'dbR6.R' 
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Date: 2017-12-15
+Authors@R: c(person(given = "Leandro", family = "Roser", role = c("aut", "cre"), email = "learoser@gmail.com"))
+Maintainer: Leandro Roser <learoser@gmail.com>
+Description: The package provides the dbR6 class and associated methods to create and manipulate SQLite databases.
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
+Imports: devtools, crayon
+Remotes: leandroroser/reader
+Packaged: 2017-11-21 08:12:58 UTC; leandro
 RoxygenNote: 6.0.1

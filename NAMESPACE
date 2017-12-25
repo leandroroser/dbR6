@@ -2,6 +2,7 @@
 
 export(dbR6)
 export(dbR6_data)
+import(reader)
 importFrom(R6,R6Class)
 importFrom(crayon,bgCyan)
 importFrom(crayon,bgMagenta)

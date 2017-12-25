@@ -58,6 +58,9 @@ dbR6 class
 \item{exist_table}{lorem ipsum}
 \item{statement_chunk}{lorem ipsum}
 \item{streamer}{lorem ipsum}
+\item{write_dataframe}{lorem ipsum}
+\item{write_matrix}{lorem ipsum}
+
 }
 }
 

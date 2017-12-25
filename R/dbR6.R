@@ -5,6 +5,7 @@
 #' @importFrom crayon bgCyan
 #' @importFrom crayon bgMagenta
 #' @importFrom crayon bold
+#' @import reader
 #' @return Object of \code{\link{R6Class}}
 #' @format \code{\link{R6Class}} object.
 #' @field where (inherited from R6_data class) Environment storing data & enclosing environment for metadata
@@ -44,7 +45,8 @@
 #' \item{exist_table}{lorem ipsum}
 #' \item{statement_chunk}{lorem ipsum}
 #' \item{streamer}{lorem ipsum}
-#'  \item{read_write_in_chunks}{lorem ipsum}
+#' \item{write_dataframe}{lorem ipsum}
+#' \item{write_matrix}{lorem ipsum}
 #'
 #' }
 #' @export
@@ -457,11 +459,11 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
     })
     cat("Process finished in ", this_time[3], " seconds")
     invisible(self)
-}
+},
 
 #----------
 
-read_write_in_chunks =  function(infile, out_name, my_db, header, chunksize, sep, fun = NULL,...) {
+write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, sep = " ", fun = NULL,...) {
 
     skip <- 0
 
@@ -492,7 +494,7 @@ read_write_in_chunks =  function(infile, out_name, my_db, header, chunksize, sep
       data <- fun(data)
     }
 
-    my_db$add_table(out_name, data, overwrite = TRUE )
+    self$add_table(out_name, data, overwrite = TRUE )
 
     while(nrow(data) > 0) {
 
@@ -526,13 +528,59 @@ read_write_in_chunks =  function(infile, out_name, my_db, header, chunksize, sep
           data <- fun(data)
         }
 
-        my_db$add_table(out_name, data, append = TRUE )
+        self$add_table(out_name, data, append = TRUE )
       }
     }
 
     cat("Written ", skip, " lines into database")
     invisible(NULL)
+  },
+
+#----------
+
+write_matrix =  function(infile, out_name, header = TRUE,
+                                        chunksize = 100, sep = " ", has_row_names = TRUE,
+                                        fun = NULL, data_mod = "character", ...) {
+
+
+my_reader <- reader(infile, sep, header, has_row_names, chunksize)
+
+next_chunk(my_reader)
+data <- get_data(my_reader)
+
+  if(!is.null(fun)){
+    data <- fun(data)
   }
+
+if(data_mod != "character") {
+  mode(data) <- data_mod
+}
+
+self$add_table(out_name, as.data.frame(data, stringsAsFactors = FALSE), overwrite = TRUE)
+lines_written <- nrow(data)
+
+  while(TRUE) {
+
+    next_chunk(my_reader)
+    data <- get_data(my_reader)
+    data <- as.data.frame(data, stringsAsFactors = FALSE)
+
+    if(nrow(data) != 0) {
+
+      if(data_mod != "character") {
+        mode(data) <- data_mod
+      }
+
+      self$add_table(out_name, data, append = TRUE)
+      lines_written <- lines_written +  nrow(data)
+    } else {
+      break
+    }
+  }
+cat("Written ", lines_written, " lines into database \n")
+
+  invisible(NULL)
+}
 
 )
 )
