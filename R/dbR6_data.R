@@ -32,10 +32,16 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
       stop("A file must be selected when overwrite is TRUE")
     }
 
+
+
     if(overwrite){
       if(length(grep(filename, dir())) != 0) {
         suppressMessages(file.remove(filename))
         message("Overwriting database...")
+      }
+    } else {
+      if(length(grep(filename, dir())) != 0) {
+        stop("File exists in memory but overwrite = FALSE")
       }
     }
 

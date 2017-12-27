@@ -261,12 +261,17 @@ send_statement = function(statement) {
 
   #----------------------
 add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
-                     row.names = FALSE, ...) {
+                     row.names = FALSE, fun = NULL,  ...) {
     if(new_name %in% self$list_tables() && !overwrite && !append) {
       stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
     }
     names <- self$get_metadata()$df_names
     self$set_metadata_single("df_names", c(names, new_name))
+
+    if(!is.null(fun)) {
+      new_df <- fun(new_df)
+    }
+
     RSQLite::dbWriteTable(super$get_where()$data, new_name, new_df, overwrite = overwrite,
                           append = append, row.names = row.names, ...)
     self$set_metadata()
@@ -539,44 +544,31 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
 #----------
 
 write_matrix =  function(infile, out_name, header = TRUE,
-                                        chunksize = 100, sep = " ", has_row_names = TRUE,
+                                        chunksize = 1000L, sep = " ", has_row_names = TRUE,
                                         fun = NULL, data_mod = "character", ...) {
 
 
 my_reader <- reader(infile, sep, header, has_row_names, chunksize)
 
-next_chunk(my_reader)
-data <- get_data(my_reader)
+    lines_written <- 0
 
-  if(!is.null(fun)){
-    data <- fun(data)
-  }
-
-if(data_mod != "character") {
-  mode(data) <- data_mod
-}
-
-self$add_table(out_name, as.data.frame(data, stringsAsFactors = FALSE), overwrite = TRUE)
-lines_written <- nrow(data)
-
-  while(TRUE) {
-
-    next_chunk(my_reader)
-    data <- get_data(my_reader)
-    data <- as.data.frame(data, stringsAsFactors = FALSE)
-
-    if(nrow(data) != 0) {
+    while(next_chunk(my_reader)) {
+      data <- get_data(my_reader)
+      data <- as.data.frame(data, stringsAsFactors = FALSE)
 
       if(data_mod != "character") {
         mode(data) <- data_mod
       }
 
+
+      if(!is.null(fun)){
+        data <- fun(data)
+      }
+
       self$add_table(out_name, data, append = TRUE)
       lines_written <- lines_written +  nrow(data)
-    } else {
-      break
     }
-  }
+
 cat("Written ", lines_written, " lines into database \n")
 
   invisible(NULL)
