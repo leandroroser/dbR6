@@ -1,6 +1,6 @@
 ## dbR6 
 
-This package defines the dbR6 class, which offers methods for creation and manipulation of RSQlite tables. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the dbR6 class.  
+This package defines the dbR6 class, which offers methods for creation and manipulation of RSQLite tables. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the dbR6 class.  
 
 
 ### Example
