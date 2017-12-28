@@ -22,7 +22,7 @@ data$write_matrix("long_table.txt", out_name = "long", chunksize = 1000)
 
 small_table <- matrix(sample(letters, 1000, replace = TRUE), 100, 10)
 write.table(small_table, "small_table.txt", quote = FALSE)
-data$write_dataframe("small_table.txt", out_name = "small")
+data$write_dataframe("small_table.txt", "small")
 
 # Please note that the first method is for matrix (i.e., all columns of the same type) and the
 # second for data frames (the columns can be of different type). The first one is recommended when
