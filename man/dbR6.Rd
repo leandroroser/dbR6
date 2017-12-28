@@ -25,41 +25,56 @@ dbR6 class
 \section{Methods}{
 
 \describe{
-\item{deep_clone}{lorem ipsum}
-\item{initialize}{lorem ipsum}
-\item{finalize}{lorem ipsum}
-\item{get_where}{(inherited from R6_data class) lorem ipsum}
-\item{set_data}{(inherited from R6_data class) lorem ipsum}
-\item{get_metadata}{lorem ipsum}
-\item{set_metadata}{lorem ipsum}
-\item{set_metadata_single}{lorem ipsum}
-\item{list_tables}{lorem ipsum}
-\item{n_tables}{lorem ipsum}
-\item{set_metadata}{lorem ipsum}
-\item{colnames}{lorem ipsum}
-\item{nrow}{lorem ipsum}
-\item{ncol}{lorem ipsum}
-\item{dim}{lorem ipsum}
-\item{print}{lorem ipsum}
-\item{get_table}{lorem ipsum}
-\item{send_query}{lorem ipsum}
-\item{send_statement}{lorem ipsum}
-\item{add_table}{lorem ipsum}
-\item{remove_table}{lorem ipsum}
-\item{add_empty_table}{lorem ipsum}
-\item{save}{lorem ipsum}
-\item{clone_db}{lorem ipsum}
-\item{sort}{lorem ipsum}
-\item{create_index}{lorem ipsum}
-\item{drop_index}{lorem ipsum}
-\item{get_indices}{lorem ipsum}
-\item{transaction}{lorem ipsum}
-\item{filter}{lorem ipsum}
-\item{exist_table}{lorem ipsum}
-\item{statement_chunk}{lorem ipsum}
-\item{streamer}{lorem ipsum}
-\item{write_dataframe}{lorem ipsum}
-\item{write_matrix}{lorem ipsum}
+\item{\strong{deep_clone}}{deep clone dbR6 object (internal function).
+\subsection{Parameters}{
+\emph{\strong{name}} What to clone ("metadata", "where" (database))-
+
+\emph{\strong{Value}} The name of the output.
+}
+}
+\item{initialize}{initialize dbR6 object.
+\subsection{Parameters}{
+\code{\strong{filename}} ":memory:" for to create an in-memory database,
+or a name for an on-disk database.
+
+\code{\strong{overwrite}} The name of the output.
+}
+}
+
+filename = ":memory:", overwrite = FALSE
+\item{finalize}{finalize dbR6 object.}
+\item{get_where}{(inherited from R6_data class). Get location of the database linked to a dbR6 object.}
+\item{set_data}{(inherited from R6_data class). Set dbR6 database (Internal).}
+\item{get_metadata}{Get metadata.}
+\item{set_metadata}{Set metadata.}
+\item{set_metadata_single}{Set a single metadata field.}
+\item{list_tables}{List tables in database.}
+\item{get_tables_number}{Get number of tables.}
+\item{colnames}{Get colnames of a table.}
+\item{nrow}{Get the number of rows of a table.}
+\item{ncol}{Get the number of columns of a table.}
+\item{dim}{Get dimension of a table.}
+\item{print}{Print dbR6 object graphical interface.}
+\item{get_table}{Get a table.}
+\item{send_query}{Send an SQL query.}
+\item{send_statement}{Send an SQL statement.}
+\item{add_table}{Add a table to a dbR6  object.}
+\item{remove_table}{Remove a table.}
+\item{add_empty_table}{Add an empty table.}
+\item{save}{Save a dbR6 database on disk.}
+\item{clone_db}{Clone a dbR6 object.}
+\item{sort}{Sort a table.}
+\item{create_index}{Create an index for a table.}
+\item{drop_index}{Drop an index from a table.}
+\item{get_indices}{Get indices for a table.}
+\item{transaction}{Generate transaction with the tables.}
+\item{filter}{Filter a table using the given conditions.}
+\item{exist_table}{Verify if a table exists (Logical).}
+\item{statement_chunk}{Send a statement to the database, processing the data in chunks.}
+\item{streamer}{Apply a function for an imput data table using chunks, storing the output
+into a new table.}
+\item{write_dataframe}{Write an external dataframe into the database using chunks.}
+\item{write_matrix}{Write an external matrix into the database using chunks.}
 
 }
 }
