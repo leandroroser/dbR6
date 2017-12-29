@@ -5,7 +5,7 @@ This package defines the dbR6 class, an R6 class which offers methods for creati
 
 ## Available methods
 
-A list with the methods is available on <a href="#" onclick='window.open("https://leandroroser.github.io/dbR6/reference/index.html");return false;'> this link</a>
+Description of methods is available on <a href = "https://leandroroser.github.io/dbR6/reference/index.html"> this link </a>
 
 ### Example
 
