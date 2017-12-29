@@ -25,57 +25,388 @@ dbR6 class
 \section{Methods}{
 
 \describe{
-\item{\strong{deep_clone}}{deep clone dbR6 object (internal function).
-\subsection{Parameters}{
-\code{\strong{name}} What to clone ("metadata", "where" (database))-
 
-\code{\strong{Value}} The name of the output.
+\enumerate{
+\item{\bold{initialize}}{
+
+Initialize dbR6 object.
+\emph{---Parameters---}
+\subsection{}{
+\itemize{
+\item{\code{\strong{filename}} ":memory:" for to create an in-memory database,
+or a name for an on-disk database.}
+\item{\code{\strong{overwrite}} The name of the output.}
 }
 }
-\item{initialize}{initialize dbR6 object.
-\subsection{Parameters}{
-\code{\strong{filename}} ":memory:" for to create an in-memory database,
-or a name for an on-disk database.
+}
 
-\code{\strong{overwrite}} The name of the output.
+\item{\bold{finalize}}{
+
+Finalize dbR6 object.}
+
+
+
+
+\item{\bold{get_metadata}}{
+
+Get object metadata.}
+
+
+
+\item{\bold{list_tables}}{
+
+List tables in database.}
+
+
+\item{\bold{get_tables_number}}{
+
+Get number of tables.}
+
+\item{\bold{colnames}}{
+
+Get colnames of a table.
+
+\emph{---Parameters---}
+
+\subsection{}{
+\itemize{
+\item{\code{\strong{what}} Name of table.}
+}
+}
+}
+
+\item{\bold{nrow}}{
+
+Get the number of rows of a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of table.}
+}
+}
+}
+
+\item{\bold{ncol}}{
+
+Get the number of columns of a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of table.}
+}
+}
+}
+
+\item{\bold{dim}}{
+
+Get dimension of a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of table.}
+}
+}
+}
+
+\item{\bold{print}}{
+
+Print dbR6 object graphical interface.}
+
+\item{\bold{get_table}}{
+
+Get a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of the table}
+\item{\code{\strong{from}} Row where start to read (index >= 1)}
+\item{\code{\strong{to}} Row where fininish to read}
+}
+}
+}
+
+\item{\bold{send_query}}{
+
+Send an SQL query.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{query}} Query to send}
+}
+}
+}
+
+\item{\bold{send_statement}}{
+
+Send an SQL statement.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{
+\code{\strong{statement}} Statement to send}
+}
+}
+}
+
+\item{\bold{add_table}}{
+
+Add a table to a dbR6  object.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{new_name}} Name for the new table}
+
+\item{\code{\strong{new_df}} Input table}
+
+\item{\code{\strong{overwrite}} Overwrite if already exists? Default FALSE}
+
+\item{\code{\strong{append}} Append content if already exists? Default FALSE}
+
+\item{\code{\strong{row.names}} Row names present? Default FALSE}
+
+\item{\code{\strong{fun}} Function to apply to the table before writing it}
+
+\item{\code{\strong{...}} Additional parameters passed to RSQLite::dbWriteTable.}
+}
+}
+}
+
+\item{\bold{remove_table}}{
+
+Remove a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of table.}
+}
+}
+}
+
+\item{\bold{create_table_from}}{
+
+Add an empty table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{new_names}} Name of the new table.}
+
+\item{\code{\strong{from}} Table to copy structure from.}
+
+\item{\code{\strong{overwrite}} Overwrite table if exists?.}
+}
+}
+}
+
+\item{\bold{save}}{
+
+Save a dbR6 database on disk.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{to}} Name of the new table.}
+}
+}
+}
+
+\item{\bold{clone_db}}{
+
+Clone a dbR6 object.
+
+\emph{---Parameters---}
+
+\subsection{}{
+\itemize{
+\item\code{\strong{to}} Name of the new table.}
 }
 }
 
-filename = ":memory:", overwrite = FALSE
-\item{finalize}{finalize dbR6 object.}
-\item{get_where}{(inherited from R6_data class). Get location of the database linked to a dbR6 object.}
-\item{set_data}{(inherited from R6_data class). Set dbR6 database (Internal).}
-\item{get_metadata}{Get metadata.}
-\item{set_metadata}{Set metadata.}
-\item{set_metadata_single}{Set a single metadata field.}
-\item{list_tables}{List tables in database.}
-\item{get_tables_number}{Get number of tables.}
-\item{colnames}{Get colnames of a table.}
-\item{nrow}{Get the number of rows of a table.}
-\item{ncol}{Get the number of columns of a table.}
-\item{dim}{Get dimension of a table.}
-\item{print}{Print dbR6 object graphical interface.}
-\item{get_table}{Get a table.}
-\item{send_query}{Send an SQL query.}
-\item{send_statement}{Send an SQL statement.}
-\item{add_table}{Add a table to a dbR6  object.}
-\item{remove_table}{Remove a table.}
-\item{add_empty_table}{Add an empty table.}
-\item{save}{Save a dbR6 database on disk.}
-\item{clone_db}{Clone a dbR6 object.}
-\item{sort}{Sort a table.}
-\item{create_index}{Create an index for a table.}
-\item{drop_index}{Drop an index from a table.}
-\item{get_indices}{Get indices for a table.}
-\item{transaction}{Generate transaction with the tables.}
-\item{filter}{Filter a table using the given conditions.}
-\item{exist_table}{Verify if a table exists (Logical).}
-\item{statement_chunk}{Send a statement to the database, processing the data in chunks.}
-\item{streamer}{Apply a function for an imput data table using chunks, storing the output
-into a new table.}
-\item{write_dataframe}{Write an external dataframe into the database using chunks.}
-\item{write_matrix}{Write an external matrix into the database using chunks.}
+\item{\bold{sort}}{
 
+Sort a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+ \itemize{
+\item{\code{\strong{what}} Name of the table to sort.}
+
+\item{\code{\strong{column}} Column used to sort.}
+
+\item{\code{\strong{...}} Vector with other columns used to sort.}
+}
+}
+}
+
+\item{\bold{create_index}}{
+
+Create an index for a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of the table to sort.}
+
+\item{\code{\strong{column}} Column used to Create index.}
+
+\item{\code{\strong{unique}} Create unique index? (Logical).}
+
+\item{\code{\strong{...}} Other aditional columns in a character vector to create the index.}
+}
+}
+}
+
+\item{\bold{drop_index}}{
+
+Drop an index from a table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of the index to drop.}
+}
+}
+}
+
+\item{\bold{get_indices}}{
+
+Get indices for a table.}
+
+\item{\bold{transaction}}{
+
+Generate transaction with the tables.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{...}} Character vector with transactions to parse.}
+}
+}
+}
+
+\item{\bold{filter}}{
+
+Filter a table using the given conditions.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{table}} Name of the table.}
+
+\item{\code{\strong{conditions}} Logical conditions.}
+
+\item{\code{\strong{r_commands}}  R commands to be evaluated in the condition ('where' query)
+indicated witihin \%rs& and \%re\% as in:  \%rs\% my_command \%re\%}
+}
+}
+}
+
+\item{exist_table}{Verify if a table exists (Logical).
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Name of the table.}
+}
+}
+}
+
+
+\item{\bold{statement_chunk}}{
+
+Executes a statement in chunks
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{what}} Statement.}
+
+\item{\code{\strong{n}} Chunk size.}
+}
+}
+}
+
+\item{\bold{streamer}}{
+
+Apply a function for an imput data table using chunks, storing the output
+into a new table.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{input}} Input table.}
+\item{\code{\strong{output}} Output table.}
+\item{\code{\strong{my_fun}} R function to apply.}
+\item{\code{\strong{n}} Chunk size.}
+}
+}
+}
+
+
+\item{\bold{write_dataframe}}{
+
+Write an external dataframe into the database using chunks.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{input}} Input table.}
+\item{\code{\strong{output}} Output table.}
+\item{\code{\strong{has_colnames}} Colnames present? (Logical).}
+\item{\code{\strong{chunksize}} Chunk size.}
+\item{\code{\strong{sep}} Character separating cell elements (default = " ").}
+\item{\code{\strong{fun}} Function to apply to the chunk before writing it to the database.}
+\item{\code{\strong{...}} Additional parameters passed to read.table.}
+}
+}
+}
+
+\item{\bold{write_matrix}}{
+
+Write an external matrix into the database using chunks.
+
+\emph{---Parameters---}
+\subsection{}{
+
+\itemize{
+\item{\code{\strong{input}} Input table.}
+\item{\code{\strong{output}} Output table.}
+\item{\code{\strong{has_colnames}} colnames present? Default TRUE.}
+\item{\code{\strong{has_rownames}} rownames present? Default TRUE.}
+\item{\code{\strong{my_fun}}  Function to apply to the chunk before writing it to the database.}
+\item{\code{\strong{data_mode}} R mode of the input data ("integer", "logical", "character", "numerical").}
+}
+}
+}
+
+}
 }
 }
 

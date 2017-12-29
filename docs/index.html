@@ -50,7 +50,7 @@
       </header><div class="row">
   <div class="contents col-md-9">
     <section class="level2"><h2>dbR6</h2>
-<p>This package defines the dbR6 class, which offers methods for creation and manipulation of RSQLite tables. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the dbR6 class.</p>
+<p>This package defines the dbR6 class, an R6 class which offers methods for creation and manipulation of SQLite tables. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the class.</p>
 <section class="level3"><h3>Example</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb1-1" data-line-number="1"># let's create a big table:</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">long_table &lt;- matrix(sample(letters, 100000, replace = TRUE), 10000, 10)</a>
@@ -63,29 +63,27 @@
 <a class="sourceLine" id="cb1-9" data-line-number="9"># allows to read a matrix in chunks</a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">data$write_matrix("long_table.txt", out_name = "long", chunksize = 1000)</a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"># A second method for dataframes is provided using the native </a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"># read.table function, but it is slow for big tables</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">small_table &lt;- matrix(sample(letters, 1000, replace = TRUE), 100, 10)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">write.table(small_table, "small_table.txt", quote = FALSE)</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">data$write_dataframe("small_table.txt", "small")</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"># Please note that the first method is for matrix (i.e., all columns of the same type) and the</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"># second for data frames (the columns can be of different type). The first one is recommended when</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"># working with tables with a same type. The package reader uses a pointer to locate the next chunk,</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"># while read.table needs to read all the data up to the next chunk and skips those rows, which makes it</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"># slower with increasing the size of the data.</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"># The show method returns information about the object:</a>
-<a class="sourceLine" id="cb1-26" data-line-number="26">data</a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="st">![dbR6 interface](https://raw.githubusercontent.com/leandroroser/dbR6/master/inst/extdata/dbR6.png)</span></a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"># Listing tables</a>
-<a class="sourceLine" id="cb1-31" data-line-number="31">data$list_tables()</a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"># Sending a query</a>
-<a class="sourceLine" id="cb1-34" data-line-number="34">data$send_query("SELECT * FROM salida LIMIT 5;")</a></code></pre></div>
+<a class="sourceLine" id="cb1-12" data-line-number="12"># The show method returns information about the object:</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">data</a></code></pre></div>
+<p><img src="https://github.com/leandroroser/dbR6/raw/master/inst/extdata/dbR6.jpg" alt="Interface"></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb2-1" data-line-number="1"># A second method for dataframes is provided using the native </a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"># read.table function, but it is slow for big tables</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">small_table &lt;- matrix(sample(letters, 1000, replace = TRUE), 100, 10)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">write.table(small_table, "small_table.txt", quote = FALSE)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">data$write_dataframe("small_table.txt", "small")</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"># Please note that the first method is for matrix (i.e., all columns of the same type) and the</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"># second for data frames (the columns can be of different type). The first one is recommended when</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"># working with tables with a same type. The package reader uses a pointer to locate the next chunk,</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"># while read.table needs to read all the data up to the next chunk and skips those rows, which makes it</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"># slower with increasing the size of the data.</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"># Listing tables</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">data$list_tables()</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"># Sending a query</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">data$send_query("SELECT * FROM salida LIMIT 5;")</a></code></pre></div>
 </section></section>
 </div>
 

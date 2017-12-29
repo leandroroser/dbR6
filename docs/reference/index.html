@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • dbR6</title>
+<title>dbR6 class — dbR6 • dbR6</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -73,52 +73,254 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.1.0</small>
-      </h1>
+    <h1>dbR6 class</h1>
     </div>
+    
+    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
 
-    <div class="contents">
-      <table class="ref-index">
+    
+    <dl class='dl-horizontal'>
+<dt><code>where</code></dt><dd><p>(inherited from R6_data class) Environment storing data &amp; enclosing environment for metadata</p></dd>
+    <dt><code>metadata</code></dt><dd><p>Environment storing object metadata</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    
+    <dl class='dl-horizontal'>
+    <br/><br/><b class = "method">initialize</b><br/>
+    Initialize dbR6 object.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>filename</strong></code> ":memory:" for to create an in-memory database,
+or a name for an on-disk database.</p></li>
+<li><p><code><strong>overwrite</strong></code> The name of the output.</p></li>
+</ul>
+     <br/><b class = "method">finalize</b><br/>
+    Finalize dbR6 object.
+ <br/>
+    <br/><br/><b class = "method">get_metadata</b><br/>
+    Get object metadata.
+ <br/>
+    <br/><br/><b class = "method">list_tables</b><br/>
+    List tables in database.
+ <br/>
+    <br/><br/><b class = "method">get_tables_number</b><br/>
+    Get number of tables.
+ <br/>
+    <br/><br/><b class = "method">colnames</b><br/>
+    Get colnames of a table.
+<br/><br/><em>---Parameters---</em><br/>
+    <h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of table.</p></li>
+</ul>
+    <br/><b class = "method">nrow</b><br/>
+    Get the number of rows of a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of table.</p></li>
+</ul>
+    <br/><br/><b class = "method">ncol</b><br/>
+    Get the number of columns of a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of table.</p></li>
+</ul>
+    <br/><br/><b class = "method">dim</b><br/>
+    Get dimension of a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of table.</p></li>
+</ul>
+    <br/><br/><b class = "method">print</b><br/>
+    Print dbR6 object graphical interface.
+    <br/>
+    <br/><br/><b class = "method">get_table</b><br/>
+    Get a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of the table</p></li>
+<li><p><code><strong>from</strong></code> Row where start to read (index &gt;= 1)</p></li>
+<li><p><code><strong>to</strong></code> Row where fininish to read</p></li>
+</ul>
+    <br/><br/><b class = "method">send_query</b><br/>
+    Send an SQL query.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>query</strong></code> Query to send</p></li>
+</ul>
+    <br/><br/><b class = "method">send_statement</b><br/>
+    Send an SQL statement.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>statement</strong></code> Statement to send</p></li>
+</ul>
+    <br/><br/><b class = "method">add_table</b><br/>
+    Add a table to a dbR6  object.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>new_name</strong></code> Name for the new table</p></li>
+<li><p><code><strong>new_df</strong></code> Input table</p></li>
+<li><p><code><strong>overwrite</strong></code> Overwrite if already exists? Default FALSE</p></li>
+<li><p><code><strong>append</strong></code> Append content if already exists? Default FALSE</p></li>
+<li><p><code><strong>row.names</strong></code> Row names present? Default FALSE</p></li>
+<li><p><code><strong>fun</strong></code> Function to apply to the table before writing it</p></li>
+<li><p><code><strong>...</strong></code> Additional parameters passed to RSQLite::dbWriteTable.</p></li>
+</ul>
+    <br/><br/><b class = "method">remove_table</b><br/>
+    Remove a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of table.</p></li>
+</ul>
+    <br/><br/><b class = "method">create_table_from</b><br/>
+    Add an empty table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>new_names</strong></code> Name of the new table.</p></li>
+<li><p><code><strong>from</strong></code> Table to copy structure from.</p></li>
+<li><p><code><strong>overwrite</strong></code> Overwrite table if exists?.</p></li>
+</ul>
+    <br/><br/><b class = "method">save</b><br/>
+    Save a dbR6 database on disk.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>to</strong></code> Name of the new table.</p></li>
+</ul>
+    <br/><br/><b class = "method">clone_db</b><br/>
+    Clone a dbR6 object.
+<br/><br/><em>---Parameters---</em><br/>
+    <h3></h3>
+    <ul>
+<li><p><code><strong>to</strong></code> Name of the new table.</p></li>
+</ul>
+    <br/><br/><b class = "method">sort</b><br/>
+    Sort a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of the table to sort.</p></li>
+<li><p><code><strong>column</strong></code> Column used to sort.</p></li>
+<li><p><code><strong>...</strong></code> Vector with other columns used to sort.</p></li>
+</ul>
+    <br/><br/><b class = "method">create_index</b><br/>
+    Create an index for a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of the table to sort.</p></li>
+<li><p><code><strong>column</strong></code> Column used to Create index.</p></li>
+<li><p><code><strong>unique</strong></code> Create unique index? (Logical).</p></li>
+<li><p><code><strong>...</strong></code> Other aditional columns in a character vector to create the index.</p></li>
+</ul>
+    <br/><br/><b class = "method">drop_index</b><br/>
+    Drop an index from a table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of the index to drop.</p></li>
+</ul>
+    <br/><br/><b class = "method">get_indices</b><br/>
+    Get indices for a table.
+    <br/><br/><br/><b class = "method">transaction</b><br/>
+    Generate transaction with the tables.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>...</strong></code> Character vector with transactions to parse.</p></li>
+</ul>
+    <br/><br/><b class = "method">filter</b><br/>
+    Filter a table using the given conditions.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>table</strong></code> Name of the table.</p></li>
+<li><p><code><strong>conditions</strong></code> Logical conditions.</p></li>
+<li><p><code><strong>r_commands</strong></code>  R commands to be evaluated in the condition ('where' query)
+indicated witihin %rs&amp; and %re% as in:  %rs% my_command %re%</p></li>
+</ul>
+ <br/><br/><b class = "method">exist_table</b><br/>
+ Verify if a table exists (Logical).
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Name of the table.</p></li>
+</ul>
+    <br/><br/><b class = "method">statement_chunk</b><br/>
+    Executes a statement in chunks
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>what</strong></code> Statement.</p></li>
+<li><p><code><strong>n</strong></code> Chunk size.</p></li>
+</ul>
+    <br/><br/><b class = "method">streamer</b><br/>
+    Apply a function for an imput data table using chunks, storing the output
+into a new table.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>input</strong></code> Input table.</p></li>
+<li><p><code><strong>output</strong></code> Output table.</p></li>
+<li><p><code><strong>my_fun</strong></code> R function to apply.</p></li>
+<li><p><code><strong>n</strong></code> Chunk size.</p></li>
+</ul>
+    <br/><br/><b class = "method">write_dataframe</b><br/>
+    Write an external dataframe into the database using chunks.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>input</strong></code> Input table.</p></li>
+<li><p><code><strong>output</strong></code> Output table.</p></li>
+<li><p><code><strong>has_colnames</strong></code> Colnames present? (Logical).</p></li>
+<li><p><code><strong>chunksize</strong></code> Chunk size.</p></li>
+<li><p><code><strong>sep</strong></code> Character separating cell elements (default = " ").</p></li>
+<li><p><code><strong>fun</strong></code> Function to apply to the chunk before writing it to the database.</p></li>
+<li><p><code><strong>...</strong></code> Additional parameters passed to read.table.</p></li>
+</ul>
+    <br/><br/><b class = "method">write_matrix</b><br/>
+    Write an external matrix into the database using chunks.
+<br/><br/><em>---Parameters---</em><br/>
+<h3></h3>
+    <ul>
+<li><p><code><strong>input</strong></code> Input table.</p></li>
+<li><p><code><strong>output</strong></code> Output table.</p></li>
+<li><p><code><strong>has_colnames</strong></code> colnames present? Default TRUE.</p></li>
+<li><p><code><strong>has_rownames</strong></code> rownames present? Default TRUE.</p></li>
+<li><p><code><strong>my_fun</strong></code>  Function to apply to the chunk before writing it to the database.</p></li>
+<li><p><code><strong>data_mode</strong></code> R mode of the input data ("integer", "logical", "character", "numerical").</p></li>
+</ul>
+    </dl>
+    
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dbR6_data.html">dbR6_data</a></code> </p>
-          </td>
-          <td><p>dbR6_data class</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dbR6.html">dbR6</a></code> </p>
-          </td>
-          <td><p>dbR6 class</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      
+      <li><a href="#format">Format</a></li>
+
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#fields">Fields</a></li>
+
+      <li><a href="#methods">Methods</a></li>
+          </ul>
+
   </div>
 </div>
 

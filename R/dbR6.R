@@ -12,57 +12,421 @@
 #' @field metadata Environment storing object metadata
 #' @section Methods:
 #' \describe{
-#' \item{\strong{deep_clone}}{deep clone dbR6 object (internal function).
-#' \subsection{Parameters}{
-#' \code{\strong{name}} What to clone ("metadata", "where" (database))-
 #'
-#' \code{\strong{Value}} The name of the output.
+#' \enumerate{
+#\item{\strong{deep_clone}}{deep clone dbR6 object (internal function).
+#\subsection{Parameters}{
+#\code{\strong{name}} What to clone ("metadata", "where" (database))-
+#
+#\code{\strong{Value}} The name of the output.
+#}
+#}
+#' \item{\bold{initialize}}{
+#'
+#' Initialize dbR6 object.
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#' \itemize{
+#' \item{\code{\strong{filename}} ":memory:" for to create an in-memory database,
+#' or a name for an on-disk database.}
+#' \item{\code{\strong{overwrite}} The name of the output.}
 #' }
 #' }
-#' \item{initialize}{initialize dbR6 object.
-#' \subsection{Parameters}{
-#' \code{\strong{filename}} ":memory:" for to create an in-memory database,
-#' or a name for an on-disk database.
+#' }
 #'
-#' \code{\strong{overwrite}} The name of the output.
+
+#' \item{\bold{finalize}}{
+#'
+#' Finalize dbR6 object.}
+#'
+# \item{get_where}{(inherited from R6_data class). Get location of the database linked to a dbR6 object (Internal).}
+#'
+# \item{set_data}{(inherited from R6_data class). Set dbR6 database (Internal).}
+#'
+#'
+#' \item{\bold{get_metadata}}{
+#'
+#' Get object metadata.}
+#'
+# \item{set_metadata}{Set object metadata. (Internal).}
+# \item{set_metadata_single}{Set a single metadata field (Internal).}
+#'
+#'
+#' \item{\bold{list_tables}}{
+#'
+#' List tables in database.}
+#'
+#'
+#' \item{\bold{get_tables_number}}{
+#'
+#' Get number of tables.}
+#'
+#' \item{\bold{colnames}}{
+#'
+#' Get colnames of a table.
+#'
+#' \emph{---Parameters---}
+#'
+#' \subsection{}{
+#' \itemize{
+#' \item{\code{\strong{what}} Name of table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{nrow}}{
+#'
+#' Get the number of rows of a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{ncol}}{
+#'
+#' Get the number of columns of a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{dim}}{
+#'
+#' Get dimension of a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{print}}{
+#'
+#' Print dbR6 object graphical interface.}
+#'
+#' \item{\bold{get_table}}{
+#'
+#' Get a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of the table}
+#' \item{\code{\strong{from}} Row where start to read (index >= 1)}
+#' \item{\code{\strong{to}} Row where fininish to read}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{send_query}}{
+#'
+#' Send an SQL query.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{query}} Query to send}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{send_statement}}{
+#'
+#' Send an SQL statement.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{
+#' \code{\strong{statement}} Statement to send}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{add_table}}{
+#'
+#' Add a table to a dbR6  object.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{new_name}} Name for the new table}
+#'
+#' \item{\code{\strong{new_df}} Input table}
+#'
+#' \item{\code{\strong{overwrite}} Overwrite if already exists? Default FALSE}
+#'
+#' \item{\code{\strong{append}} Append content if already exists? Default FALSE}
+#'
+#' \item{\code{\strong{row.names}} Row names present? Default FALSE}
+#'
+#' \item{\code{\strong{fun}} Function to apply to the table before writing it}
+#'
+#' \item{\code{\strong{...}} Additional parameters passed to RSQLite::dbWriteTable.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{remove_table}}{
+#'
+#' Remove a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{create_table_from}}{
+#'
+#' Add an empty table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{new_names}} Name of the new table.}
+#'
+#' \item{\code{\strong{from}} Table to copy structure from.}
+#'
+#' \item{\code{\strong{overwrite}} Overwrite table if exists?.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{save}}{
+#'
+#' Save a dbR6 database on disk.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{to}} Name of the new table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{clone_db}}{
+#'
+#' Clone a dbR6 object.
+#'
+#' \emph{---Parameters---}
+#'
+#' \subsection{}{
+#' \itemize{
+#' \item\code{\strong{to}} Name of the new table.}
 #' }
 #' }
 #'
-#' filename = ":memory:", overwrite = FALSE
-#' \item{finalize}{finalize dbR6 object.}
-#' \item{get_where}{(inherited from R6_data class). Get location of the database linked to a dbR6 object.}
-#' \item{set_data}{(inherited from R6_data class). Set dbR6 database (Internal).}
-#' \item{get_metadata}{Get metadata.}
-#' \item{set_metadata}{Set metadata.}
-#' \item{set_metadata_single}{Set a single metadata field.}
-#' \item{list_tables}{List tables in database.}
-#' \item{get_tables_number}{Get number of tables.}
-#' \item{colnames}{Get colnames of a table.}
-#' \item{nrow}{Get the number of rows of a table.}
-#' \item{ncol}{Get the number of columns of a table.}
-#' \item{dim}{Get dimension of a table.}
-#' \item{print}{Print dbR6 object graphical interface.}
-#' \item{get_table}{Get a table.}
-#' \item{send_query}{Send an SQL query.}
-#' \item{send_statement}{Send an SQL statement.}
-#' \item{add_table}{Add a table to a dbR6  object.}
-#' \item{remove_table}{Remove a table.}
-#' \item{add_empty_table}{Add an empty table.}
-#' \item{save}{Save a dbR6 database on disk.}
-#' \item{clone_db}{Clone a dbR6 object.}
-#' \item{sort}{Sort a table.}
-#' \item{create_index}{Create an index for a table.}
-#' \item{drop_index}{Drop an index from a table.}
-#' \item{get_indices}{Get indices for a table.}
-#' \item{transaction}{Generate transaction with the tables.}
-#' \item{filter}{Filter a table using the given conditions.}
-#' \item{exist_table}{Verify if a table exists (Logical).}
-#' \item{statement_chunk}{Send a statement to the database, processing the data in chunks.}
-#' \item{streamer}{Apply a function for an imput data table using chunks, storing the output
-#' into a new table.}
-#' \item{write_dataframe}{Write an external dataframe into the database using chunks.}
-#' \item{write_matrix}{Write an external matrix into the database using chunks.}
+#' \item{\bold{sort}}{
 #'
+#' Sort a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#'  \itemize{
+#' \item{\code{\strong{what}} Name of the table to sort.}
+#'
+#' \item{\code{\strong{column}} Column used to sort.}
+#'
+#' \item{\code{\strong{...}} Vector with other columns used to sort.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{create_index}}{
+#'
+#' Create an index for a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of the table to sort.}
+#'
+#' \item{\code{\strong{column}} Column used to Create index.}
+#'
+#' \item{\code{\strong{unique}} Create unique index? (Logical).}
+#'
+#' \item{\code{\strong{...}} Other aditional columns in a character vector to create the index.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{drop_index}}{
+#'
+#' Drop an index from a table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of the index to drop.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{get_indices}}{
+#'
+#' Get indices for a table.}
+#'
+#' \item{\bold{transaction}}{
+#'
+#' Generate transaction with the tables.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{...}} Character vector with transactions to parse.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{filter}}{
+#'
+#' Filter a table using the given conditions.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{table}} Name of the table.}
+#'
+#' \item{\code{\strong{conditions}} Logical conditions.}
+#'
+#' \item{\code{\strong{r_commands}}  R commands to be evaluated in the condition ('where' query)
+#' indicated witihin \%rs& and \%re\% as in:  \%rs\% my_command \%re\%}
+#' }
+#' }
+#' }
+#'
+#' \item{exist_table}{Verify if a table exists (Logical).
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Name of the table.}
+#' }
+#' }
+#' }
+#'
+#'
+#' \item{\bold{statement_chunk}}{
+#'
+#' Executes a statement in chunks
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{what}} Statement.}
+#'
+#' \item{\code{\strong{n}} Chunk size.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{streamer}}{
+#'
+#' Apply a function for an imput data table using chunks, storing the output
+#' into a new table.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{input}} Input table.}
+#' \item{\code{\strong{output}} Output table.}
+#' \item{\code{\strong{my_fun}} R function to apply.}
+#' \item{\code{\strong{n}} Chunk size.}
+#' }
+#' }
+#' }
+#'
+#'
+#' \item{\bold{write_dataframe}}{
+#'
+#' Write an external dataframe into the database using chunks.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{input}} Input table.}
+#' \item{\code{\strong{output}} Output table.}
+#' \item{\code{\strong{has_colnames}} Colnames present? (Logical).}
+#' \item{\code{\strong{chunksize}} Chunk size.}
+#' \item{\code{\strong{sep}} Character separating cell elements (default = " ").}
+#' \item{\code{\strong{fun}} Function to apply to the chunk before writing it to the database.}
+#' \item{\code{\strong{...}} Additional parameters passed to read.table.}
+#' }
+#' }
+#' }
+#'
+#' \item{\bold{write_matrix}}{
+#'
+#' Write an external matrix into the database using chunks.
+#'
+#' \emph{---Parameters---}
+
+#' \subsection{}{
+#'
+#' \itemize{
+#' \item{\code{\strong{input}} Input table.}
+#' \item{\code{\strong{output}} Output table.}
+#' \item{\code{\strong{has_colnames}} colnames present? Default TRUE.}
+#' \item{\code{\strong{has_rownames}} rownames present? Default TRUE.}
+#' \item{\code{\strong{my_fun}}  Function to apply to the chunk before writing it to the database.}
+#' \item{\code{\strong{data_mode}} R mode of the input data ("integer", "logical", "character", "numerical").}
+#' }
+#' }
+#' }
+#'
+#' }
 #' }
 #' @export
 
@@ -303,7 +667,7 @@ remove_table = function(what) {
   },
 
   #--------------------
-add_empty_table = function(new_name, shape, overwrite) {
+create_table_from = function(new_name, from, overwrite) {
     if(new_name %in% self$list_tables()) {
       if(!overwrite) {
         stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
@@ -311,7 +675,7 @@ add_empty_table = function(new_name, shape, overwrite) {
         self$remove_table(what = new_name)
       }
     }
-    self$send_statement(paste0("CREATE TABLE ", new_name, " AS SELECT * FROM ", shape, " WHERE 1=2"))
+    self$send_statement(paste0("CREATE TABLE ", new_name, " AS SELECT * FROM ", from, " WHERE 1=2"))
     invisible(self)
   },
 
@@ -344,7 +708,7 @@ sort = function(what, column, ...) {
   #self$send_statement(paste0("CREATE INDEX idx_temp ON ", what, " (", column, ")"))
 
   tempname <- paste("temp_", paste(sample(c(letters, 0:9, 20)), collapse = ""), sep = "")
-  self$add_empty_table(tempname, what, overwrite = TRUE)
+  self$create_table_from(tempname, what, overwrite = TRUE)
   self$send_statement(paste0("INSERT INTO ", tempname, " SELECT * FROM ", what, " ORDER BY ", column))
   self$remove_table(what)
   self$send_statement(paste0("ALTER TABLE ", tempname, " RENAME TO ", what))
@@ -410,8 +774,8 @@ filter = function(table, conditions, r_commands = FALSE) {
   self$send_query(paste0("SELECT * FROM ", table, " WHERE ", conditions))
 },
 
-exist_table = function(name) {
-  RSQLite::dbExistsTable(super$get_where()$data, name)
+exist_table = function(what) {
+  RSQLite::dbExistsTable(super$get_where()$data, what)
 },
 
 statement_chunk = function(what, n) {
@@ -450,7 +814,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
     # iterator
     iter_fun <- function() {
-      if(x == 1)  self$add_empty_table(output, shape = input,  overwrite =  TRUE)
+      if(x == 1)  self$create_table_from(output, from = input,  overwrite =  TRUE)
       this_query <- self$send_query(paste0("SELECT * FROM ", input,
                                            " WHERE id IN (SELECT id FROM ", input, " WHERE ", "id >= ", x,
                                            " AND id < ", x + n, ")"))
@@ -483,16 +847,16 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
 #----------
 
-write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, sep = " ", fun = NULL,...) {
+write_dataframe =  function(input, output, has_colnames = TRUE, chunksize = 100, sep = " ", fun = NULL,...) {
 
     skip <- 0
 
     if(header) {
-      true_header <- as.character(read.table(infile, nrows  = 1, stringsAsFactors = FALSE)[1, ])
+      true_header <- as.character(read.table(input, nrows  = 1, stringsAsFactors = FALSE)[1, ])
       skip <- 1
     }
 
-    data <- read.table(infile,
+    data <- read.table(input,
                        header = FALSE,
                        sep = sep,
                        na.strings = "NA",
@@ -505,7 +869,7 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
                        row.names = 1,
                        ... )
 
-    if(header) {
+    if(has_colnames) {
       colnames(data) <- true_header
     }
     skip <- skip + nrow(data)
@@ -514,12 +878,12 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
       data <- fun(data)
     }
 
-    self$add_table(out_name, data, overwrite = TRUE )
+    self$add_table(output, data, overwrite = TRUE )
 
     while(nrow(data) > 0) {
 
-      tryCatch(data <- read.table(infile,
-                                  header = header,
+      tryCatch(data <- read.table(input,
+                                  header = has_colnames,
                                   sep = sep,
                                   na.strings = "NA",
                                   colClasses = c("character"),
@@ -534,12 +898,12 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
                  data <<-data.frame()
                  if(length(grep("no lines available in input", e$message) == 0)) {
                    print(e$message)
-                   file.remove(out_name)
+                   file.remove(output)
                  }
                })
 
       if(nrow(data) > 0) {
-        if(header) {
+        if(has_colnames) {
           colnames(data) <- true_header
         }
         skip <- skip + nrow(data)
@@ -548,7 +912,7 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
           data <- fun(data)
         }
 
-        self$add_table(out_name, data, append = TRUE )
+        self$add_table(output, data, append = TRUE )
       }
     }
 
@@ -558,12 +922,12 @@ write_dataframe =  function(infile, out_name, header = TRUE, chunksize = 100, se
 
 #----------
 
-write_matrix =  function(infile, out_name, header = TRUE,
-                                        chunksize = 1000L, sep = " ", has_row_names = TRUE,
-                                        fun = NULL, data_mod = "character", ...) {
+write_matrix =  function(input, output, has_colnames = TRUE,
+                                        chunksize = 1000L, sep = " ", has_rownames = TRUE,
+                                        fun = NULL, data_mod = "character") {
 
 
-my_reader <- reader(infile, sep, header, has_row_names, chunksize)
+my_reader <- reader(input, sep, has_colnames, has_rownames, chunksize)
 
     lines_written <- 0
 
@@ -580,7 +944,7 @@ my_reader <- reader(infile, sep, header, has_row_names, chunksize)
         data <- fun(data)
       }
 
-      self$add_table(out_name, data, append = TRUE)
+      self$add_table(output, data, append = TRUE)
       lines_written <- lines_written +  nrow(data)
     }
 

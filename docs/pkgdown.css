@@ -161,3 +161,8 @@ code a, pre a {
 .error   { color: orange;  font-weight: bolder;}
 .warning { color: #6A0366; font-weight: bolder;}
 
+
+.method {
+color: #10820e;
+font-size: 1.2em;
+}
