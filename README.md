@@ -33,7 +33,7 @@ data$write_dataframe("small_table.txt", "small")
 # The show method returns information about the object:
 data
 
-![Interface](dbR6/inst/extdata/dbR6.jpg?raw=true)
+![Interface](/inst/extdata/dbR6.jpg)
 
 # Listing tables
 data$list_tables()
