@@ -27,9 +27,9 @@ dbR6 class
 \describe{
 \item{\strong{deep_clone}}{deep clone dbR6 object (internal function).
 \subsection{Parameters}{
-\emph{\strong{name}} What to clone ("metadata", "where" (database))-
+\code{\strong{name}} What to clone ("metadata", "where" (database))-
 
-\emph{\strong{Value}} The name of the output.
+\code{\strong{Value}} The name of the output.
 }
 }
 \item{initialize}{initialize dbR6 object.
