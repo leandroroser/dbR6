@@ -3,6 +3,10 @@
 This package defines the dbR6 class, an R6 class which offers methods for creation and manipulation of SQLite tables. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the class.  
 
 
+## Available methods
+
+Description of methods is available on <a href = "https://leandroroser.github.io/dbR6/reference/index.html"> this link</a>
+
 ### Example
 
 ```diff
