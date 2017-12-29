@@ -17,6 +17,14 @@ data <- dbR6$new("output.sqlite")
 # allows to read a matrix in chunks
 data$write_matrix("long_table.txt", out_name = "long", chunksize = 1000)
 
+# The show method returns information about the object:
+data
+```
+
+![Interface](https://github.com/leandroroser/dbR6/raw/master/inst/extdata/dbR6.jpg)
+
+
+```diff
 # A second method for dataframes is provided using the native 
 # read.table function, but it is slow for big tables
 
@@ -30,15 +38,6 @@ data$write_dataframe("small_table.txt", "small")
 # while read.table needs to read all the data up to the next chunk and skips those rows, which makes it
 # slower with increasing the size of the data.
 
-# The show method returns information about the object:
-data
-
-```
-
-![Interface](https://github.com/leandroroser/dbR6/raw/master/inst/extdata/dbR6.jpg)
-
-
-```diff
 # Listing tables
 data$list_tables()
 
