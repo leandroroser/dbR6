@@ -34,7 +34,9 @@ close(con)
 # In this case we will create an SQLite database on disk:
 data_on_disk <- dbR6$new("output.sqlite")
 
-# Write the big matrix in the on-disk database. The dbR6 package uses the reader package (available on this GitHub repository, https://github.com/leandroroser/reader), which allows to read a matrix in chunks efficiently:
+# Write the big matrix in the on-disk database. The dbR6 package uses the reader package
+# (available on this GitHub repository, https://github.com/leandroroser/reader),
+# which allows to read a matrix in chunks efficiently:
 require("reader")
 data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 10000)
 
