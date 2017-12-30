@@ -10,16 +10,26 @@ Description of methods is available on <a href = "https://leandroroser.github.io
 ### Example
 
 ```diff
-# let's create a big table:
+
+library(dbR6)
+
+# Let's create a big table:
 long_table <- matrix(sample(letters, 100000, replace = TRUE), 10000, 10)
 write.table(long_table, "long_table.txt", quote = FALSE)
 
-# create a new dbR6 object (on-disk)
-data <- dbR6$new("output.sqlite")
 
-# write the big table in the database using the reader package, which
-# allows to read a matrix in chunks
-data$write_matrix("long_table.txt", out_name = "long", chunksize = 1000)
+# Create a new dbR6 object (on-disk) with the method "new". All the methods
+# available for the dbR6 class, are accessible via: some_dbR6_object$name_of_method(parameters).
+# In this case we will create an SQLite database on disk:
+data_on_disk <- dbR6$new("output.sqlite")
+
+# Create a second object, in-memory. For this purpose, use the parameter ":memory:"
+data_in_memory <- dbR6$new(":memory:")
+
+# Write the big matrix in the on-disk database. The dbR6 package uses the reader package (available on this GitHub repository, https://github.com/leandroroser/reader), which allows to read a matrix in chunks efficiently:
+require("reader")
+data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 1000)
+
 
 # The show method returns information about the object:
 data
@@ -29,23 +39,31 @@ data
 
 
 ```diff
-# A second method for dataframes is provided using the native 
-# read.table function, but it is slow for big tables
 
-small_table <- matrix(sample(letters, 1000, replace = TRUE), 100, 10)
-write.table(small_table, "small_table.txt", quote = FALSE)
-data$write_dataframe("small_table.txt", "small")
+# Call some of the available methods:
+data_on_disk$list_tables()  # list tables
+data_on_disk$get_table("long", 1, 10)  # get values from the "long" table, from rows 1 to 10
+data_on_disk$location()  # location of the database
+data_on_disk$nrow("long") # number of rows of "long" table
+data_on_disk$ncol("long") # number of columns of "long" table
+data_on_disk$send_query("SELECT * FROM long LIMIT 5;") #send a SQL query
+
+
+# Method to write data frames
+
+data$write_dataframe("long_table.txt", "long_as_df")
 
 # Please note that the first method is for matrix (i.e., all columns of the same type) and the
 # second for data frames (the columns can be of different type). The first one is recommended when
-# working with tables with a same type. The package reader uses a pointer to locate the next chunk,
-# while read.table needs to read all the data up to the next chunk and skips those rows, which makes it
-# slower with increasing the size of the data.
+# working with tables with a same type of data, as it is faster.
 
-# Listing tables
+# List tables
 data$list_tables()
 
-# Sending a query
-data$send_query("SELECT * FROM salida LIMIT 5;")
+# Remove table "long"
+data_on_disk$remove_table("long")
+
+# See the object
+data_on_disk
 
 ```

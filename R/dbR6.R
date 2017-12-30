@@ -847,84 +847,100 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
 #----------
 
-write_dataframe =  function(input, output, has_colnames = TRUE, chunksize = 100, sep = " ", fun = NULL,...) {
+write_dataframe =  function(input, output, has_colnames = TRUE, has_rownames = TRUE,
+                            chunksize = 100, sep = " ", fun = NULL,...) {
 
-    skip <- 0
+    lines_completed <- 0
 
-    if(header) {
-      true_header <- as.character(read.table(input, nrows  = 1, stringsAsFactors = FALSE)[1, ])
-      skip <- 1
+    con <- file(description=input,open="r")
+
+
+    if(has_rownames) {
+      rownames_value = 1
+    } else {
+      rownames_value <- NULL
     }
 
-    data <- read.table(input,
-                       header = FALSE,
-                       sep = sep,
-                       na.strings = "NA",
-                       colClasses = c("character"),
-                       strip.white = TRUE,
-                       comment.char="",
-                       stringsAsFactors = FALSE,
-                       nrows = chunksize,
-                       skip = skip,
-                       row.names = 1,
-                       ... )
+
+    if(has_colnames)
+    {
+      true_header <- read.table(con,
+                                nrows = 1,
+                                header = FALSE,
+                                sep = sep,
+                                na.strings = "NA",
+                                strip.white = TRUE,
+                                comment.char="",
+                                stringsAsFactors = FALSE,
+                                row.names = NULL,
+                                ...)
+     true_header<- as.character(true_header[1, ])
+    }
+
+    data <- read.table(con,
+               header = FALSE,
+               sep = sep,
+               na.strings = "NA",
+               strip.white = TRUE,
+               comment.char="",
+               stringsAsFactors = FALSE,
+               nrows = chunksize,
+               row.names = rownames_value,
+               ...)
 
     if(has_colnames) {
       colnames(data) <- true_header
     }
-    skip <- skip + nrow(data)
 
-    if(!is.null(fun)){
-      data <- fun(data)
-    }
+    self$add_table(output, data, overwrite = TRUE)
+    lines_completed <- this_lines <- nrow(data)
 
-    self$add_table(output, data, overwrite = TRUE )
+    while(this_lines > 0) {
 
-    while(nrow(data) > 0) {
-
-      tryCatch(data <- read.table(input,
-                                  header = has_colnames,
+      tryCatch({
+          data <- read.table(con,
+                                  header = FALSE,
                                   sep = sep,
                                   na.strings = "NA",
-                                  colClasses = c("character"),
                                   strip.white = TRUE,
                                   comment.char="",
                                   stringsAsFactors = FALSE,
                                   nrows = chunksize,
-                                  skip = skip,
-                                  row.names = 1,
-                                  ... ),
+                                  row.names = rownames_value,
+                                  ... )
+               this_lines <- nrow(data)
+               lines_completed <- lines_completed  +  this_lines
+               if(this_lines > 0) {
+                 if(has_colnames) {
+                   colnames(data) <- true_header
+                 }
+
+                 if(!is.null(fun)){
+                   data <- fun(data)
+                 }
+
+                 self$add_table(output, data, append = TRUE )
+                 cat("Written ", lines_completed, " lines into database\n")
+               }
+    },
                error = function(e) {
                  data <<-data.frame()
-                 if(length(grep("no lines available in input", e$message) == 0)) {
-                   print(e$message)
-                   file.remove(output)
+                 this_lines <<- 0
+                 # only pass when all the lines were read
+                 if(length(grep("no lines available in input", e$message)) == 0) {
+                   stop(e)
                  }
                })
-
-      if(nrow(data) > 0) {
-        if(has_colnames) {
-          colnames(data) <- true_header
-        }
-        skip <- skip + nrow(data)
-
-        if(!is.null(fun)){
-          data <- fun(data)
-        }
-
-        self$add_table(output, data, append = TRUE )
-      }
     }
-
-    cat("Written ", skip, " lines into database")
+    close(con)
     invisible(NULL)
   },
 
 #----------
 
 write_matrix =  function(input, output, has_colnames = TRUE,
-                                        chunksize = 1000L, sep = " ", has_rownames = TRUE,
-                                        fun = NULL, data_mod = "character") {
+                         chunksize = 1000L, sep = " ", has_rownames = TRUE,
+                         fun = NULL, data_mod = "character") {
 
 
 my_reader <- reader(input, sep, has_colnames, has_rownames, chunksize)
