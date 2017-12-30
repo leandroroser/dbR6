@@ -56,12 +56,13 @@ data_on_disk$get_table("long", 1, 10)  # get values from the "long" table, from 
 data_on_disk$location()  # location of the database
 data_on_disk$nrow("long") # number of rows of "long" table
 data_on_disk$ncol("long") # number of columns of "long" table
-data_on_disk$send_query("SELECT * FROM long LIMIT 5;") #send a SQL query
+data_on_disk$send_query("SELECT * FROM long LIMIT 5;") #send an SQL query
 
 
 # Method to write data frames
 
-# Please note that the first method is for matrix (i.e., all columns of the same type) while the second for data frames (the columns can be of different type). 
+# Please note that the first method is for matrix (i.e., all columns of the same type) 
+# while the second for data frames (the columns can be of different type). 
 # The first one is recommended when
 # working with tables with a same type of data, as it is faster.
 
