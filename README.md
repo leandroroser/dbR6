@@ -34,9 +34,6 @@ close(con)
 # In this case we will create an SQLite database on disk:
 data_on_disk <- dbR6$new("output.sqlite")
 
-# Create a second object, in-memory. For this purpose, use the parameter ":memory:"
-data_in_memory <- dbR6$new(":memory:")
-
 # Write the big matrix in the on-disk database. The dbR6 package uses the reader package (available on this GitHub repository, https://github.com/leandroroser/reader), which allows to read a matrix in chunks efficiently:
 require("reader")
 data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 10000)
@@ -79,3 +76,14 @@ data_on_disk$remove_table("long", "long_as_df")
 data_on_disk
 ```
 
+Object in-memory and re-connect to existing objects
+
+```diff
+
+# In-memory are created passing the parameter ":memory:" to the constructor
+data_in_memory <- dbR6$new(":memory:")
+
+# For reconnection to an existing object the database is passed as argument to the constructor
+reconnection <- dbR6$new("output.sqlite")
+
+```

@@ -23,10 +23,10 @@ dbR6_data class
 \section{Methods}{
 
 \describe{
-\item{initialize}{lorem ipsum}
-\item{finalize}{lorem ipsum}
-\item{get_where}{lorem ipsum}
-\item{set_data}{lorem ipsum}
+\item{initialize}{initialize method}
+\item{finalize}{finalize method}
+\item{get_where}{get environment with the database connection}
+\item{set_data}{set database connection}
 }
 }
 

@@ -10,7 +10,7 @@ Description: The package provides the dbR6 class and associated methods to creat
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-Imports: devtools, crayon
+Imports: devtools, crayon, pryr
 Remotes: leandroroser/reader
 Packaged: 2017-11-21 08:12:58 UTC; leandro
 RoxygenNote: 6.0.1

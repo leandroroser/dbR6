@@ -8,10 +8,10 @@
 #' @field where environment storing data & enclosing environment for metadata
 #' @section Methods:
 #' \describe{
-#' \item{initialize}{lorem ipsum}
-#' \item{finalize}{lorem ipsum}
-#' \item{get_where}{lorem ipsum}
-#' \item{set_data}{lorem ipsum}
+#' \item{initialize}{initialize method}
+#' \item{finalize}{finalize method}
+#' \item{get_where}{get environment with the database connection}
+#' \item{set_data}{set database connection}
 #' }
 #' @export
 
@@ -28,25 +28,24 @@ public = list(
 
 initialize = function(filename = ":memory:", overwrite = FALSE) {
 
-    if(filename == ":memory:" && overwrite) {
-      stop("A file must be selected when overwrite is TRUE")
+    if(filename != ":memory:")
+    {
+      filename <- normalizePath(filename)
     }
 
-
-
     if(overwrite){
+      if(filename == ":memory:") {
+        stop("A file must be selected when overwrite is TRUE")
+      }
+
       if(length(grep(filename, dir())) != 0) {
         suppressMessages(file.remove(filename))
         message("Overwriting database...")
       }
     } else {
-      if(length(grep(filename, dir())) != 0) {
-        stop("File exists in memory but overwrite = FALSE")
+      if(filename != ":memory:") {
+        message(paste0("Connecting with existing database: ", filename))
       }
-    }
-
-    if(filename != ":memory:" && !overwrite) {
-      message(paste0("Connecting with database: ", filename))
     }
 
     private$where <- new.env(parent = emptyenv(), hash = FALSE)

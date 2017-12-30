@@ -576,16 +576,16 @@ print = function() {
       }
     }
 
-    print_obj_size <- paste0(" ", self$get_metadata()$Robject_size,  " Kb ")
+    print_obj_size <- paste0(" ", self$get_metadata()$Robject_size,  " Mb ")
 
     in_memory <- super$get_where()$data@dbname == ":memory:"
     if(in_memory) {
     print_db_size <- " [[in memory]] "
     } else {
-    print_db_size <- paste0(" ", self$get_metadata()$db_size, " Kb ")
+    print_db_size <- paste0(" ", self$get_metadata()$db_size, " Mb ")
     }
 
-    print_location <- paste0(" ", self$location(), " ")
+    print_location <- paste0(" ", gsub(".*/", ".../", self$location()), " ")
     if(nchar(print_location) > 33) {
       end <- nchar(print_location)
       start <- end - 30
