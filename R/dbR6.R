@@ -943,28 +943,27 @@ write_matrix =  function(input, output, has_colnames = TRUE,
                          fun = NULL, data_mod = "character") {
 
 
-my_reader <- reader(input, sep, has_colnames, has_rownames, chunksize)
+my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
 
     lines_written <- 0
 
-    while(next_chunk(my_reader)) {
-      data <- get_data(my_reader)
-      data <- as.data.frame(data, stringsAsFactors = FALSE)
+    while(reader::next_chunk(my_reader)) {
+      data <- reader::get_data(my_reader)
 
       if(data_mod != "character") {
         mode(data) <- data_mod
       }
 
-
       if(!is.null(fun)){
         data <- fun(data)
       }
 
+      data <- reader::matrix2df(data)
+
       self$add_table(output, data, append = TRUE)
       lines_written <- lines_written +  nrow(data)
+      cat("Written ", lines_written, " lines into database \n")
     }
-
-cat("Written ", lines_written, " lines into database \n")
 
   invisible(NULL)
 }

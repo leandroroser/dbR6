@@ -13,9 +13,20 @@ Description of methods is available on <a href = "https://leandroroser.github.io
 
 library(dbR6)
 
-# Let's create a big table:
-long_table <- matrix(sample(letters, 100000, replace = TRUE), 10000, 10)
-write.table(long_table, "long_table.txt", quote = FALSE)
+# Let's create a table of 1E6 rows x 100 columns:
+
+con <- file("long_table.txt", open = "w")
+header <- paste("C", 1:100, sep = "", collapse = " ")
+writeLines(header, con)
+row_index <- 1
+for(i in 1:100) {
+long_table <- matrix(sample(letters, 1000000, replace = TRUE), 10000, 100)
+rownames(long_table) <- row_index : (i * 10000)
+row_index <- row_index + 10000
+write.table(long_table, con, quote = FALSE, append = TRUE, col.names = FALSE, row.names = TRUE)
+cat("Written ", i * 10000, " of 1E6 rows\n")
+}
+close(con)
 
 
 # Create a new dbR6 object (on-disk) with the method "new". All the methods
@@ -28,11 +39,11 @@ data_in_memory <- dbR6$new(":memory:")
 
 # Write the big matrix in the on-disk database. The dbR6 package uses the reader package (available on this GitHub repository, https://github.com/leandroroser/reader), which allows to read a matrix in chunks efficiently:
 require("reader")
-data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 1000)
+data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 10000)
 
 
 # The show method returns information about the object:
-data
+data_on_disk
 ```
 
 ![Interface](https://github.com/leandroroser/dbR6/raw/master/inst/extdata/dbR6.jpg)
@@ -51,19 +62,20 @@ data_on_disk$send_query("SELECT * FROM long LIMIT 5;") #send a SQL query
 
 # Method to write data frames
 
-data$write_dataframe("long_table.txt", "long_as_df")
-
-# Please note that the first method is for matrix (i.e., all columns of the same type) and the
-# second for data frames (the columns can be of different type). The first one is recommended when
+# Please note that the first method is for matrix (i.e., all columns of the same type) while the second for data frames (the columns can be of different type). 
+# The first one is recommended when
 # working with tables with a same type of data, as it is faster.
+
+data_on_disk$write_dataframe("long_table.txt", "long_as_df", chunksize = 10000)
+
 
 # List tables
 data$list_tables()
 
 # Remove table "long"
-data_on_disk$remove_table("long")
+data_on_disk$remove_table("long", "long_as_df")
 
 # See the object
 data_on_disk
-
 ```
+
