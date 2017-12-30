@@ -79,7 +79,7 @@ data_on_disk$remove_table("long", "long_as_df")
 data_on_disk
 ```
 
-### Objects in-memory and reconnections to existing objects
+### Objects in-memory and reconnections to existing databases
 
 ```diff
 
