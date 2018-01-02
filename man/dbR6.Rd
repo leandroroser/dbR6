@@ -176,7 +176,7 @@ Add a table to a dbR6  object.
 
 \item{\code{\strong{append}} Append content if already exists? Default FALSE}
 
-\item{\code{\strong{row.names}} Row names present? Default FALSE}
+\item{\code{\strong{has_rownames}} Row names present? Default TRUE}
 
 \item{\code{\strong{fun}} Function to apply to the table before writing it}
 

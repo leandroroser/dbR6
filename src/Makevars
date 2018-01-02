@@ -1,0 +1,3 @@
+CC=ccache clang 
+CXX=ccache clang++ 
+CCACHE_CPP2=yes

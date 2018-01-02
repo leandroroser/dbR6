@@ -183,7 +183,7 @@
 #'
 #' \item{\code{\strong{append}} Append content if already exists? Default FALSE}
 #'
-#' \item{\code{\strong{row.names}} Row names present? Default FALSE}
+#' \item{\code{\strong{has_rownames}} Row names present? Default TRUE}
 #'
 #' \item{\code{\strong{fun}} Function to apply to the table before writing it}
 #'
@@ -484,7 +484,8 @@ set_metadata = function() {
     # in db
     if(!in_memory) {
       RSQLite::dbWriteTable(this_data, "metadata",
-                            data.frame(df_names = df_names, db_size = db_size, Robject_size = Robject_size), overwrite = TRUE)
+                            data.frame(df_names = df_names, db_size = db_size,
+                                       Robject_size = Robject_size), overwrite = TRUE)
     }
     #in object
 
@@ -593,8 +594,6 @@ print = function() {
 
     }
 
-
-
     cat("\n")
     cat(topCol("                  dbR6 object                          "),  "\n\n")
     cat(crayon::bgMagenta(" <-> ")); palette(" Data frames: ", print_tables, 50); cat("\n")
@@ -606,7 +605,7 @@ print = function() {
   },
 
   # poner un from----to y usar LIMITS de sql
-get_table = function(what, from = NULL, to = NULL) {
+get_table = function(what, from = NULL, to = NULL, has_rownames = TRUE) {
     cond1 <- !is.null(from) && from <=0
     cond2 <- !is.null(to) && (to <=0 || to > self$nrow(what))
     if(cond1 || cond2) {
@@ -621,7 +620,11 @@ get_table = function(what, from = NULL, to = NULL) {
     } else {
       limits <- ""
     }
-    self$send_query(paste0("SELECT * FROM ", what, limits))
+    out <- self$send_query(paste0("SELECT * FROM ", what, limits))
+    if(has_rownames) {
+    out <- as_table_with_rownames(out)
+    }
+    out
   },
 
   #---------------------
@@ -640,7 +643,7 @@ send_statement = function(statement) {
 
   #----------------------
 add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
-                     row.names = FALSE, fun = NULL,  ...) {
+                     write_rownames = TRUE, fun = NULL,  ...) {
     if(new_name %in% self$list_tables() && !overwrite && !append) {
       stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
     }
@@ -652,7 +655,7 @@ add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
     }
 
     RSQLite::dbWriteTable(super$get_where()$data, new_name, new_df, overwrite = overwrite,
-                          append = append, row.names = row.names, ...)
+                          append = append, row.names = write_rownames, ...)
     self$set_metadata()
     invisible(self)
   },
@@ -892,7 +895,7 @@ write_dataframe =  function(input, output, has_colnames = TRUE, has_rownames = T
       colnames(data) <- true_header
     }
 
-    self$add_table(output, data, overwrite = TRUE)
+    self$add_table(output, data, overwrite = TRUE, write_rownames = has_rownames)
     lines_completed <- this_lines <- nrow(data)
 
     while(this_lines > 0) {
@@ -940,7 +943,7 @@ write_dataframe =  function(input, output, has_colnames = TRUE, has_rownames = T
 
 write_matrix =  function(input, output, has_colnames = TRUE,
                          chunksize = 1000L, sep = " ", has_rownames = TRUE,
-                         fun = NULL, data_mod = "character") {
+                         fun = NULL, data_mod = "character", ...) {
 
 
 my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
@@ -959,8 +962,11 @@ my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
       }
 
       data <- reader::matrix2df(data)
-
-      self$add_table(output, data, append = TRUE)
+      if(lines_written == 0) {
+       self$add_table(output, data, overwrite = TRUE, ...)
+      } else {
+       self$add_table(output, data, append = TRUE, ...)
+      }
       lines_written <- lines_written +  nrow(data)
       cat("Written ", lines_written, " lines into database \n")
     }
