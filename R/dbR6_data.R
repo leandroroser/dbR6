@@ -28,10 +28,6 @@ public = list(
 
 initialize = function(filename = ":memory:", overwrite = FALSE) {
 
-    if(filename != ":memory:")
-    {
-      filename <- normalizePath(filename)
-    }
 
     if(overwrite){
       if(filename == ":memory:") {
@@ -41,18 +37,24 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
       if(length(grep(filename, dir())) != 0) {
         suppressMessages(file.remove(filename))
         message("Overwriting database...")
+        file.create(filename)
       }
+
     } else {
       if(filename != ":memory:") {
+        if(length(grep(filename, dir())) != 0) {
         message(paste0("Connecting with existing database: ", filename))
+      } else {
+        message("Creating new database...")
+        file.create(filename)
+      }
       }
     }
-
+    if(filename != ":memory:") filename <- normalizePath(filename)
     private$where <- new.env(parent = emptyenv(), hash = FALSE)
     private$where$data <- RSQLite::dbConnect(RSQLite::SQLite(), filename)
 
     if(filename == ":memory:") {
-
       message("Database created in memory")
     } else {
       message(paste0("Database located in: ", filename))
