@@ -570,7 +570,7 @@ print = function() {
     if(all(tables %in% "")) {
       print_tables <- " [[empty db]] "
     } else {
-      print_tables <- paste(" ", tables, collapse = ", ")
+      print_tables <- paste(" ", tables, " ", collapse = ", ")
       if(nchar(print_tables) > 33) {
       print_tables <- paste0(" ", substr(print_tables, 1, 17), " ... (", self$get_tables_number(), " tables) ")
 
