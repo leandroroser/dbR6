@@ -37,8 +37,10 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
       if(length(grep(filename, dir())) != 0) {
         suppressMessages(file.remove(filename))
         message("Overwriting database...")
-        file.create(filename)
+      } else {
+        message("Creating new database...")
       }
+      file.create(filename)
 
     } else {
       if(filename != ":memory:") {
