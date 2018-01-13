@@ -50,7 +50,7 @@
 #' Get object metadata.}
 #'
 # \item{set_metadata}{Set object metadata. (Internal).}
-# \item{set_metadata_single}{Set a single metadata field (Internal).}
+# \item{set_one_metadata_value}{Set a single metadata field (Internal).}
 #'
 #'
 #' \item{\bold{list_tables}}{
@@ -206,7 +206,7 @@
 #' }
 #' }
 #'
-#' \item{\bold{create_table_from}}{
+#' \item{\bold{copy_table_structure}}{
 #'
 #' Add an empty table.
 #'
@@ -306,7 +306,7 @@
 #'
 #' Get indices for a table.}
 #'
-#' \item{\bold{transaction}}{
+#' \item{\bold{send_transaction}}{
 #'
 #' Generate transaction with the tables.
 #'
@@ -434,6 +434,7 @@ dbR6 <- R6::R6Class("dbR6",
 
 inherit = dbR6_data,
 private = list(
+  keys = NULL,
   metadata = NULL,
   deep_clone = function(name, value) {
     # With x$clone(deep=TRUE) is called, the deep_clone gets invoked once for
@@ -453,10 +454,26 @@ private = list(
 public = list(
 
   #---------------------
-initialize = function(filename = ":memory:", overwrite = FALSE) {
-    super$initialize(filename, overwrite)
+initialize = function(filename = ":memory:", overwrite = FALSE, new_metadata = FALSE) {
+    exists_metadata <- super$initialize(filename, overwrite)
     private$metadata <- new.env(parent = super$get_where(), hash = FALSE)
+    if(exists_metadata) {
+      metadata_path <- paste0(super$get_where()$data@dbname, "_metadata.rds")
+
+      if(!(file.exists(metadata_path) && new_metadata)) {
+        stop("No metadata found for object. New metadata without keys can be created using the parameter
+                new_metadata = TRUE. Note that a splitted table can not be reduced with the reduce() method
+                when the original metadata has been lost and you should do a manual reduction via rbind()
+                (see the rbind() method documentation.")
+      } else if(!file.exists(metadata_path) && new_metadata) {
+        self$set_metadata()
+      } else {
+        self$load_metadata()
+      }
+
+    } else {
     self$set_metadata()
+    }
   },
 
   #----------------------
@@ -468,34 +485,49 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
 get_metadata = function() private$metadata,
 
   #---------------------
+
+load_metadata = function() {
+  # internal checkpoint for coding errors
+  if(super$get_where()$data@dbname == ":memory:") stop("in memory file has not on-disk metadata")
+
+  metadata_path <- paste0(super$get_where()$data@dbname, "_metadata.rds")
+  this_metadata <- readRDS(metadata_path)
+
+  self$set_one_metadata_value(df_names, this_metadata$df_names)
+  self$set_one_metadata_value(db_size, this_metadata$db_size)
+  self$set_one_metadata_value(Robject_size, this_metadata$Robject_size)
+  private$keys <- this_metadata$keys
+},
+
+
 set_metadata = function() {
 
     this_data <- super$get_where()$data
     in_memory <- this_data@dbname == ":memory:"
     df_names <- self$list_tables()
     if(!in_memory) {
-      db_size <- round(as.numeric(na.omit(file.size(super$get_where()$data@dbname))) / 1000, 3)
+      db_size <- round(as.numeric(na.omit(file.size(super$get_where()$data@dbname))) / 1E3, 3)
     } else {
       db_size <- 0
     }
 
-    Robject_size <-  round(as.numeric(pryr::object_size(self))/ 1000, 3)
+    Robject_size <-  round(as.numeric(pryr::object_size(self))/ 1E6, 3)
 
     # in db
     if(!in_memory) {
-      RSQLite::dbWriteTable(this_data, "metadata",
-                            data.frame(df_names = df_names, db_size = db_size,
-                                       Robject_size = Robject_size), overwrite = TRUE)
+      saveRDS(list(df_names = df_names, db_size = db_size,
+                   Robject_size = Robject_size, keys = private$keys),
+                   paste0(super$get_where()$data@dbname, "_metadata.rds"), compress = TRUE)
     }
-    #in object
 
-    self$set_metadata_single(df_names, df_names)
-    self$set_metadata_single(db_size, round(as.numeric(db_size) / 1000, 3))
-    self$set_metadata_single(Robject_size, round(as.numeric(Robject_size) / 1000, 3))
+    # create an in-memory copy of metadata
+    self$set_one_metadata_value(df_names, df_names)
+    self$set_one_metadata_value(db_size, db_size)
+    self$set_one_metadata_value(Robject_size, Robject_size)
   },
 
   #--------------------
-set_metadata_single = function(name, value) {
+set_one_metadata_value = function(name, value) {
     name <- deparse(substitute(name))
     assign(name, value, private$metadata)
   },
@@ -648,7 +680,7 @@ add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
       stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
     }
     names <- self$get_metadata()$df_names
-    self$set_metadata_single("df_names", c(names, new_name))
+    self$set_one_metadata_value("df_names", c(names, new_name))
 
     if(!is.null(fun)) {
       new_df <- fun(new_df)
@@ -661,8 +693,12 @@ add_table = function(new_name, new_df, overwrite = FALSE, append = FALSE,
   },
 
 remove_table = function(what) {
-    if(!what %in% self$list_tables()) return(paste0("Table '", what,   "' not found in database"))
-      RSQLite::dbRemoveTable(super$get_where()$data, what)
+
+  tables_names <- self$list_tables()
+    for(this_table in what) {
+    if(!this_table %in% tables_names) return(paste0("Table '", this_table,   "' not found in database"))
+      RSQLite::dbRemoveTable(super$get_where()$data, this_table)
+    }
       #this_statement <- RSQLite::dbSendStatement(super$get_where()$data,  paste0("DROP TABLE ", to_remove))
       #on.exit(RSQLite::dbClearResult(this_statement))
       self$set_metadata()
@@ -670,7 +706,7 @@ remove_table = function(what) {
   },
 
   #--------------------
-create_table_from = function(new_name, from, overwrite) {
+copy_table_structure = function(new_name, from, overwrite) {
     if(new_name %in% self$list_tables()) {
       if(!overwrite) {
         stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
@@ -685,6 +721,7 @@ create_table_from = function(new_name, from, overwrite) {
   #--------------------
 
 save = function(to) {
+    to <- paste0(to, "sqlite")
     this_data <- super$get_where()$data
     if(this_data@dbname != ":memory:") stop("db already present on disk")
     db <- RSQLite::dbConnect(RSQLite::SQLite(), to)
@@ -711,7 +748,7 @@ sort = function(what, column, ...) {
   #self$send_statement(paste0("CREATE INDEX idx_temp ON ", what, " (", column, ")"))
 
   tempname <- paste("temp_", paste(sample(c(letters, 0:9, 20)), collapse = ""), sep = "")
-  self$create_table_from(tempname, what, overwrite = TRUE)
+  self$copy_table_structure(tempname, what, overwrite = TRUE)
   self$send_statement(paste0("INSERT INTO ", tempname, " SELECT * FROM ", what, " ORDER BY ", column))
   self$remove_table(what)
   self$send_statement(paste0("ALTER TABLE ", tempname, " RENAME TO ", what))
@@ -744,7 +781,7 @@ get_indices = function() {
 # obj$transaction(mylist)
 
 
-parse_transaction = function(...) {
+send_transaction = function(...) {
 
   fun <- function(...) {
     args <- as.list(substitute(...))[-1]
@@ -800,8 +837,6 @@ statement_chunk = function(what, n) {
 # -> select
 # -> where, limit -offset - between, distinct,  group by, having, order by,in
 # -> operators, AND - ON, like, NOT, NOT-IN
-# -> joins
-#----> check if transactions are relevant to be added
 
 # sql_constructor = function()
 
@@ -817,7 +852,7 @@ streamer = function(input, output, my_fun = function(y) y , n = 1000) {
 
     # iterator
     iter_fun <- function() {
-      if(x == 1)  self$create_table_from(output, from = input,  overwrite =  TRUE)
+      if(x == 1)  self$copy_table_structure(output, from = input,  overwrite =  TRUE)
       this_query <- self$send_query(paste0("SELECT * FROM ", input,
                                            " WHERE id IN (SELECT id FROM ", input, " WHERE ", "id >= ", x,
                                            " AND id < ", x + n, ")"))
@@ -946,12 +981,12 @@ write_matrix =  function(input, output, has_colnames = TRUE,
                          fun = NULL, data_mod = "character", ...) {
 
 
-my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
+my_reader <- chunkR::reader(input, sep, has_colnames, has_rownames, chunksize)
 
     lines_written <- 0
 
-    while(reader::next_chunk(my_reader)) {
-      data <- reader::get_data(my_reader)
+    while(chunkR::next_chunk(my_reader)) {
+      data <- chunkR::get_matrix(my_reader)
 
       if(data_mod != "character") {
         mode(data) <- data_mod
@@ -961,7 +996,7 @@ my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
         data <- fun(data)
       }
 
-      data <- reader::matrix2df(data)
+      data <- chunkR::matrix2df(data)
       if(lines_written == 0) {
        self$add_table(output, data, overwrite = TRUE, ...)
       } else {
@@ -972,8 +1007,113 @@ my_reader <- reader::reader(input, sep, has_colnames, has_rownames, chunksize)
     }
 
   invisible(NULL)
+},
+
+
+
+cbind = function(x,  t1, ..., outname, join = c("left", "inner", "cross", "natural"), using_what){
+  table_list <- list(...)
+  joinlist <- list()
+
+  if(join == "left" || join == "inner") {
+
+    if(join == "left") {
+      jointype <- "INNER JOIN"
+    } else {
+      jointype <- "LEFT OUTER JOIN"
+    }
+
+    for(i in seq_along(table_list)) {
+      joinlist[[j]] <- paste0(jointype, table_list[[i]],  "ON", t1, ".ID",  table_list[[i]], ".ID ")
+    }
+    my_query <- paste0("CREATE TABLE ", outname, " AS SELECT * FROM ", t1, " ", do.call("c", joinlist))
+  } else if (join == "cross") {
+    for(i in seq_along(table_list)) {
+      joinlist[[j]] <- paste0("CROSS JOIN", table_list[[i]], " ")
+    }
+  } else {
+    for(i in seq_along(table_list)) {
+      joinlist[[j]] <- paste0("NATURAL JOIN", table_list[[i]],  " USING ", using_what )
+  }
+  my_query <- paste0("CREATE TABLE ", outname, " AS SELECT * FROM ", t1, " ", do.call("c", joinlist))
 }
 
-)
-)
+self$send_statement(my_query)
 
+invisible(self)
+},
+
+
+
+rbind = function(outname, union_type = c("union", "union_all"), remove_after = TRUE, ...){
+
+  union_type <- match.arg(union_type)
+  table_list <- list(...)
+
+  self$copy_table_structure(outname, table_list[[1]])
+
+  for(table_to_append in table_list) {
+    self$send_statement(paste0("INSERT INTO ", outname, " SELECT * FROM ", table_to_append))
+
+    if(remove_after) {
+        self$remove_table(table_to_append)
+      }
+  }
+  invisible(self)
+},
+
+
+add_keys = function(key, value) {
+private$keys[key] = list(value)
+},
+
+remove_keys = function(key) {
+  which_key <- which(names(self$keys) == key)
+  if(length(which_key)>0) self$keys <- self$keys[-which_key]
+},
+
+get_keys = function() {
+  private$keys
+},
+
+split = function(x, what) {
+  my_factor <- self$send_query(paste0("SELECT DISTINCT ",what, " FROM ", x))[, 1]
+
+  statement_fun <- function(y) paste0("CREATE TABLE ", y, " AS SELECT * FROM ",
+                                      x, " WHERE ", paste0(x, ".", what), " = ","'", my_factor[i], "'")
+  for(i in seq_along(my_factor)) {
+    this_table <- paste0(what, "_", my_factor[i])
+    statement_fun(this_table)
+    self$send_statement(my_statement)
+  }
+  self$add_keys(what, my_factor)
+  invisible(self)
+},
+
+reduce = function(x, what,  union_type = c("union", "union_all"), remove_after = TRUE) {
+  union_type <- match_arg(union_type)
+  #tabnames <- self$list_tables()
+  #which_tables <- tabnames[grep(what, tabnames)]
+  which_tables <- keys[what]
+
+  if(length(which_tables) == 0) {
+    stop("name of variable do not exists. Check names with the method get_keys()")
+  }
+
+  self$rbind(union_type, remove_after, which_tables)
+  self$remove_keys(what)
+  invisible(self)
+},
+
+map_reduce = function(x, what, query_function) {
+  self$split(x, what)
+  for(table_to_reduce in self$keys[what]) {
+    self$send_query("CREATE TABLE __my_temp_table__ AS", query_function(table_to_reduce))
+    self$remove_table(table_to_reduce)
+    self$send_statement("ALTER TABLE __my_temp_table__ RENAME TO ", table_to_reduce)
+  }
+  self$reduce(table_to_reduce, what, "union")
+  invisible(self)
+}
+)
+)

@@ -198,7 +198,7 @@ Remove a table.
 }
 }
 
-\item{\bold{create_table_from}}{
+\item{\bold{copy_table_structure}}{
 
 Add an empty table.
 
@@ -293,7 +293,7 @@ Drop an index from a table.
 
 Get indices for a table.}
 
-\item{\bold{transaction}}{
+\item{\bold{send_transaction}}{
 
 Generate transaction with the tables.
 

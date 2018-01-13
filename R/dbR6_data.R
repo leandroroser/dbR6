@@ -19,15 +19,21 @@
 dbR6_data <- R6::R6Class("dbR6_data",
 
 private = list(
-
 where = NULL
-
 ),
 
 public = list(
 
 initialize = function(filename = ":memory:", overwrite = FALSE) {
 
+    # return_value = TRUE if an existing database is read from disk.
+    # This is an indicator to detect if exists previous metadata
+    return_value <- FALSE
+
+    # automatically add file type
+    if(filename != ":memory:") {
+    filename <- paste0(filename, ".sqlite")
+    }
 
     if(overwrite){
       if(filename == ":memory:") {
@@ -40,15 +46,18 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
       } else {
         message("Creating new database...")
       }
+      return_value <- FALSE
       file.create(filename)
 
     } else {
       if(filename != ":memory:") {
         if(length(grep(filename, dir())) != 0) {
         message(paste0("Connecting with existing database: ", filename))
+        return_value <- TRUE
       } else {
         message("Creating new database...")
         file.create(filename)
+        return_value <- FALSE
       }
       }
     }
@@ -61,6 +70,8 @@ initialize = function(filename = ":memory:", overwrite = FALSE) {
     } else {
       message(paste0("Database located in: ", filename))
     }
+
+    return_value
   },
 
   #------------------
