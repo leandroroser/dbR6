@@ -24,7 +24,7 @@ long_table <- matrix(sample(letters, 1000000, replace = TRUE), 10000, 100)
 rownames(long_table) <- row_index : (i * 10000)
 row_index <- row_index + 10000
 write.table(long_table, con, quote = FALSE, append = TRUE, col.names = FALSE, row.names = TRUE)
-cat("Written ", i * 10000, " of 1E6 rows\n")
+cat("Written ", i * 100000, " of 1E6 rows\n")
 }
 close(con)
 
@@ -38,7 +38,7 @@ data_on_disk <- dbR6$new("output.sqlite")
 # (available on this GitHub repository, https://github.com/leandroroser/chunkR),
 # which allows to read a matrix in chunks efficiently:
 require("chunkR")
-data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 10000)
+data_on_disk$write_matrix(input = "long_table.txt", output  = "long", chunksize = 100000)
 
 
 # The show method returns information about the object:
