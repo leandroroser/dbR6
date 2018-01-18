@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_filter  <- function(...)  {
-  with(parent.env(environment()), {
   # R commands to be evaluated in the condition ('where' query)
   # are indicated witihin %rs& and %re% as in:  %rs% my_command %re%
 
@@ -18,5 +17,4 @@ dbR6_filter  <- function(...)  {
   conditions <- gsub("[|]+|[||]+", "OR", conditions)
   conditions <- gsub("[&]+|[&&]+", "AND", conditions)
   self$send_query(paste0("SELECT * FROM ", table, " WHERE ", conditions))
-})
 }

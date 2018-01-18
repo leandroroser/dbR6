@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_remove_table  <- function(...) {
-  with(parent.env(environment()), {
   tables_names <- self$list_tables()
   for(this_table in what) {
     if(!(this_table %in% tables_names)) return(paste0("Table '", this_table,   "' not found in database"))
@@ -12,6 +11,5 @@ dbR6_remove_table  <- function(...) {
   #on.exit(RSQLite::dbClearResult(this_statement))
   self$set_metadata()
   invisible(self)
-  })
 }
 

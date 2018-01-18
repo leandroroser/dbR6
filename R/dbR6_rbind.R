@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_rbind  <- function(...) {
-  with(parent.env(environment()), {
   if(grep(outname, data_on_disk$list_tables())) {
     if(!overwrite) {
       stop("the table ", outname, " exists, but the parameter overwrite = FALSE")
@@ -23,5 +22,4 @@ dbR6_rbind  <- function(...) {
     }
   }
   invisible(self)
-  })
 }

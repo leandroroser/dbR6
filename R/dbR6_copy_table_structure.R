@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_copy_table_structure  <- function(...) {
-  with(parent.env(environment()), {
   if(new_name %in% self$list_tables()) {
     if(!overwrite) {
       stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
@@ -12,5 +11,4 @@ dbR6_copy_table_structure  <- function(...) {
   }
   self$send_statement(paste0("CREATE TABLE ", new_name, " AS SELECT * FROM ", from, " WHERE 1=2"))
   invisible(self)
-  })
 }

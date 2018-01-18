@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_initialize <- function(...){
-  with(parent.env(environment()), {
   exists_metadata <- super$initialize(filename, overwrite)
   private$metadata <- new.env(parent = super$get_where(), hash = FALSE)
   if(exists_metadata) {
@@ -22,6 +21,5 @@ dbR6_initialize <- function(...){
   } else {
     self$set_metadata()
   }
-  })
 }
 

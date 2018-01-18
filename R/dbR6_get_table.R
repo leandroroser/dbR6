@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_get_table <- function(...) {
-  with(parent.env(environment()), {
     cond1 <- !is.null(from) && from <= 0
     cond2 <- !is.null(to) && (to <= 0 || to > self$nrow(what))
     if (cond1 || cond2) {
@@ -26,5 +25,4 @@ dbR6_get_table <- function(...) {
         out <- as_table_with_rownames(out)
     }
     out
-  })
 }

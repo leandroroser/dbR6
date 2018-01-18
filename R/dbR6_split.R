@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_split <- function(...) {
-  with(parent.env(environment()), {
     my_factor <- self$send_query(paste0("SELECT DISTINCT ",what, " FROM ", x))[, 1]
 
     statement_fun <- function(y) paste0("CREATE TABLE ", y, " AS SELECT * FROM ",
@@ -29,6 +28,5 @@ dbR6_split <- function(...) {
     self$add_keys(what, my_factor)
     self$set_metadata()
     invisible(self)
-  })
   }
 

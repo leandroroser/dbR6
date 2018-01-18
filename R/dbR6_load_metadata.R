@@ -4,7 +4,6 @@
 #'@export
 
 dbR6_load_metadata  <- function() {
-  with(parent.env(environment()), {
   # internal checkpoint for coding errors
   if(super$get_where()$data@dbname == ":memory:") stop("in memory file has not on-disk metadata")
 
@@ -21,6 +20,6 @@ dbR6_load_metadata  <- function() {
   self$set_one_metadata_value(Robject_size, this_metadata$Robject_size)
   private$keys <- this_metadata$keys
   close(con)
-  })
+  invisible(NULL)
 }
 

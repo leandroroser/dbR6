@@ -3,7 +3,6 @@
 
 dbR6_write_dataframe <- function(...) {
 
-  with(parent.env(environment()), {
     my_reader <- chunkR::reader(path = input, sep = sep, has_rownames = has_colnames,
                                 has_colnames = has_colnames, chunksize =  chunksize,
                                 data_format = "data.frame", columns_classes = columns_classes,
@@ -14,14 +13,10 @@ dbR6_write_dataframe <- function(...) {
     while(chunkR::next_chunk(my_reader)) {
       data <- chunkR::get_table(my_reader)
 
-      if(!is.null(fun)){
-        data <- fun(data)
-      }
-
       if(lines_written == 0) {
-        self$add_table(output, data, overwrite = TRUE, ...)
+        self$add_table(output, data, overwrite = TRUE, fun = fun, ...)
       } else {
-        self$add_table(output, data, append = TRUE, ...)
+        self$add_table(output, data, append = TRUE, fun = fun, ...)
       }
 
       lines_written <- lines_written +  nrow(data)
@@ -29,7 +24,6 @@ dbR6_write_dataframe <- function(...) {
     }
 
     invisible(NULL)
-  })
 }
 
 # Old version based in read.table

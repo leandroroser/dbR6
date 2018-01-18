@@ -2,7 +2,6 @@
 #'@keywords internal
 
 dbR6_sort  <- function(...)   {
-  with(parent.env(environment()), {
   dots <- as.character(unlist(list(...)))
   if(length(dots) > 0) column <- paste(c(column, dots), collapse = ", ")
 
@@ -18,5 +17,4 @@ dbR6_sort  <- function(...)   {
   #self$send_statement("DROP INDEX IF EXISTS idx_temp") # but is previously removed when drop
 
   invisible(self)
-  })
 }

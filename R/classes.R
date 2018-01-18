@@ -62,7 +62,7 @@ dbR6 <- R6::R6Class("dbR6",
     add_table = call_dbR6(dbR6_add_table,
                           alist(new_name =, new_df =,
                                 overwrite = FALSE, append = FALSE,
-                                write_rownames = TRUE, fun =, ...=)),
+                                write_rownames = TRUE, fun =NULL, ...=)),
     remove_table =  call_dbR6(dbR6_remove_table, alist(what =)),
     copy_table_structure = call_dbR6(dbR6_copy_table_structure,
                                      alist(new_name =, from =, overwrite =)),
@@ -98,7 +98,7 @@ dbR6 <- R6::R6Class("dbR6",
     write_matrix =  call_dbR6(dbR6_write_matrix,
                               alist(input =, output =, has_rownames = TRUE, has_colnames = TRUE,
                                     chunksize = 1000L, sep = " ",
-                                    fun = NULL, data_mod = "character")),
+                                    fun = NULL, data_mod = "character", ...=)),
 
 
     # Table keys

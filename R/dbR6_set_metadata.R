@@ -3,7 +3,6 @@
 #'@keywords internal
 
 dbR6_set_metadata <- function() {
-  with(parent.env(environment()), {
   this_data <- super$get_where()$data
   metadata_path <- self$get_where()$metadata
   in_memory <- this_data@dbname == ":memory:"
@@ -28,5 +27,5 @@ dbR6_set_metadata <- function() {
   self$set_one_metadata_value(df_names, df_names)
   self$set_one_metadata_value(db_size, db_size)
   self$set_one_metadata_value(Robject_size, Robject_size)
-  })
+  invisible(NULL)
 }
