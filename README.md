@@ -1,5 +1,5 @@
 ## dbR6 
-<img src  = "https://github.com/leandroroser/dbR6/blob/master/inst/extdata/icon.png" width="500px" align="center">
+<img src  = "https://github.com/leandroroser/dbR6/blob/master/inst/extdata/icon.png" width="500px" position="center">
 
 This package defines the dbR6 class, a system with methods for creation and manipulation of SQLite databases. During the construction of the object, a database is created in-memory or on-disk. Tables can then be added and manipulated with methods provided by the class.  
 
