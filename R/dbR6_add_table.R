@@ -14,7 +14,7 @@ dbR6_add_table <- function(...) {
     new_df <- fun(new_df)
   }
 
-  RSQLite::dbWriteTable(super$get_where()$data, new_name, new_df, overwrite = overwrite,
+  RSQLite::dbWriteTable(self$get_where()$data, new_name, new_df, overwrite = overwrite,
                         append = append, row.names = write_rownames, ...)
   self$set_metadata()
   invisible(self)

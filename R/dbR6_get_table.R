@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_get_table <- function(...) {
+
     cond1 <- !is.null(from) && from <= 0
     cond2 <- !is.null(to) && (to <= 0 || to > self$nrow(what))
     if (cond1 || cond2) {
