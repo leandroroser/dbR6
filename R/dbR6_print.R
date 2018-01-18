@@ -27,20 +27,21 @@ dbR6_print <- function() {
     if(all(tables %in% "")) {
       print_tables <- " [[empty db]] "
     } else {
-      print_tables <- paste(tables, " ", collapse = ", ")
+      print_tables <- paste0(paste(tables, collapse = ", "), " ")
       if(nchar(print_tables) > 33) {
-        print_tables <- paste0(" ", substr(print_tables, 1, 17), " ... (", self$get_tables_number(), " tables) ")
-
-      }
+        print_tables <- paste0(" ", substr(print_tables, 1, 16), "... [", self$get_tables_number(), " table(s)] ")
+    }
     }
 
-    print_obj_size <- paste0(" ", self$get_metadata()$Robject_size,  " Mb ")
 
-    in_memory <- super$get_where()$data@dbname == ":memory:"
+
+    print_obj_size <- paste0(aux_format_object_size(self$get_metadata()$Robject_size), " ")
+
+    in_memory <- self$get_where()$data@dbname == ":memory:"
     if(in_memory) {
       print_db_size <- " [[in memory]] "
     } else {
-      print_db_size <- paste0(" ", self$get_metadata()$db_size, " Mb ")
+      print_db_size <- paste0(aux_format_object_size(self$get_metadata()$db_size), " ")
     }
 
     print_location <- paste0(" ", gsub(".*/", ".../", self$location()), " ")
@@ -52,7 +53,7 @@ dbR6_print <- function() {
     }
 
     cat("\n")
-    cat(topCol("                  dbR6 object                          "),  "\n\n")
+    cat(topCol("                    dbR6 object                        "),  "\n\n")
     cat(crayon::bgMagenta(" <-> ")); palette(" Data frames: ", print_tables, 50); cat("\n")
     cat(crayon::bgMagenta(" <-> ")); palette(" Size of R object: ", print_obj_size, 50); cat("\n")
     cat(crayon::bgMagenta(" <-> ")); palette(" Size of db on disk: ", print_db_size, 50); cat("\n")
@@ -60,4 +61,6 @@ dbR6_print <- function() {
     cat("                                                                      \n")
     invisible(self)
 }
+
+
 

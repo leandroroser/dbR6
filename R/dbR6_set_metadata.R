@@ -3,17 +3,17 @@
 #'@keywords internal
 
 dbR6_set_metadata <- function() {
-  this_data <- super$get_where()$data
+  this_data <- self$get_where()$data
   metadata_path <- self$get_where()$metadata
   in_memory <- this_data@dbname == ":memory:"
   df_names <- self$list_tables()
   if(!in_memory) {
-    db_size <- round(as.numeric(na.omit(file.size(super$get_where()$data@dbname))) / 1E3, 3)
+    db_size <- as.numeric(na.omit(file.size(self$get_where()$data@dbname)))
   } else {
     db_size <- 0
   }
 
-  Robject_size <-  round(as.numeric(pryr::object_size(self))/ 1E6, 3)
+  Robject_size <- as.numeric(pryr::object_size(self))
 
   # in db
   if(!in_memory) {

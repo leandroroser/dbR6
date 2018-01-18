@@ -4,7 +4,7 @@
 \alias{dbR6_get_tables_number}
 \title{dbR6_get_tables_number__}
 \usage{
-dbR6_get_tables_number(...)
+dbR6_get_tables_number()
 }
 \description{
 dbR6_get_tables_number__
