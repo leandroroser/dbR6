@@ -34,9 +34,9 @@ Initialize dbR6 object.
 \emph{---Parameters---}
 \subsection{}{
 \itemize{
-\item{\code{\strong{filename}} ":memory:" for to create an in-memory database,
+\item{\strong{filename} ":memory:" for to create an in-memory database,
 or a name for an on-disk database.}
-\item{\code{\strong{overwrite}} The name of the output.}
+\item{\strong{overwrite} The name of the output.}
 }
 }
 }
@@ -169,9 +169,9 @@ Add a table to a dbR6  object.
 \subsection{}{
 
 \itemize{
-\item{\code{\strong{new_name}} Name for the new table}
+\item{\strong{new_name} Name for the new table}
 
-\item{\code{\strong{new_df}} Input table}
+\item{\strong{new_df} Input table}
 
 \item{\code{\strong{overwrite}} Overwrite if already exists? Default FALSE}
 

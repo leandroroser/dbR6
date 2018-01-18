@@ -4,12 +4,14 @@
 dbR6_write_matrix <- function(...) {
 
   with(parent.env(environment()), {
-  my_reader <- chunkR::reader(input, sep, has_colnames, has_rownames, chunksize)
+    my_reader <- chunkR::reader(path = input, sep = sep, has_rownames = has_colnames,
+                                has_colnames = has_colnames, chunksize =  chunksize,
+                                data_format = "matrix")
 
   lines_written <- 0
 
   while(chunkR::next_chunk(my_reader)) {
-    data <- chunkR::get_matrix(my_reader)
+    data <- chunkR::get_table(my_reader)
 
     if(data_mod != "character") {
       mode(data) <- data_mod

@@ -88,14 +88,18 @@ dbR6 <- R6::R6Class("dbR6",
 
     # Writig data
     streamer = call_dbR6(dbR6_streamer, alist(input =, output =, my_fun = function(y) y, n = 1000)),
-    write_dataframe =  call_dbR6(dbR6_write_dataframe,
+
+     write_dataframe =  call_dbR6(dbR6_write_dataframe,
                                  alist(input =, output =,
-                                       has_colnames = TRUE, has_rownames = TRUE,
-                                       chunksize = 100, sep = " ", fun = NULL,...=)),
+                                       has_rownames = TRUE, has_colnames = TRUE,
+                                       chunksize = 1000L, sep = " ",  columns_classes = character(0),
+                                       autodetect = TRUE, scan_rows = 10, fun = NULL, ...=)),
+
     write_matrix =  call_dbR6(dbR6_write_matrix,
-                              alist(input =, output =, has_colnames = TRUE,
-                                    chunksize = 1000L, sep = " ", has_rownames = TRUE,
-                                    fun = NULL, data_mod = "character", ...=)),
+                              alist(input =, output =, has_rownames = TRUE, has_colnames = TRUE,
+                                    chunksize = 1000L, sep = " ",
+                                    fun = NULL, data_mod = "character")),
+
 
     # Table keys
     add_keys = call_dbR6(dbR6_add_keys, alist(key =, value =)),
