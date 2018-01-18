@@ -2,7 +2,7 @@
 #'@keywords internal
 
 dbR6_reduce  <- function(...) {
-
+  with(parent.env(environment()), {
   if(grep(what, data_on_disk$list_tables())) {
     if(!overwrite) {
       stop("some of output tables exist,", outname, " but the parameter overwrite = FALSE")
@@ -25,4 +25,5 @@ dbR6_reduce  <- function(...) {
   self$remove_keys(what)
   self$set_metadata()
   invisible(self)
+  })
 }

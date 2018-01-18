@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_save  <- function(...) {
+  with(parent.env(environment()), {
   to <- paste0(to, "sqlite")
   this_data <- super$get_where()$data
   if(this_data@dbname != ":memory:") stop("db already present on disk")
@@ -11,4 +12,5 @@ dbR6_save  <- function(...) {
   self$set_metadata()
   message("object saved on disk")
   invisible(self)
+  })
 }

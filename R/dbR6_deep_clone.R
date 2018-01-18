@@ -3,6 +3,7 @@
 #'@keywords internal
 
 dbR6_deep_clone <- function(...) {
+  with(parent.env(environment()), {
   # With x$clone(deep=TRUE) is called, the deep_clone gets invoked once for
   # each field, with the name and value.
   head_env <- new.env(parent = emptyenv(), hash = FALSE)
@@ -14,4 +15,5 @@ dbR6_deep_clone <- function(...) {
     # For all other fields, just return the value
     value
   }
+  })
 }
