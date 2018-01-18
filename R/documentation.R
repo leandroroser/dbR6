@@ -4,6 +4,9 @@
 #' @name dbR6Parent
 #' @docType class
 #' @importFrom R6 R6Class
+#' @importFrom methods setOldClass
+#' @importFrom stats na.omit
+#' @importFrom utils read.table
 #' @return Object of \code{\link{R6Class}}
 #' @format \code{\link{R6Class}} object.
 #' @field where environment storing data & enclosing environment for metadata
@@ -25,7 +28,7 @@ NULL
 #' @importFrom crayon bgCyan
 #' @importFrom crayon bgMagenta
 #' @importFrom crayon bold
-#' @import reader
+#' @import chunkR
 #' @return Object of \code{\link{R6Class}}
 #' @format \code{\link{R6Class}} object.
 #' @field where (inherited from R6_data class) Environment storing data & enclosing environment for metadata

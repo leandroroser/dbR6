@@ -2,12 +2,11 @@
 % Please edit documentation in R/auxiliar.R
 \name{call_dbR6}
 \alias{call_dbR6}
-\title{generate_method}
+\title{call_dbR6}
 \usage{
 call_dbR6(method, args)
 }
 \description{
-generate_method
+call_dbR6
 }
-\keyword{call_dbR6}
 \keyword{internal}
