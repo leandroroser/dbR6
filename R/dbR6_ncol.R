@@ -2,8 +2,10 @@
 #'@keywords internal
 
 dbR6_ncol  <- function(...) {
+  with(parent.env(environment()), {
     if (!what %in% self$list_tables())
         stop(paste0("Table '", what, "' not found in database"))
     out <- RSQLite::dbListFields(super$get_where()$data, what)
     length(out)
+  })
 }

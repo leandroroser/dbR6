@@ -3,7 +3,7 @@
 
 dbR6_write_matrix <- function(...) {
 
-
+  with(parent.env(environment()), {
   my_reader <- chunkR::reader(input, sep, has_colnames, has_rownames, chunksize)
 
   lines_written <- 0
@@ -30,5 +30,6 @@ dbR6_write_matrix <- function(...) {
   }
 
   invisible(NULL)
+  })
 }
 

@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_streamer  <- function(...) {
+  with(parent.env(environment()), {
   ## it is assuming an id in the table, may be changed
 
   force(x <- 1)
@@ -39,4 +40,5 @@ dbR6_streamer  <- function(...) {
   })
   cat("Process finished in ", this_time[3], " seconds")
   invisible(self)
+  })
 }

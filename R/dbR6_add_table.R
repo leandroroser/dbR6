@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_add_table <- function(...) {
+  with(parent.env(environment()), {
   if(new_name %in% self$list_tables() && !overwrite && !append) {
     stop("The table ", new_name, " exists in the working directory. Use overwrite = TRUE to overwrite it")
   }
@@ -16,4 +17,5 @@ dbR6_add_table <- function(...) {
                         append = append, row.names = write_rownames, ...)
   self$set_metadata()
   invisible(self)
+  })
 }

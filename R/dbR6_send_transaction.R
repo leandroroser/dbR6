@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_send_transaction <- function(...) {
+  with(parent.env(environment()), {
   # pass a list of unquoted arguments in transaction
   # example:
   # mylis <- list(a$transaction("CREATE TABLE t1(a, b PRIMARY KEY)"),
@@ -16,5 +17,6 @@ dbR6_send_transaction <- function(...) {
   what <- fun(...)
   RSQLite::dbWithTransaction(super$get_where()$data, eval(what))
   invisible(self)
+  })
 }
 

@@ -2,7 +2,7 @@
 #'@keywords internal
 
 dbR6_write_dataframe <- function(...) {
-
+  with(parent.env(environment()), {
   lines_completed <- 0
 
   con <- file(description=input, open = "r")
@@ -87,5 +87,6 @@ dbR6_write_dataframe <- function(...) {
   }
   close(con)
   invisible(NULL)
+  })
 }
 

@@ -14,7 +14,7 @@ Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Pa
          'dbR6_cbind.R' 'dbR6_rbind.R' 'dbR6_add_keys.R' 
          'dbR6_remove_keys.R' 'dbR6_get_keys.R' 'dbR6_split.R' 'dbR6_reduce.R'
          'dbR6_map_reduce.R' 'classes.R' 
-Version: 0.1.0
+Version: 1.0.0
 Date: 2017-12-15
 Authors@R: c(person(given = "Leandro", family = "Roser", role = c("aut", "cre"), email = "learoser@gmail.com"))
 Maintainer: Leandro Roser <learoser@gmail.com>
@@ -22,7 +22,8 @@ Description: The package provides the dbR6 class and associated methods to creat
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-Imports: Rcpp (>= 0.12.14), devtools, crayon, pryr, jsonlite
+Depends: R (>= 3.0), methods
+Imports: Rcpp (>= 0.12.14), devtools, crayon, pryr, jsonlite, chunkR, R6, RSQLite, rstudioapi
 LinkingTo: Rcpp
 Remotes: leandroroser/reader
 NeedsCompilation: yes

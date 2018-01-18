@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_print <- function() {
+  with(parent.env(environment()), {
     # detect EStudio session color (if using RStudio)
     col_bg<- try(rstudioapi::getThemeInfo()$dark, silent = TRUE)
     # patch for Dracula
@@ -59,5 +60,6 @@ dbR6_print <- function() {
     cat(crayon::bgMagenta(" <-> ")); palette(" Location: ", print_location, 50); cat("\n")
     cat("                                                                      \n")
     invisible(self)
+  })
 }
 

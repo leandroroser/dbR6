@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6_statement_chunk  <- function(...)  {
+  with(parent.env(environment()), {
   t_s <- RSQLite::dbSendStatement(super$get_where()$data, what)
   while (!RSQLite::dbHasCompleted(t_s)) {
     chunk <- RSQLite::dbFetch(t_s, n = n)
@@ -9,4 +10,5 @@ dbR6_statement_chunk  <- function(...)  {
   }
   RSQLite::dbClearResult(t_s)
   invisible(self)
+  })
 }

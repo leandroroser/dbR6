@@ -2,7 +2,7 @@
 #'@keywords internal
 
 dbR6Parent_initialize <- function(...)  {
-
+  with(parent.env(environment()), {
   # if file is xxx.sqlite, remove the .sqlite part
   if(length(grep(".sqlite$", filename, ignore.case = TRUE)) != 0) {
     filename <- gsub(".sqlite$", "", filename, ignore.case = TRUE)
@@ -69,5 +69,6 @@ dbR6Parent_initialize <- function(...)  {
   }
 
   return_value
+  })
 }
 
