@@ -1,4 +1,18 @@
 
+# Define global variables for R check
+
+globals <- c("self", "filename", "overwrite", "private", "x", "key", "value",
+             "new_name", "fun", "data_mod", "fun", "output", "Robject_size",
+             "autodetect", "chunksize", "columns_classes", "data_mod", "data_on_disk",
+             "db_size", "df_names", "filename", "from", "fun", "has_colnames",
+             "has_rownames", "index", "input", "j", "key", "my_fun", "n",
+             "name", "new_metadata", "new_name", "outname", "output", "overwrite",
+             "query", "query_function", "r_commands", "remove_after", "scan_rows",
+             "sep", "statement", "this_table", "to", "unique_index", "value",
+             "what", "write_rownames", "x")
+
+if(getRversion() >= "2.15.1")  utils::globalVariables(globals)
+
 #' @rdname dbR6Parent
 #' @export
 
@@ -27,10 +41,10 @@ dbR6 <- R6::R6Class("dbR6",
   inherit = dbR6Parent,
 
   private = list(
+    deep_clone = call_dbR6(dbR6_deep_clone, alist(name =, value =)),
     keys = NULL,
     metadata = NULL,
-    metadata_path = NULL,
-    deep_clone = call_dbR6(dbR6_deep_clone, alist(name =, value =))
+    metadata_path = NULL
   ),
 
   public = list(
@@ -42,10 +56,10 @@ dbR6 <- R6::R6Class("dbR6",
     #----------------------------------------------------------------------
 
     # general db configuration and methods
-    location = call_dbR6(dbR6_location),
-    save = call_dbR6(dbR6_save, alist(to =)),
     clone_db = call_dbR6(dbR6_clone_db, alist(to =)),
+    location = call_dbR6(dbR6_location),
     print = call_dbR6(dbR6_print),
+    save = call_dbR6(dbR6_save, alist(to =)),
 
     # Metadata configuration
     get_metadata = call_dbR6(dbR6_get_metadata),
@@ -55,71 +69,100 @@ dbR6 <- R6::R6Class("dbR6",
                                        alist(name = NULL, value = NULL)),
 
     # Tables manipulation
-    list_tables = call_dbR6(dbR6_list_tables),
+    add_table = call_dbR6(dbR6_add_table,
+                          alist(from = , to =,
+                                overwrite = FALSE,
+                                append = FALSE,
+                                fun =NULL,
+                                index_row_names = TRUE,
+                                ...=)
+                          ),
+    copy_table = call_dbR6(dbR6_copy_table, alist(from =, to =, overwrite = TRUE)),
+    copy_table_structure = call_dbR6(dbR6_copy_table_structure,
+                                     alist(from =, to =,  overwrite =)),
+    exists_table = call_dbR6(dbR6_exists_table, alist(table =)),
     get_tables_number = call_dbR6(dbR6_get_tables_number),
     get_table = call_dbR6(dbR6_get_table,
-                          alist(what =, from = NULL, to = NULL, has_rownames = TRUE)),
-    add_table = call_dbR6(dbR6_add_table,
-                          alist(new_name =, new_df =,
-                                overwrite = FALSE, append = FALSE,
-                                write_rownames = TRUE, fun =NULL, ...=)),
-    remove_table =  call_dbR6(dbR6_remove_table, alist(what =)),
-    copy_table_structure = call_dbR6(dbR6_copy_table_structure,
-                                     alist(new_name =, from =, overwrite =)),
-    exists_table = call_dbR6(dbR6_exists_table, alist(what =)),
+                          alist(table =, start = NULL, end = NULL, has_rownames = TRUE)),
+
+    list_tables = call_dbR6(dbR6_list_tables),
+
+    remove_table =  call_dbR6(dbR6_remove_table, alist(table =)),
+
 
     # Indexing
+    colnames = call_dbR6(dbR6_colnames, alist(table =)),
     create_index = call_dbR6(dbR6_create_index,
-                             alist(what =, column =, unique_index = FALSE, ...=)),
+                             alist(table =, column =,
+                                   index_name=,
+                                   unique_index = FALSE,
+                                   ...=)),
     drop_index = call_dbR6(dbR6_drop_index, alist(index =)),
     get_index = call_dbR6(dbR6_get_index),
 
     # Tables attributes
-    colnames = call_dbR6(dbR6_colnames, alist(what =)),
-    nrow = call_dbR6(dbR6_nrow, alist(what =)),
-    ncol = call_dbR6(dbR6_ncol, alist(what =)),
-    dim = call_dbR6(dbR6_dim, alist(what =)),
+    dim = call_dbR6(dbR6_dim, alist(table =)),
+    nrow = call_dbR6(dbR6_nrow, alist(table =)),
+    ncol = call_dbR6(dbR6_ncol, alist(table =)),
 
     # Query methods
     send_query = call_dbR6(dbR6_send_query, alist(query =)),
     send_statement = call_dbR6(dbR6_send_statement, alist(statement =)),
     send_transaction = call_dbR6(dbR6_send_transaction, alist(...=)),
-    statement_chunk = call_dbR6(dbR6_statement_chunk, alist(what =, n =)),
+    statement_chunk = call_dbR6(dbR6_statement_chunk, alist(table =, n =)),
 
     # Writig data
-    streamer = call_dbR6(dbR6_streamer, alist(input =, output =, my_fun = function(y) y, n = 1000)),
+    streamer = call_dbR6(dbR6_streamer, alist(from =, to =, my_fun = function(y) y, n = 1000)),
 
-     write_dataframe =  call_dbR6(dbR6_write_dataframe,
-                                 alist(input =, output =,
-                                       has_rownames = TRUE, has_colnames = TRUE,
-                                       chunksize = 1000L, sep = " ",  columns_classes = character(0),
-                                       autodetect = TRUE, scan_rows = 10, fun = NULL, ...=)),
+    write_dataframe =  call_dbR6(dbR6_write_dataframe,
+                                 alist(from =, to =,
+                                       has_rownames = TRUE,
+                                       has_colnames = TRUE,
+                                       chunksize = 1000L, sep = " ",
+                                       columns_classes = character(0),
+                                       autodetect = TRUE,
+                                       scan_rows = 10,
+                                       fun = NULL,
+                                       index_row_names = TRUE,
+                                       overwrite = FALSE,
+                                       ...=)),
 
     write_matrix =  call_dbR6(dbR6_write_matrix,
-                              alist(input =, output =, has_rownames = TRUE, has_colnames = TRUE,
-                                    chunksize = 1000L, sep = " ",
-                                    fun = NULL, data_mod = "character", ...=)),
+                              alist(from =,
+                                    to =,
+                                    has_rownames = TRUE,
+                                    has_colnames = TRUE,
+                                    chunksize = 1000L,
+                                    sep = " ",
+                                    fun = NULL,
+                                    data_mod = "character",
+                                    index_row_names = TRUE,
+                                    overwrite = FALSE,
+                                    ...=)),
 
 
     # Table keys
     add_keys = call_dbR6(dbR6_add_keys, alist(key =, value =)),
-    remove_keys = call_dbR6(dbR6_remove_keys, alist(key =)),
     get_keys = call_dbR6(dbR6_get_keys),
+    remove_keys = call_dbR6(dbR6_remove_keys, alist(key =)),
+
 
     # Operations
-    sort = call_dbR6(dbR6_sort, alist(what =, column =, ...=)),
-    filter = call_dbR6(dbR6_filter, alist(table =, conditions =, r_commands = FALSE)),
     cbind = call_dbR6(dbR6_cbind,
-                      alist(t1=, ...=, outname=, join = c("left", "inner", "cross", "natural"),
-                                        using_what=, overwrite = FALSE)),
-    rbind = call_dbR6(dbR6_rbind, alist(outname =, union_type = c("union", "union_all"),
-                                        overwrite = FALSE, remove_after = TRUE, ...=)),
-    split = call_dbR6(dbR6_split, alist(x =, what =, remove_after = FALSE)),
-    reduce = call_dbR6(dbR6_reduce,
-                       alist(what =, union_type = c("union", "union_all"), remove_after = TRUE)),
+                      alist(to=, using_what= "row_names", ...=,
+                            join = c("left", "inner", "cross", "natural"),
+                            overwrite = FALSE)),
+    filter = call_dbR6(dbR6_filter, alist(table =, conditions =, r_commands = FALSE)),
     map_reduce = call_dbR6(dbR6_map_reduce,
-                           alist(x =, what =, query_function =, overwrite = FALSE,
-                                 remove_after = FALSE))
+                           alist(from =, column =, query_function =, overwrite = FALSE,
+                                 remove_after = FALSE)),
+    rbind = call_dbR6(dbR6_rbind, alist(to =, union_type = c("union", "union_all"),
+                                        overwrite = FALSE, remove_after = TRUE, ...=)),
+    reduce = call_dbR6(dbR6_reduce,
+                       alist(to =, union_type = c("union", "union_all"), remove_after = TRUE)),
+    sort = call_dbR6(dbR6_sort, alist(table =, column =, ...=)),
+    split = call_dbR6(dbR6_split, alist(from=, to=,column=, remove_after = FALSE))
+
    )
 )
 

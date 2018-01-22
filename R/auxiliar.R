@@ -40,6 +40,22 @@ call_dbR6 <- function(method, args) {
      args <- list()
   }
   formals(method) <- args
-  environment(method) <- parent.env(environment())
+  environment(method) <- parent.frame()
   method
 }
+
+#'uquote_name
+#'@keywords internal
+#'
+
+# name_as_string <- function(x) {
+#   out <- substitute(x,env=parent.frame())
+#   gsub('^"|"$', "", deparse(out))
+# }
+
+# for list
+name_as_string <- function(...) {
+  what <- sys.call(1)
+  as.character(as.list(what)[-1])
+}
+

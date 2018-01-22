@@ -3,7 +3,7 @@
 #'@keywords internal
 
 dbR6_list_tables = function() {
-  out <- RSQLite::dbListTables(super$get_where()$data)
+  out <- RSQLite::dbListTables(self$get_where()$data)
   out <- out[out != "metadata"]
   if(length(out) == 0)  {
     return("")

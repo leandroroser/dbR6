@@ -2,5 +2,5 @@
 #'@keywords internal
 
 dbR6_dim <- function(...) {
-    c(self$nrow(what), self$ncol(what))
+    c(self$nrow(what), self$ncol(table))
 }

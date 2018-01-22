@@ -3,7 +3,7 @@
 
 dbR6_write_matrix <- function(...) {
 
-    my_reader <- chunkR::reader(path = input, sep = sep, has_rownames = has_colnames,
+    my_reader <- chunkR::reader(path = from, sep = sep, has_rownames = has_colnames,
                                 has_colnames = has_colnames, chunksize =  chunksize,
                                 data_format = "matrix")
 
@@ -22,12 +22,17 @@ dbR6_write_matrix <- function(...) {
 
     data <- chunkR::matrix2df(data)
     if(lines_written == 0) {
-      self$add_table(output, data, overwrite = TRUE, ...)
+      self$add_table(to, data, index_row_names = FALSE,
+                     overwrite = overwrite, ...)
     } else {
-      self$add_table(output, data, append = TRUE, ...)
+      self$add_table(to, data, append = TRUE, index_row_names = FALSE, ...)
     }
     lines_written <- lines_written +  nrow(data)
     cat("Written ", lines_written, " lines into database \n")
+  }
+
+  if(index_row_names) {
+    self$create_index(to, column = "row_names")
   }
 
   invisible(NULL)

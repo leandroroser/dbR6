@@ -3,7 +3,7 @@
 
 dbR6_remove_table  <- function(...) {
   tables_names <- self$list_tables()
-  for(this_table in what) {
+  for(this_table in table) {
     if(!(this_table %in% tables_names)) return(paste0("Table '", this_table,   "' not found in database"))
     RSQLite::dbRemoveTable(super$get_where()$data, this_table)
   }

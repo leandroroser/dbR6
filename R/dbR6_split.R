@@ -2,16 +2,16 @@
 #'@keywords internal
 
 dbR6_split <- function(...) {
-    my_factor <- self$send_query(paste0("SELECT DISTINCT ",what, " FROM ", x))[, 1]
+    my_factor <- self$send_query(paste0("SELECT DISTINCT ",column, " FROM ", from))[, 1]
 
     statement_fun <- function(y) paste0("CREATE TABLE ", y, " AS SELECT * FROM ",
-                                        x, " WHERE ", paste0(x, ".", what),
+                                        from, " WHERE ", paste0(from, ".", column),
                                         " = ","'", my_factor[i], "'")
-    this_table <- paste0(what, "_", my_factor)
+    this_table <- paste0(column, "_", my_factor)
 
     if(any(grep(paste(this_table, collapse="|"), data_on_disk$list_tables()) == TRUE)) {
       if(!overwrite) {
-        stop("some of output tables exist,", outname, " but the parameter overwrite = FALSE")
+        stop("some of output tables exist,", to, " but the parameter overwrite = FALSE")
       } else {
         data_on_disk$remove_table(this_table)
       }
@@ -23,9 +23,9 @@ dbR6_split <- function(...) {
     }
     # remove parent table
     if(remove_after) {
-      self$remove(what)
+      self$remove(column)
     }
-    self$add_keys(what, my_factor)
+    self$add_keys(column, my_factor)
     self$set_metadata()
     invisible(self)
   }

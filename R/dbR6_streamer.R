@@ -6,18 +6,18 @@ dbR6_streamer  <- function(...) {
 
   force(x <- 1)
   force(n)
-  force(output)
+  force(to)
 
   # iterator
   iter_fun <- function() {
-    if(x == 1)  self$copy_table_structure(output, from = input,  overwrite =  TRUE)
-    this_query <- self$send_query(paste0("SELECT * FROM ", input,
-                                         " WHERE id IN (SELECT id FROM ", input, " WHERE ", "id >= ", x,
+    if(x == 1)  self$copy_table_structure(to, from = from,  overwrite =  TRUE)
+    this_query <- self$send_query(paste0("SELECT * FROM ", from,
+                                         " WHERE id IN (SELECT id FROM ", from, " WHERE ", "id >= ", x,
                                          " AND id < ", x + n, ")"))
 
-    ## move to output and remove in each cycle
+    ## move to to and remove in each cycle
 
-    self$add_table(new_name = output, new_df = my_fun(this_query), append = TRUE)
+    self$add_table(new_name = to, new_df = my_fun(this_query), append = TRUE)
 
     x_0 <- x
     nr <- nrow(this_query)

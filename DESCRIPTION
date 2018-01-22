@@ -3,7 +3,7 @@ Type: Package
 Title: Databases Manipulation with the dbR6 Class
 Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Parent_finalize.R' 
          'dbR6Parent_get_where.R' 'dbR6Parent_set_data.R' 
-         'dbR6Parent_set_metadata.R' 'dbR6_deep_clone.R' 
+         'dbR6Parent_set_metadata.R' 'dbR6_deep_clone.R' 'dbR6_copy_table.R' 
           'dbR6_nrow.R' 'documentation.R' 'dbR6_initialize.R' 'dbR6_finalize.R' 'dbR6_get_metadata.R' 'dbR6_load_metadata.R' 'dbR6_set_metadata.R' 'dbR6_set_one_metadata_value.R' 'dbR6_list_tables.R' 
          'dbR6_get_tables_number.R' 'dbR6_location.R' 'dbR6_colnames.R' 'dbR6_ncol.R' 'dbR6_dim.R' 
          'dbR6_print.R' 'dbR6_get_table.R' 'dbR6_send_query.R' 'dbR6_send_statement.R' 
@@ -29,3 +29,6 @@ Remotes: leandroroser/reader
 NeedsCompilation: yes
 Packaged: 2017-11-21 08:12:58 UTC; leandro
 RoxygenNote: 6.0.1
+Suggests: 
+    testthat,
+    covr

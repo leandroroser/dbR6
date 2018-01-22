@@ -3,7 +3,7 @@
 
 dbR6_write_dataframe <- function(...) {
 
-    my_reader <- chunkR::reader(path = input, sep = sep, has_rownames = has_colnames,
+    my_reader <- chunkR::reader(path = from, sep = sep, has_rownames = has_colnames,
                                 has_colnames = has_colnames, chunksize =  chunksize,
                                 data_format = "data.frame", columns_classes = columns_classes,
                                 autodetect = autodetect, scan_rows = scan_rows)
@@ -14,14 +14,22 @@ dbR6_write_dataframe <- function(...) {
       data <- chunkR::get_table(my_reader)
 
       if(lines_written == 0) {
-        self$add_table(output, data, overwrite = TRUE, fun = fun, ...)
+        self$add_table(data, to, overwrite = overwrite,
+                       fun = fun,
+                       index_row_names = FALSE,
+                       ...)
       } else {
-        self$add_table(output, data, append = TRUE, fun = fun, ...)
+        self$add_table(data, to, append = TRUE, fun = fun, index_row_names = FALSE, ...)
       }
 
       lines_written <- lines_written +  nrow(data)
       cat("Written ", lines_written, " lines into database \n")
     }
+
+    if(index_row_names) {
+      self$create_index(to, column = "row_names")
+    }
+
 
     invisible(NULL)
 }

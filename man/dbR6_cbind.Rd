@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_cbind.R
 \name{dbR6_cbind}
 \alias{dbR6_cbind}
-\title{dbR6_cbind__}
+\title{dbR6_cbind}
 \usage{
 dbR6_cbind(...)
 }
 \description{
-dbR6_cbind__
+dbR6_cbind
 }
 \keyword{internal}

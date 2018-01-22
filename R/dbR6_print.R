@@ -44,7 +44,14 @@ dbR6_print <- function() {
       print_db_size <- paste0(aux_format_object_size(self$get_metadata()$db_size), " ")
     }
 
-    print_location <- paste0(" ", gsub(".*/", ".../", self$location()), " ")
+    # simplify path if there only are > 2 levels
+    print_location <-  self$location()
+    if(gsub("(.*/)*(.*?/)(.*?$)", "\\1", print_location) != "") {
+      print_location <- gsub("(.*/)*(.*?/)(.*?$)", ".../\\2\\3 ", print_location)
+    } else {
+      print_location <- paste0( self$location(), " ")
+    }
+
     if(nchar(print_location) > 33) {
       end <- nchar(print_location)
       start <- end - 30
