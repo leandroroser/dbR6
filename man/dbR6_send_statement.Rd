@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_send_statement.R
 \name{dbR6_send_statement}
 \alias{dbR6_send_statement}
-\title{dbR6_send_statement__}
+\title{dbR6_send_query}
 \usage{
 dbR6_send_statement(...)
 }
 \description{
-dbR6_send_statement__
+dbR6_send_query
 }
 \keyword{internal}

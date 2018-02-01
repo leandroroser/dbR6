@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_colnames.R
 \name{dbR6_colnames}
 \alias{dbR6_colnames}
-\title{dbR6_colnames__}
+\title{dbR6_colnames}
 \usage{
 dbR6_colnames(...)
 }
 \description{
-dbR6_colnames__
+dbR6_colnames
 }
 \keyword{internal}

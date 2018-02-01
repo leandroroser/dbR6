@@ -2,11 +2,13 @@
 % Please edit documentation in R/dbR6_load_metadata.R
 \name{dbR6_load_metadata}
 \alias{dbR6_load_metadata}
-\title{dbR6_load_metadata__}
+\title{dbR6_load_metadata
+Internal method to load metadata}
 \usage{
 dbR6_load_metadata()
 }
 \description{
-dbR6_load_metadata__
+dbR6_load_metadata
+Internal method to load metadata
 }
 \keyword{internal}

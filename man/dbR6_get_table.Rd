@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_get_table.R
 \name{dbR6_get_table}
 \alias{dbR6_get_table}
-\title{dbR6_get_table__}
+\title{dbR6_get_table}
 \usage{
 dbR6_get_table(...)
 }
 \description{
-dbR6_get_table__
+dbR6_get_table
 }
 \keyword{internal}

@@ -24,8 +24,8 @@ dbR6_set_metadata <- function() {
   }
 
   # create an in-memory copy of metadata
-  self$set_one_metadata_value(df_names, df_names)
-  self$set_one_metadata_value(db_size, db_size)
-  self$set_one_metadata_value(Robject_size, Robject_size)
+  private$set_one_metadata_value(df_names, df_names)
+  private$set_one_metadata_value(db_size, db_size)
+  private$set_one_metadata_value(Robject_size, Robject_size)
   invisible(NULL)
 }

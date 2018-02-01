@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_sort.R
 \name{dbR6_sort}
 \alias{dbR6_sort}
-\title{dbR6_sort__}
+\title{dbR6_sort}
 \usage{
 dbR6_sort(...)
 }
 \description{
-dbR6_sort__
+dbR6_sort
 }
 \keyword{internal}

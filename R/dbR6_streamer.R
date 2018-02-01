@@ -1,5 +1,14 @@
-#' dbR6_streamer__
-#'@keywords internal
+#' dbR6_streamer
+#' @example
+#' {
+#' data(mtcars2)
+#' my_db <- dbR6$new()
+#' my_db$add_table(mtcars, "mtcars_db")
+#'
+#' # COMPLETAR---
+#' }
+#' @keywords internal
+
 
 dbR6_streamer  <- function(...) {
   ## it is assuming an id in the table, may be changed

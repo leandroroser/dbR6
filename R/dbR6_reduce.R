@@ -1,27 +1,34 @@
-#' dbR6_reduce__
-#'@keywords internal
+#' dbR6_reduce
+#' @example
+#' {
+#' data(mtcars2)
+#' my_db <- dbR6$new()
+#' my_db$add_table(mtcars, "mtcars_db")
+#' my_db$split("mtcars_db", "splitted", "gear")
+#' my_db$list_tables()
+#' my_db$reduce("gear", "reduced")
+#' my_db$list_tables()
+#' }
+#' @keywords internal
 
 dbR6_reduce  <- function(...) {
-  if(grep(to, data_on_disk$list_tables())) {
+  if(length(grep(to, my_db$list_tables())) > 0) {
     if(!overwrite) {
       stop("some of output tables exist,", to, " but the parameter overwrite = FALSE")
     } else {
-      data_on_disk$remove_table(to)
+      self$remove_table(to)
     }
   }
 
-  union_type <- match.arg(union_type)
-  #tabnames <- self$list_tables()
-  #which_tables <- tabnames[grep(what, tabnames)]
-  which_tables <- (private$keys[to])[[1]]
-  which_tables <- paste0(to, "_", which_tables)
+  which_tables <- (private$keys[from])[[1]]
+  which_tables <- sort(paste0(from, "_", which_tables[order(which_tables)]))
 
-  if(length(which_tables) == 0) {
+
+  if(length(which_tables) == 0)
     stop("name of variable do not exists. Check names with the method get_keys()")
-  }
 
-  self$rbind(outname = to, union_type = union_type, remove_after = remove_after, which_tables)
-  self$remove_keys(to)
-  self$set_metadata()
+  self$rbind(to, which_tables, remove_appended = "sequential")
+  private$remove_keys(from)
+  private$set_metadata()
   invisible(self)
 }

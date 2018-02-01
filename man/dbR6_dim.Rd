@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_dim.R
 \name{dbR6_dim}
 \alias{dbR6_dim}
-\title{dbR6_dim__}
+\title{dbR6_dim}
 \usage{
 dbR6_dim(...)
 }
 \description{
-dbR6_dim__
+dbR6_dim
 }
 \keyword{internal}

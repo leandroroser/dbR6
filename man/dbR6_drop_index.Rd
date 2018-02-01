@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_drop_index.R
 \name{dbR6_drop_index}
 \alias{dbR6_drop_index}
-\title{dbR6_drop_index__}
+\title{dbR6_drop_index}
 \usage{
 dbR6_drop_index(...)
 }
 \description{
-dbR6_drop_index__
+dbR6_drop_index
 }
 \keyword{internal}

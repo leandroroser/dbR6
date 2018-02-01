@@ -14,7 +14,7 @@ dbR6_send_transaction <- function(...) {
   }
 
   what <- fun(...)
-  RSQLite::dbWithTransaction(super$get_where()$data, eval(what))
-  invisible(self)
+  RSQLite::dbWithTransaction(self$get_where()$data, eval(what))
+  TRUE
 }
 

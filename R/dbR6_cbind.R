@@ -4,7 +4,6 @@
 #' data(mtcars2)
 #' my_db <- dbR6$new()
 #' my_db$add_table(mtcars, "mtcars_db")
-#' my_db$create_index("mtcarsdb", column = "row_names")
 #' my_db$cbind("out", using_what = "row_names", "mtcarsdb", "mtcarsdb")
 #' }
 #' @keywords internal

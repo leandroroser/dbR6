@@ -1,5 +1,15 @@
-#' dbR6_split__
-#'@keywords internal
+#' dbR6_split
+#' @example
+#' {
+#' data(mtcars2)
+#' my_db <- dbR6$new()
+#' my_db$add_table(mtcars, "mtcars_db")
+#' my_db$split("mtcars_db", "splitted", "gear")
+#' my_db$list_tables()
+#' my_db$reduce("gear", "reduced")
+#' my_db$list_tables()
+#' }
+#' @keywords internal
 
 dbR6_split <- function(...) {
     my_factor <- self$send_query(paste0("SELECT DISTINCT ",column, " FROM ", from))[, 1]
@@ -9,11 +19,11 @@ dbR6_split <- function(...) {
                                         " = ","'", my_factor[i], "'")
     this_table <- paste0(column, "_", my_factor)
 
-    if(any(grep(paste(this_table, collapse="|"), data_on_disk$list_tables()) == TRUE)) {
+    if(any(grep(paste(this_table, collapse="|"), self$list_tables()) == TRUE)) {
       if(!overwrite) {
         stop("some of output tables exist,", to, " but the parameter overwrite = FALSE")
       } else {
-        data_on_disk$remove_table(this_table)
+        self$remove_table(this_table)
       }
     }
 
@@ -25,8 +35,8 @@ dbR6_split <- function(...) {
     if(remove_after) {
       self$remove(column)
     }
-    self$add_keys(column, my_factor)
-    self$set_metadata()
+    private$add_keys(column, my_factor)
+    private$set_metadata()
     invisible(self)
   }
 

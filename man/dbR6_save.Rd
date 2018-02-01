@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_save.R
 \name{dbR6_save}
 \alias{dbR6_save}
-\title{dbR6_save__}
+\title{dbR6_list_tables}
 \usage{
 dbR6_save(...)
 }
 \description{
-dbR6_save__
+dbR6_list_tables
 }
 \keyword{internal}

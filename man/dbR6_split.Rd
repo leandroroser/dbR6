@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_split.R
 \name{dbR6_split}
 \alias{dbR6_split}
-\title{dbR6_split__}
+\title{dbR6_sort}
 \usage{
 dbR6_split(...)
 }
 \description{
-dbR6_split__
+dbR6_sort
 }
 \keyword{internal}

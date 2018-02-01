@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_get_tables_number.R
 \name{dbR6_get_tables_number}
 \alias{dbR6_get_tables_number}
-\title{dbR6_get_tables_number__}
+\title{dbR6_colnames}
 \usage{
 dbR6_get_tables_number()
 }
 \description{
-dbR6_get_tables_number__
+dbR6_colnames
 }
 \keyword{internal}

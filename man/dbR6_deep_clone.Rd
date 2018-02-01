@@ -2,11 +2,13 @@
 % Please edit documentation in R/dbR6_deep_clone.R
 \name{dbR6_deep_clone}
 \alias{dbR6_deep_clone}
-\title{dbR6_deep_clone__}
+\title{dbR6_deep_clone
+dbR6Parent method}
 \usage{
 dbR6_deep_clone(...)
 }
 \description{
-dbR6_deep_clone__
+dbR6_deep_clone
+dbR6Parent method
 }
 \keyword{internal}

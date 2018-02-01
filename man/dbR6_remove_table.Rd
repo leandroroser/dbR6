@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_remove_table.R
 \name{dbR6_remove_table}
 \alias{dbR6_remove_table}
-\title{dbR6_remove_table__}
+\title{dbR6_remove_table}
 \usage{
 dbR6_remove_table(...)
 }
 \description{
-dbR6_remove_table__
+dbR6_remove_table
 }
 \keyword{internal}

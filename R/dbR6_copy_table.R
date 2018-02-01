@@ -1,5 +1,12 @@
 #' dbR6_copy_table
-#'@keywords internal
+#' @example
+#' {
+#' data(mtcars2)
+#' my_db <- dbR6$new()
+#' my_db$add_table(mtcars, "mtcars_db")
+#' my_db$copy_table("mtcars_db", "mtcars_db_copy")
+#' }
+#' @keywords internal
 
 dbR6_copy_table  <- function(...) {
 
@@ -11,5 +18,5 @@ dbR6_copy_table  <- function(...) {
     }
   }
 
-self$send_query(paste0("CREATE TABLE ", to, "AS SELECT * FROM ", from))
+self$send_statement(paste0("CREATE TABLE ", to, " AS SELECT * FROM ", from))
 }

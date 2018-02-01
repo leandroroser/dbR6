@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_finalize.R
 \name{dbR6_finalize}
 \alias{dbR6_finalize}
-\title{dbR6_finalize__}
+\title{dbR6_finalize}
 \usage{
 dbR6_finalize()
 }
 \description{
-dbR6_finalize__
+dbR6_finalize
 }
 \keyword{internal}

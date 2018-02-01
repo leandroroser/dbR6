@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_rbind.R
 \name{dbR6_rbind}
 \alias{dbR6_rbind}
-\title{dbR6_rbind}
+\title{dbR6_location}
 \usage{
 dbR6_rbind(...)
 }
 \description{
-dbR6_rbind
+dbR6_location
 }
 \keyword{internal}

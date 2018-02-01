@@ -1,4 +1,4 @@
-#' dbR6_drop_index
+#' dbR6_list_indices
 #' @example
 #' {
 #' data(mtcars2)
@@ -6,13 +6,9 @@
 #' my_db$add_table(mtcars, "mtcars_db")
 #' my_db$create_index("mtcars_db", column = "mpg", index_name = "mpg_index")
 #' my_db$list_indices()
-#' my_db$drop_index("mpg_index")
-#' my_db$list_indices()
 #' }
 #' @keywords internal
 
-
-dbR6_drop_index <- function(...)  {
-  self$send_statement(paste0("DROP INDEX IF EXISTS ", index))
-  invisible(self)
+dbR6_list_indices <- function() {
+  self$send_query("SELECT name FROM sqlite_master WHERE type='index' ORDER BY name;")
 }

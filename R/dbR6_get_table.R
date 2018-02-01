@@ -1,12 +1,20 @@
-#' dbR6_get_table__
-#'@keywords internal
+#' dbR6_get_table
+#' @example
+#' {
+#' data(mtcars2)
+#' my_db <- dbR6$new()
+#' my_db$add_table(mtcars, "mtcars_db")
+#' my_db$get_table("mtcars_db")
+#' my_db$get_table("mtcars_db", 1, 10)
+#' }
+#' @keywords internal
 
 dbR6_get_table <- function(...) {
 
  #   table <- name_as_string(table) # object as string
 
     cond1 <- !is.null(start) && start <= 0
-    cond2 <- !is.null(end) && (end <= 0 || end > self$nrow(table))
+    cond2 <- !is.null(end) && (end <= 0 || end > self$nrow(tabname))
     if (cond1 || cond2) {
         stop("start and end must be >= 1, and end may not exceed the number of rows of the table")
     }
@@ -20,7 +28,7 @@ dbR6_get_table <- function(...) {
     } else {
         limits <- ""
     }
-    out <- self$send_query(paste0("SELECT * FROM ", table, limits))
+    out <- self$send_query(paste0("SELECT * FROM ", tabname, limits))
     if (has_rownames) {
         out <- as_table_with_rownames(out)
     }

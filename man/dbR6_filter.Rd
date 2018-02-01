@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_filter.R
 \name{dbR6_filter}
 \alias{dbR6_filter}
-\title{dbR6_filter__}
+\title{dbR6_colnames}
 \usage{
 dbR6_filter(...)
 }
 \description{
-dbR6_filter__
+dbR6_colnames
 }
 \keyword{internal}

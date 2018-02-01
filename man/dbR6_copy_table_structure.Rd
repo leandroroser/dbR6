@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_copy_table_structure.R
 \name{dbR6_copy_table_structure}
 \alias{dbR6_copy_table_structure}
-\title{dbR6_copy_table_structure__}
+\title{dbR6_copy_table_structure}
 \usage{
 dbR6_copy_table_structure(...)
 }
 \description{
-dbR6_copy_table_structure__
+dbR6_copy_table_structure
 }
 \keyword{internal}

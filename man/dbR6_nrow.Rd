@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_nrow.R
 \name{dbR6_nrow}
 \alias{dbR6_nrow}
-\title{dbR6_nrow__}
+\title{dbR6_nrow}
 \usage{
 dbR6_nrow(...)
 }
 \description{
-dbR6_nrow__
+dbR6_nrow
 }
 \keyword{internal}

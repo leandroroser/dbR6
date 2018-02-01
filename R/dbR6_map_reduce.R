@@ -9,6 +9,6 @@ dbR6_map_reduce <- function(...) {
     self$send_statement("ALTER TABLE __my_temp_table__ RENAME TO ", table_to_reduce)
   }
   self$reduce(table_to_reduce, column, "union")
-  self$set_metadata()
+  private$set_metadata()
   invisible(self)
 }

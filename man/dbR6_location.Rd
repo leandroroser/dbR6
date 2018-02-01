@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_location.R
 \name{dbR6_location}
 \alias{dbR6_location}
-\title{dbR6_location__}
+\title{dbR6_location}
 \usage{
 dbR6_location()
 }
 \description{
-dbR6_location__
+dbR6_location
 }
 \keyword{internal}
