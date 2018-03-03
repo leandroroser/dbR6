@@ -1,5 +1,4 @@
-
-#' dbR6_set_one_metadata_value__
+#' dbR6_set_one_metadata_value
 #'@keywords internal
 
 dbR6_set_one_metadata_value = function(...) {

@@ -118,10 +118,10 @@ dbR6 <- R6::R6Class("dbR6",
     send_query = call_dbR6(dbR6_send_query, alist(query =)),
     send_statement = call_dbR6(dbR6_send_statement, alist(statement =)),
     send_transaction = call_dbR6(dbR6_send_transaction, alist(...=)),
-    statement_chunk = call_dbR6(dbR6_statement_chunk, alist(tabname =, n =)),
+    send_query_chunk = call_dbR6(dbR6_send_query_chunk, alist(tabname =, query =, n = 1000)),
 
-    # Writig data
-    streamer = call_dbR6(dbR6_streamer, alist(from =, to =, my_fun = function(y) y, n = 1000)),
+    # Writing data
+    streamer = call_dbR6(dbR6_streamer, alist(from =, to =, fun = function(y) y, n = 1000,   index_row_names = TRUE)),
 
     write_dataframe =  call_dbR6(dbR6_write_dataframe,
                                  alist(from =, to =,
@@ -156,7 +156,7 @@ dbR6 <- R6::R6Class("dbR6",
                             overwrite = FALSE)),
     filter = call_dbR6(dbR6_filter, alist(tabname =, conditions =, eval_before = FALSE)),
     map_reduce = call_dbR6(dbR6_map_reduce,
-                           alist(from =, column =, query_function =, overwrite = FALSE,
+                           alist(from =, to = NULL, column =, query_function =, overwrite = FALSE,
                                  remove_after = FALSE)),
     rbind = call_dbR6(dbR6_rbind, alist(to =,  ...=,
                                         overwrite = FALSE,
@@ -164,7 +164,7 @@ dbR6 <- R6::R6Class("dbR6",
     reduce = call_dbR6(dbR6_reduce,
                        alist(from =, to =)),
     sort = call_dbR6(dbR6_sort, alist(tabname =, column =, ...=)),
-    split = call_dbR6(dbR6_split, alist(from=, to=,column=, remove_after = FALSE))
+    split = call_dbR6(dbR6_split, alist(from=, to=,column=, overwrite = FALSE, remove_after = FALSE))
 
    )
 )

@@ -8,7 +8,6 @@
 #' }
 #' @keywords internal
 
-
 dbR6_nrow <- function(...) {
     if (!(tabname %in% self$list_tables()))
         stop(paste0("Table '", tabname, "' not found in database"))

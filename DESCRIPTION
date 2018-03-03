@@ -12,7 +12,7 @@ Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Pa
          'dbR6_add_table.R' 'dbR6_remove_table.R' 'dbR6_copy_table_structure.R' 'dbR6_save.R'
          'dbR6_clone_db.R' 'dbR6_sort.R' 'dbR6_create_index.R' 'dbR6_drop_index.R' 
          'dbR6_list_indices.R' 'dbR6_send_transaction.R' 'dbR6_filter.R' 'dbR6_exists_table.R'
-         'dbR6_statement_chunk.R' 'dbR6_streamer.R' 'dbR6_write_dataframe.R' 'dbR6_write_matrix.R' 
+         'dbR6_send_query_chunk.R' 'dbR6_streamer.R' 'dbR6_write_dataframe.R' 'dbR6_write_matrix.R' 
          'dbR6_cbind.R' 'dbR6_rbind.R' 'dbR6_add_keys.R' 
          'dbR6_remove_keys.R' 'dbR6_get_keys.R' 'dbR6_split.R' 'dbR6_reduce.R'
          'dbR6_map_reduce.R' 'classes.R' 

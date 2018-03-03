@@ -21,7 +21,6 @@
 #' my_db3$rbind("mtcars_db1", "mtcars_db2")
 #' my_db3$rbind("out", "mtcars_db1", "mtcars_db2", remove_appended = "after")
 #'
-#'
 #' }
 #' @keywords internal
 

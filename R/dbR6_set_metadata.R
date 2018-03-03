@@ -1,5 +1,4 @@
-
-#' dbR6_set_metadata__
+#' dbR6_set_metadata
 #'@keywords internal
 
 dbR6_set_metadata <- function() {
@@ -19,7 +18,8 @@ dbR6_set_metadata <- function() {
   if(!in_memory) {
     con <- gzfile(metadata_path, "w")
     write(jsonlite::toJSON(list(df_names = df_names, db_size = db_size,
-                                Robject_size = Robject_size, keys = private$keys)),con)
+                                Robject_size = Robject_size, keys = private$keys,
+                                nrows_tables = private$nrows_tables)), con)
     close(con)
   }
 

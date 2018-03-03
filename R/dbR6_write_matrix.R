@@ -3,14 +3,14 @@
 
 dbR6_write_matrix <- function(...) {
 
-    my_reader <- chunkR::reader(path = from, sep = sep, has_rownames = has_colnames,
+    my_chunk <- chunkR::chunker(path = from, sep = sep, has_rownames = has_colnames,
                                 has_colnames = has_colnames, chunksize =  chunksize,
                                 data_format = "matrix")
 
   lines_written <- 0
 
-  while(chunkR::next_chunk(my_reader)) {
-    data <- chunkR::get_table(my_reader)
+  while(chunkR::next_chunk(my_chunk)) {
+    data <- chunkR::get_table(my_chunk)
 
     if(data_mod != "character") {
       mode(data) <- data_mod
