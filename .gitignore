@@ -7,7 +7,6 @@
 
 # RStudio files
 .Rproj.user/
-*.Rproj
 
 # produced vignettes
 vignettes/*.html
@@ -17,6 +16,13 @@ vignettes/*.pdf
 .httr-oauth
 .Rproj.user
 
-# C++ files
+#Compiled files
 *.o
 *.so
+*.dll
+
+#Rproj
+*.Rproj
+
+#git
+.git*
