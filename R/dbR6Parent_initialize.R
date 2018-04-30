@@ -18,40 +18,29 @@ dbR6Parent_initialize <- function(...)  {
     parent_dir <- getwd()
     data_name <- paste0(getwd(), "/", filename, ".sqlite")
     metadata_name <-  paste0(getwd(), "/", filename, ".json.gz")
+
     } else {
-      parent_dir <- normalizePath(gsub("(.*)(/.*?)$", "\\1", filename), mustWork = TRUE)
+
+      parent_dir <- normalizePath(gsub("(.*)(/.*?)$", "\\1", filename),
+                                  mustWork = TRUE)
       data_name <- paste0(filename, ".sqlite")
       metadata_name <-  paste0(filename, ".json.gz")
     }
-  } else {
-    data_name <- ":memory:"
-    metadata_name <- ":memory:"
-  }
 
-  # if(data_name != ":memory:") {
-  #   data_name <- normalizePath(data_name)
-  #   metadata_name <- normalizePath(metadata_name)
-  # }
+    dir_content <- normalizePath(dir(path = parent_dir,
+      full.names = TRUE), mustWork = TRUE)
 
-  dir_content <- normalizePath(dir(path = parent_dir, full.names = TRUE), mustWork = TRUE)
-
-  if(overwrite){
-    if(filename == ":memory:") {
-      stop("A file must be selected when overwrite is TRUE\n")
-    }
-
-    if(length(grep(data_name, dir_content)) > 0) {
-      suppressMessages(file.remove(data_name))
-      message("Overwriting database...")
+    if(overwrite) {
+      if(length(grep(data_name, dir_content)) > 0) {
+        suppressMessages(file.remove(data_name))
+        message("Overwriting database...")
+      } else {
+        message("Creating new database...\n")
+      }
+      return_value <- FALSE
+      file.create(data_name)
+      file.create(metadata_name)
     } else {
-      message("Creating new database...\n")
-    }
-    return_value <- FALSE
-    file.create(data_name)
-    file.create(metadata_name)
-
-  } else {
-    if(filename != ":memory:") {
       if(length(grep(data_name, dir_content)) > 0) {
         message(paste0("Connecting with existing database: ", data_name, "\n"))
         if(!file.exists(metadata_name)) {
@@ -66,7 +55,22 @@ dbR6Parent_initialize <- function(...)  {
         return_value <- FALSE
       }
     }
+
+  } else {
+
+    if(overwrite) {
+      stop("A file must be selected when overwrite is TRUE\n")
+    }
+
+    data_name <- ":memory:"
+    metadata_name <- ":memory:"
   }
+
+  # if(data_name != ":memory:") {
+  #   data_name <- normalizePath(data_name)
+  #   metadata_name <- normalizePath(metadata_name)
+  # }
+
 
 
   private$where <- new.env(parent = emptyenv(), hash = FALSE)
