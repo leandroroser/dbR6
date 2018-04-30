@@ -3,13 +3,14 @@
 
 globals <- c("self", "filename", "overwrite", "private", "x", "key", "value",
              "new_name", "fun", "data_mod", "fun", "output", "Robject_size",
-             "autodetect", "chunksize", "columns_classes", "data_mod", "data_on_disk",
-             "db_size", "df_names", "filename", "from", "fun", "has_colnames",
-             "has_rownames", "index", "input", "j", "key", "my_fun", "n",
-             "name", "new_metadata", "new_name", "outname", "output", "overwrite",
-             "query", "query_function", "r_commands", "remove_after", "scan_rows",
-             "sep", "statement", "tabname", "this_table", "to", "unique_index", "value",
-             "what", "write_rownames", "x")
+             "autodetect", "chunksize", "columns_classes", "data_mod",
+             "data_on_disk", "db_size", "df_names", "filename", "from", "fun",
+             "has_colnames", "has_rownames", "index", "input", "j", "key",
+             "my_fun", "n", "name", "new_metadata", "new_name", "outname",
+             "output", "overwrite", "query", "query_function", "r_commands",
+             "remove_after", "scan_rows", "sep", "statement", "tabname",
+             "this_table", "to", "unique_index", "value", "what",
+             "write_rownames", "x")
 
 if(getRversion() >= "2.15.1")  utils::globalVariables(globals)
 
@@ -44,6 +45,7 @@ dbR6 <- R6::R6Class("dbR6",
   inherit = dbR6Parent,
 
   private = list(
+    palette = NULL,
     keys = NULL,
     metadata = NULL,
     valid = TRUE,
@@ -60,11 +62,13 @@ dbR6 <- R6::R6Class("dbR6",
     remove_keys = call_dbR6(dbR6_remove_keys, alist(key =))
   ),
 
+
   public = list(
     initialize = call_dbR6(dbR6_initialize,
-                           alist(filename = ":memory:",
-                                 overwrite = FALSE,
-                                 new_metadata = FALSE)),
+                        alist(filename = ":memory:",
+                              overwrite = FALSE,
+                              new_metadata = FALSE,
+                              bg_color = c("auto", "black", "white", "none"))),
     finalize = call_dbR6(dbR6_finalize),
     delete_db = call_dbR6(dbR6_delete_db),
     is_valid = call_dbR6(dbR6_is_valid),
@@ -72,6 +76,8 @@ dbR6 <- R6::R6Class("dbR6",
     #----------------------------------------------------------------------
 
     # general db configuration and methods
+    set_color = call_dbR6(dbR6_set_color,
+      alist(bg_color = c("auto", "black", "white", "none"))),
     clone_db = call_dbR6(dbR6_clone_db, alist(to =)),
     location = call_dbR6(dbR6_location),
     print = call_dbR6(dbR6_print),
@@ -89,14 +95,15 @@ dbR6 <- R6::R6Class("dbR6",
                                 index_row_names = TRUE,
                                 ...=)
                           ),
-    copy_table = call_dbR6(dbR6_copy_table, alist(from =, to =, overwrite = TRUE)),
+    copy_table = call_dbR6(dbR6_copy_table, alist(from =, to =,
+                           overwrite = TRUE)),
     copy_table_structure = call_dbR6(dbR6_copy_table_structure,
                                      alist(from =, to =,  overwrite =)),
     exists_table = call_dbR6(dbR6_exists_table, alist(tabname =)),
     get_tables_number = call_dbR6(dbR6_get_tables_number),
     get_table = call_dbR6(dbR6_get_table,
-                          alist(tabname =, start = NULL, end = NULL, has_rownames = TRUE)),
-
+                          alist(tabname =, start = NULL, end = NULL,
+                                has_rownames = TRUE)),
     list_tables = call_dbR6(dbR6_list_tables),
 
     remove_table =  call_dbR6(dbR6_remove_table, alist(tabname =)),
@@ -122,10 +129,12 @@ dbR6 <- R6::R6Class("dbR6",
     send_query = call_dbR6(dbR6_send_query, alist(query =)),
     send_statement = call_dbR6(dbR6_send_statement, alist(statement =)),
     send_transaction = call_dbR6(dbR6_send_transaction, alist(...=)),
-    send_query_chunk = call_dbR6(dbR6_send_query_chunk, alist(tabname =, query =, n = 1000)),
+    send_query_chunk = call_dbR6(dbR6_send_query_chunk,
+                                 alist(tabname =, query =, n = 1000)),
 
     # Writing data
-    streamer = call_dbR6(dbR6_streamer, alist(from =, to =, fun = function(y) y, n = 1000,   index_row_names = TRUE)),
+    streamer = call_dbR6(dbR6_streamer, alist(from =, to =,
+                    fun = function(y) y, n = 1000,   index_row_names = TRUE)),
 
     write_chunked =  call_dbR6(dbR6_write_chunked,
                                  alist(from =, to =,
@@ -146,10 +155,13 @@ dbR6 <- R6::R6Class("dbR6",
     rename_table= call_dbR6(dbR6_rename_table, alist(from =, to =)),
     cbind = call_dbR6(dbR6_cbind,
                       alist(to=, using_what= "row_names", tables=,
-                            join = c("left", "inner", "cross", "natural", "full"),
+                            join = c("left", "inner", "cross",
+                                     "natural", "full"),
                             overwrite = FALSE, remove_after = FALSE,
-                            index_row_names = TRUE, vars_1 = NULL, vars_2 = NULL)),
-    filter = call_dbR6(dbR6_filter, alist(tabname =, conditions =, eval_before = FALSE)),
+                            index_row_names = TRUE, vars_1 = NULL,
+                            vars_2 = NULL)),
+    filter = call_dbR6(dbR6_filter, alist(tabname =, conditions =,
+                                          eval_before = FALSE)),
     map_reduce = call_dbR6(dbR6_map_reduce,
                            alist(from =, to = NULL, column =, query_function =,
                                  overwrite = FALSE, remove_after = FALSE,
@@ -161,9 +173,10 @@ dbR6 <- R6::R6Class("dbR6",
                                         remove_after = FALSE)),
     reduce = call_dbR6(dbR6_reduce,
                        alist(column =, to =, overwrite = FALSE)),
-    sort = call_dbR6(dbR6_sort, alist(tabname =, column =, type = c("asc", "desc"), ...=)),
-    split = call_dbR6(dbR6_split, alist(from=, column=, overwrite = FALSE, remove_after = FALSE))
-
+    sort = call_dbR6(dbR6_sort, alist(tabname =, column =,
+                                      type = c("asc", "desc"), ...=)),
+    split = call_dbR6(dbR6_split, alist(from=, column=, overwrite = FALSE,
+                                        remove_after = FALSE))
    )
 )
 

@@ -14,7 +14,8 @@ Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Pa
          'dbR6_list_indices.R' 'dbR6_send_transaction.R' 'dbR6_filter.R' 'dbR6_exists_table.R'
          'dbR6_send_query_chunk.R' 'dbR6_streamer.R' 'dbR6_write_chunked.R'
          'dbR6_cbind.R' 'dbR6_rbind.R' 'dbR6_add_keys.R' 'dbR6_remove_keys.R' 'dbR6_get_keys.R'
-         'dbR6_split.R' 'dbR6_reduce.R' 'dbR6_map_reduce.R' 'dbR6_rename_table.R' 'classes.R' 
+         'dbR6_split.R' 'dbR6_reduce.R' 'dbR6_map_reduce.R' 'dbR6_rename_table.R' 
+         'dbR6_set_color.R' 'classes.R' 
 Version: 1.0.0
 Date: 2017-12-15
 Authors@R: c(person(given = "Leandro", family = "Roser", role = c("aut", "cre"), email = "learoser@gmail.com"))

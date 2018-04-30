@@ -6,53 +6,36 @@ dbR6_print <- function() {
       message("Invalid dbR6 object\n")
       return(invisible(NULL))
     }
-    # detect EStudio session color (if using RStudio)
-    col_bg <- try(rstudioapi::getThemeInfo()$dark, silent = TRUE)
-    # patch for Dracula
-    col_bg2 <- try(rstudioapi::getThemeInfo()$editor == "Dracula", silent = TRUE)
-    col_bg <- col_bg || col_bg2
 
-    ### colors if object in R session###
-
-    bgCol <- crayon::make_style("skyblue4", bg = TRUE)
-    palette <- function(before, after, space) add_space_color(before, after, space,
-                                                             crayon::bgCyan$white,
-                                                             crayon::bgCyan,
-                                                             crayon::bgMagenta$white)
-    topCol <- bgCol$white
-    if(!is.null(col_bg)) {
-      if(col_bg == "TRUE") {
-        palette <- function(before, after, space) add_space_color(before, after, space,
-                                                                 crayon::bgCyan$black,
-                                                                 crayon::bgCyan,
-                                                                 crayon::bgMagenta$black)
-        topCol <- bgCol$black
-      }
-    }
-
+    palette <- private$palette
     tables <- self$list_tables()
     if(all(tables %in% "")) {
       print_tables <- " [[empty db]] "
     } else {
       print_tables <- paste0(" ", paste(tables, collapse = ", "), " ")
       if(nchar(print_tables) > 33) {
-        print_tables <- paste0(" ", substr(print_tables, 1, 16), "... [", self$get_tables_number(), " table(s)] ")
+        print_tables <- paste0(" ",
+          substr(print_tables, 1, 16), "... [",
+          self$get_tables_number(), " table(s)] ")
     }
     }
 
-    print_obj_size <- paste0(" ", aux_format_object_size(self$get_metadata()$Robject_size), " ")
+    print_obj_size <- paste0(" ",
+      aux_format_object_size(self$get_metadata()$Robject_size), " ")
 
     in_memory <- self$get_where()$data@dbname == ":memory:"
     if(in_memory) {
       print_db_size <- " [[in memory]] "
     } else {
-      print_db_size <- paste0(" ", aux_format_object_size(self$get_metadata()$db_size), " ")
+      print_db_size <- paste0(" ",
+        aux_format_object_size(self$get_metadata()$db_size), " ")
     }
 
     # simplify path if there only are > 2 levels
     print_location <-  self$location()
     if(gsub("(.*/)*(.*?/)(.*?$)", "\\1", print_location) != "") {
-      print_location <- gsub("(.*/)*(.*?/)(.*?$)", ".../\\2\\3 ", print_location)
+      print_location <- gsub("(.*/)*(.*?/)(.*?$)", ".../\\2\\3 ",
+                        print_location)
     } else {
       print_location <- paste0(self$location(), " ")
     }
@@ -65,12 +48,21 @@ dbR6_print <- function() {
       print_location <- paste0(" ", print_location)
     }
 
+    if(attr(palette, "color") == "color") {
+      arrow_left <- crayon::bgMagenta(" <-> ")
+      top <- topCol("                    dbR6 object                           \n\n")
+      bottom <- "                                                                      \n"
+    } else {
+      arrow_left <- " <-> "
+      top <-    "------------------------ dbR6 object ------------------------\n"
+      bottom <- "-------------------------------------------------------------\n"
+    }
     cat("\n")
-    cat(topCol("                    dbR6 object                           "),  "\n\n")
-    cat(crayon::bgMagenta(" <-> ")); palette(" Data frames: ", print_tables, 53); cat("\n")
-    cat(crayon::bgMagenta(" <-> ")); palette(" Size of R object: ", print_obj_size, 53); cat("\n")
-    cat(crayon::bgMagenta(" <-> ")); palette(" Size of db on disk: ", print_db_size, 53); cat("\n")
-    cat(crayon::bgMagenta(" <-> ")); palette(" Location: ", print_location, 53); cat("\n")
-    cat("                                                                      \n")
+    cat(top)
+    cat(arrow_left); palette(" Data frames: ", print_tables, 53); cat("\n")
+    cat(arrow_left); palette(" Size of R object: ", print_obj_size, 53); cat("\n")
+    cat(arrow_left); palette(" Size of db on disk: ", print_db_size, 53); cat("\n")
+    cat(arrow_left); palette(" Location: ", print_location, 53); cat("\n")
+    cat(bottom)
     invisible(self)
 }

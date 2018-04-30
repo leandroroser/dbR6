@@ -3,8 +3,10 @@
 #'@keywords internal
 
 dbR6_initialize <- function(...) {
+  bg_color <- match.arg(bg_color)
   exists_metadata <- super$initialize(filename, overwrite)
   private$metadata <- new.env(parent = self$get_where(), hash = FALSE)
+
   if(exists_metadata) {
     metadata_path <- paste0(private$path[[2]])
 
@@ -22,5 +24,8 @@ dbR6_initialize <- function(...) {
   } else {
     private$set_metadata()
   }
+
+  self$set_color(bg_color = bg_color)
+  invisible(self)
 }
 
