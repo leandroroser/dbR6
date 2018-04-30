@@ -2,6 +2,7 @@
 #'@keywords internal
 
 dbR6Parent_initialize <- function(...)  {
+
   # if file is xxx.sqlite, remove the .sqlite part
   if(length(grep(".sqlite$", filename, ignore.case = TRUE)) != 0) {
     filename <- gsub(".sqlite$", "", filename, ignore.case = TRUE)
@@ -13,19 +14,33 @@ dbR6Parent_initialize <- function(...)  {
 
   # automatically add file type
   if(filename != ":memory:") {
-    data_name <- paste0(filename, ".sqlite")
-    metadata_name <-  paste0(filename, ".json.gz")
+    if(length(grep("/", filename)) == 0) {
+    parent_dir <- getwd()
+    data_name <- paste0(getwd(), "/", filename, ".sqlite")
+    metadata_name <-  paste0(getwd(), "/", filename, ".json.gz")
+    } else {
+      parent_dir <- normalizePath(gsub("(.*)(/.*?)$", "\\1", filename), mustWork = TRUE)
+      data_name <- paste0(filename, ".sqlite")
+      metadata_name <-  paste0(filename, ".json.gz")
+    }
   } else {
     data_name <- ":memory:"
     metadata_name <- ":memory:"
   }
+
+  # if(data_name != ":memory:") {
+  #   data_name <- normalizePath(data_name)
+  #   metadata_name <- normalizePath(metadata_name)
+  # }
+
+  dir_content <- normalizePath(dir(path = parent_dir, full.names = TRUE), mustWork = TRUE)
 
   if(overwrite){
     if(filename == ":memory:") {
       stop("A file must be selected when overwrite is TRUE\n")
     }
 
-    if(length(grep(data_name, dir())) != 0) {
+    if(length(grep(data_name, dir_content)) > 0) {
       suppressMessages(file.remove(data_name))
       message("Overwriting database...")
     } else {
@@ -37,10 +52,10 @@ dbR6Parent_initialize <- function(...)  {
 
   } else {
     if(filename != ":memory:") {
-      if(length(grep(data_name, dir())) != 0) {
+      if(length(grep(data_name, dir_content)) > 0) {
         message(paste0("Connecting with existing database: ", data_name, "\n"))
-        if(!file.exists( metadata_name )) {
-          message("No metadata found for sqlite object. Creating new metadata...\n")
+        if(!file.exists(metadata_name)) {
+          warning("No metadata found for sqlite object. Creating new metadata...\n")
           file.create(metadata_name)
         }
         return_value <- TRUE
@@ -52,16 +67,13 @@ dbR6Parent_initialize <- function(...)  {
       }
     }
   }
-  if(data_name != ":memory:") {
-    data_name <- normalizePath(data_name)
-    metadata_name <- normalizePath(metadata_name)
-  }
+
 
   private$where <- new.env(parent = emptyenv(), hash = FALSE)
   private$where$data <- RSQLite::dbConnect(RSQLite::SQLite(), data_name)
-  private$where$metadata <- metadata_name
+  private$path <- list(data = data_name, metadata = metadata_name)
 
-  if(data_name == ":memory:") {
+  if(filename == ":memory:") {
     message("Database created in memory\n")
   } else {
     message(paste0("Database located in: ", data_name))

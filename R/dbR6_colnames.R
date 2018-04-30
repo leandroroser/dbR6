@@ -1,11 +1,15 @@
-#' dbR6_colnames
+#' colnames
+#' @name colnames
 #' @example
 #' {
 #' data(mtcars2)
 #' my_db <- dbR6$new()
 #' my_db$colnames("mtcars_db")
 #' }
-#' @keywords internal
+#' @rdname colnames
+#' @aliases colnames,dbR6
+#' @exportMethod colnames
+
 
 dbR6_colnames  <- function(...) {
     if (!tabname %in% self$list_tables())

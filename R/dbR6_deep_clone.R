@@ -1,6 +1,6 @@
 
-#' dbR6_deep_clone
-#' dbR6Parent method
+#' deep_clone
+#' @name deep_clone
 #'@keywords internal
 
 dbR6_deep_clone <- function(...) {

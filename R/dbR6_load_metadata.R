@@ -6,7 +6,7 @@ dbR6_load_metadata  <- function() {
   # internal checkpoint for coding errors
   if(super$get_where()$data@dbname == ":memory:") stop("in memory file has not on-disk metadata")
 
-  metadata_path <- self$get_where()$metadata
+  metadata_path <- self$get_path()[[2]]
   #metadata is a json gz compressed
   con <- file(metadata_path, "rb")
   this_metadata <- suppressWarnings(try(jsonlite::fromJSON(gzcon(file(metadata_path, "rb"))), silent = TRUE))

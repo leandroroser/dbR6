@@ -1,4 +1,5 @@
-#' dbR6_copy_table
+#' copy_table
+#' @name copy_table
 #' @example
 #' {
 #' data(mtcars2)
@@ -6,7 +7,9 @@
 #' my_db$add_table(mtcars, "mtcars_db")
 #' my_db$copy_table("mtcars_db", "mtcars_db_copy")
 #' }
-#' @keywords internal
+#' @rdname copy_table
+#' @aliases copy_table,dbR6
+#' @exportMethod copy_table
 
 dbR6_copy_table  <- function(...) {
 

@@ -1,4 +1,6 @@
-#' dbR6_colnames
+
+#' get_tables_number
+#' @name get_tables_number
 #' @example
 #' {
 #' data(mtcars2)
@@ -8,7 +10,9 @@
 #' my_db$add_table(mtcars, "mtcars_db2")
 #' my_db$get_tables_number()
 #' }
-#' @keywords internal
+#' @rdname get_tables_number
+#' @aliases get_tables_number,dbR6
+#' @exportMethod get_tables_number
 
 dbR6_get_tables_number <- function() {
   out <- RSQLite::dbListTables(self$get_where()$data)

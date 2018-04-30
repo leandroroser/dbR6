@@ -2,8 +2,8 @@ Package: dbR6
 Type: Package
 Title: Databases Manipulation with the dbR6 Class
 Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Parent_finalize.R' 
-         'dbR6Parent_get_where.R' 'dbR6Parent_set_data.R' 
-         'dbR6Parent_set_metadata.R' 'dbR6_deep_clone.R' 'dbR6_copy_table.R' 
+         'dbR6Parent_get_where.R' 'dbR6Parent_set_data.R' 'dbR6Parent_get_path.R' 
+         'dbR6Parent_set_metadata.R' 'dbR6_deep_clone.R' 'dbR6_copy_table.R' 'dbR6_connect.R' 
          'dbR6_nrow.R' 'documentation.R' 'dbR6_initialize.R' 'dbR6_finalize.R' 'dbR6_delete_db.R' 
          'dbR6_is_valid.R'  'dbR6_validate_db.R' 'dbR6_get_metadata.R' 'dbR6_load_metadata.R' 
          'dbR6_set_metadata.R' 'dbR6_set_one_metadata_value.R' 'dbR6_list_tables.R' 
@@ -12,10 +12,9 @@ Collate: 'RcppExports.R' 'ZZZ.R' 'auxiliar.R' 'dbR6Parent_initialize.R'  'dbR6Pa
          'dbR6_add_table.R' 'dbR6_remove_table.R' 'dbR6_copy_table_structure.R' 'dbR6_save.R'
          'dbR6_clone_db.R' 'dbR6_sort.R' 'dbR6_create_index.R' 'dbR6_drop_index.R' 
          'dbR6_list_indices.R' 'dbR6_send_transaction.R' 'dbR6_filter.R' 'dbR6_exists_table.R'
-         'dbR6_send_query_chunk.R' 'dbR6_streamer.R' 'dbR6_write_dataframe.R' 'dbR6_write_matrix.R' 
-         'dbR6_cbind.R' 'dbR6_rbind.R' 'dbR6_add_keys.R' 
-         'dbR6_remove_keys.R' 'dbR6_get_keys.R' 'dbR6_split.R' 'dbR6_reduce.R'
-         'dbR6_map_reduce.R' 'classes.R' 
+         'dbR6_send_query_chunk.R' 'dbR6_streamer.R' 'dbR6_write_chunked.R'
+         'dbR6_cbind.R' 'dbR6_rbind.R' 'dbR6_add_keys.R' 'dbR6_remove_keys.R' 'dbR6_get_keys.R'
+         'dbR6_split.R' 'dbR6_reduce.R' 'dbR6_map_reduce.R' 'dbR6_rename_table.R' 'classes.R' 
 Version: 1.0.0
 Date: 2017-12-15
 Authors@R: c(person(given = "Leandro", family = "Roser", role = c("aut", "cre"), email = "learoser@gmail.com"))
@@ -26,11 +25,11 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.0), methods
 Imports: Rcpp (>= 0.12.14), devtools, crayon, pryr, jsonlite, chunkR, R6, RSQLite, rstudioapi
+Suggests: 
+    testthat,
+    covr
 LinkingTo: Rcpp
 Remotes: leandroroser/reader
 NeedsCompilation: yes
 Packaged: 2017-11-21 08:12:58 UTC; leandro
 RoxygenNote: 6.0.1
-Suggests: 
-    testthat,
-    covr

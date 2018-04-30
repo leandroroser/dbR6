@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_streamer.R
 \name{dbR6_streamer}
 \alias{dbR6_streamer}
-\title{dbR6_streamer__}
+\title{dbR6_streamer}
 \usage{
 dbR6_streamer(...)
 }
 \description{
-dbR6_streamer__
+dbR6_streamer
 }
 \keyword{internal}

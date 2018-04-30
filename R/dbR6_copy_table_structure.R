@@ -1,4 +1,5 @@
-#' dbR6_copy_table_structure
+#' copy_table_structure
+#' @name copy_table_structure
 #' @example
 #' {
 #' data(mtcars2)
@@ -7,7 +8,9 @@
 #' my_db$copy_table_structure("mtcars_db", "mtcars_db_copy")
 #' my_db$get_table("mtcars_db_copy")
 #' }
-#' @keywords internal
+#' @rdname copy_table_structure
+#' @aliases copy_table_structure,dbR6
+#' @exportMethod copy_table_structure
 
 dbR6_copy_table_structure  <- function(...) {
   if(to %in% self$list_tables()) {

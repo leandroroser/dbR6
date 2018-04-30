@@ -13,15 +13,16 @@
 
 dbR6_split <- function(...) {
     my_factor <- self$send_query(paste0("SELECT DISTINCT ",column, " FROM ", from))[, 1]
+    my_factor <- sort(my_factor)
 
     statement_fun <- function(y) paste0("CREATE TABLE ", y, " AS SELECT * FROM ",
                                         from, " WHERE ", paste0(from, ".", column),
                                         " = ","'", my_factor[i], "'")
     this_table <- paste0(column, "_", my_factor)
 
-    if(any(grep(paste(this_table, collapse="|"), self$list_tables()) == TRUE)) {
+    if(any(this_table %in% self$list_tables())) {
       if(!overwrite) {
-        stop("some of output tables exist,", to, " but the parameter overwrite = FALSE")
+        stop("some of output tables exist, but the parameter overwrite = FALSE")
       } else {
         self$remove_table(this_table)
       }

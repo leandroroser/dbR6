@@ -1,4 +1,5 @@
-#' dbR6_drop_index
+#' drop_index
+#' @name drop_index
 #' @example
 #' {
 #' data(mtcars2)
@@ -9,7 +10,9 @@
 #' my_db$drop_index("mpg_index")
 #' my_db$list_indices()
 #' }
-#' @keywords internal
+#' @rdname drop_index
+#' @aliases drop_index,dbR6
+#' @exportMethod drop_index
 
 
 dbR6_drop_index <- function(...)  {

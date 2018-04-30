@@ -41,15 +41,10 @@ dbR6_rbind  <- function(...) {
   self$copy_table_structure(table_list[1], to, overwrite = overwrite)
 
   for(table_to_append in table_list) {
-    self$send_statement(paste0("INSERT INTO ", to, " SELECT * FROM ", table_to_append))
+    self$send_statement(paste0("INSERT INTO ", to,
+                " SELECT * FROM ", table_to_append))
 
-    if(remove_appended == "sequential") {
-      self$remove_table(table_to_append)
-    }
-  }
-
-  if(remove_appended == "after") {
-    for(table_to_append in table_list) {
+    if(remove_after) {
       self$remove_table(table_to_append)
     }
   }

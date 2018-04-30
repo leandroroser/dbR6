@@ -1,17 +1,22 @@
-#' dbR6_delete
+
+#' delete_db
+#' @name delete_db
 #' @example
 #' {
 #' data(mtcars2)
 #' my_db <- dbR6$new()
 #' my_db$add_table(mtcars, "mtcars_db")
-#' my_db$list_tables()
+#' my_db$delete_db()
 #' }
-#' @export
+#' @rdname delete_db
+#' @aliases delete_db,dbR6
+#' @exportMethod delete_db
+
 
 dbR6_delete_db <- function() {
   where <- self$get_where()$data@dbname
   if(where != ":memory:") {
-    metadata_path <- self$get_where()$metadata
+    metadata_path <- self$get_path()[[2]]
     data_path <- self$location()
     self$initialize()
     self$finalize()

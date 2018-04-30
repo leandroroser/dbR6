@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_set_metadata.R
 \name{dbR6_set_metadata}
 \alias{dbR6_set_metadata}
-\title{dbR6_set_metadata__}
+\title{dbR6_set_metadata}
 \usage{
 dbR6_set_metadata()
 }
 \description{
-dbR6_set_metadata__
+dbR6_set_metadata
 }
 \keyword{internal}

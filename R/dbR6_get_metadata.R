@@ -1,4 +1,6 @@
-#' dbR6_get_metadata
+
+#' get_metadata
+#' @name get_metadata
 #' @example
 #' {
 #' data(mtcars2)
@@ -7,7 +9,9 @@
 #' my_db$add_table(mtcars, "mtcars_db")
 #' my_db$get_metadata()
 #' }
-#' @keywords internal
+#' @rdname get_metadata
+#' @aliases get_metadata,dbR6
+#' @exportMethod get_metadata
 
 dbR6_get_metadata = function() {
   as.list(private$metadata)

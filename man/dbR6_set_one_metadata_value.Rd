@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_set_one_metadata_value.R
 \name{dbR6_set_one_metadata_value}
 \alias{dbR6_set_one_metadata_value}
-\title{dbR6_set_one_metadata_value__}
+\title{dbR6_set_one_metadata_value}
 \usage{
 dbR6_set_one_metadata_value(...)
 }
 \description{
-dbR6_set_one_metadata_value__
+dbR6_set_one_metadata_value
 }
 \keyword{internal}

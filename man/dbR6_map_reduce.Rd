@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_map_reduce.R
 \name{dbR6_map_reduce}
 \alias{dbR6_map_reduce}
-\title{dbR6_map_reduce__}
+\title{dbR6_map_reduce}
 \usage{
 dbR6_map_reduce(...)
 }
 \description{
-dbR6_map_reduce__
+dbR6_map_reduce
 }
 \keyword{internal}

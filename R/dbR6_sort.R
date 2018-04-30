@@ -13,6 +13,7 @@
 #' @keywords internal
 
 dbR6_sort  <- function(...)   {
+  type <- match.arg(type)
   dots <- as.character(unlist(list(...)))
   if(length(dots) > 0) column <- paste(c(column, dots), collapse = ", ")
 
@@ -21,7 +22,7 @@ dbR6_sort  <- function(...)   {
 
   tempname <- paste("temp_", paste(sample(c(letters, 0:9, 20)), collapse = ""), sep = "")
   self$copy_table_structure(tabname, tempname, overwrite = TRUE)
-  self$send_statement(paste0("INSERT INTO ", tempname, " SELECT * FROM ", tabname, " ORDER BY ", column))
+  self$send_statement(paste0("INSERT INTO ", tempname, " SELECT * FROM ", tabname, " ORDER BY ", column, " ", type))
   self$remove_table(tabname)
   self$send_statement(paste0("ALTER TABLE ", tempname, " RENAME TO ", tabname))
 

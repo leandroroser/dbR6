@@ -1,11 +1,12 @@
-#' dbR6_initialize
+#' initialize
+#' @name initialize
 #'@keywords internal
 
-dbR6_initialize <- function(...){
+dbR6_initialize <- function(...) {
   exists_metadata <- super$initialize(filename, overwrite)
   private$metadata <- new.env(parent = self$get_where(), hash = FALSE)
   if(exists_metadata) {
-    metadata_path <- paste0(self$get_where()$metadata)
+    metadata_path <- paste0(private$path[[2]])
 
     if(!file.exists(metadata_path) && !new_metadata) {
       stop("No metadata found for object. New metadata without keys can be created using the parameter

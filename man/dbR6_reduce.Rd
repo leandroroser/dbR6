@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_reduce.R
 \name{dbR6_reduce}
 \alias{dbR6_reduce}
-\title{dbR6_reduce__}
+\title{dbR6_reduce}
 \usage{
 dbR6_reduce(...)
 }
 \description{
-dbR6_reduce__
+dbR6_reduce
 }
 \keyword{internal}

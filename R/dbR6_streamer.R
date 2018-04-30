@@ -23,7 +23,8 @@ dbR6_streamer  <- function(...) {
 
   # iterator
   iter_fun <- function() {
-    if(x == 1)  self$copy_table_structure(from = from, to = to, overwrite =  TRUE)
+    if(x == 1)  self$copy_table_structure(from = from, to = to,
+                                          overwrite =  TRUE)
     this_query <- self$send_query(paste0("SELECT * FROM ", from,
                                          " WHERE id IN (SELECT id FROM ",
                                          from, " WHERE ", "id >= ", x,
@@ -31,7 +32,9 @@ dbR6_streamer  <- function(...) {
 
     ## move to 'to' and remove in each cycle
 
-    self$add_table(from = this_query, to = to, fun = fun, append = TRUE, index_row_names = FALSE)
+    self$add_table(from = this_query, to = to,
+                   fun = fun, append = TRUE,
+                   index_row_names = FALSE)
 
     x_0 <- x
     nr <- nrow(this_query)

@@ -1,4 +1,5 @@
-#' dbR6_is_valid
+#' is_valid
+#' @name is_valid
 #' @example
 #' {
 #' data(mtcars2)
@@ -8,7 +9,9 @@
 #' my_db$finalize()
 #' my_db$is_valid()
 #' }
-#' @export
+#' @rdname is_valid
+#' @aliases is_valid,dbR6
+#' @exportMethod is_valid
 
 dbR6_is_valid <- function() {
   private$valid

@@ -2,11 +2,11 @@
 % Please edit documentation in R/dbR6_send_transaction.R
 \name{dbR6_send_transaction}
 \alias{dbR6_send_transaction}
-\title{dbR6_send_transaction__}
+\title{dbR6_send_transaction}
 \usage{
 dbR6_send_transaction(...)
 }
 \description{
-dbR6_send_transaction__
+dbR6_send_transaction
 }
 \keyword{internal}

@@ -1,4 +1,5 @@
-#' dbR6_colnames
+#' filter
+#' @name filter
 #' @example
 #' {
 #' data(mtcars2)
@@ -8,7 +9,9 @@
 #' my_db$filter("mtcars_db", conditions = mpg>1)
 #' my_db$filter("mtcars_db", conditions = paste0("mpg > 0 & cyl > ", mean(1:10)), eval_before = TRUE)
 #' }
-#' @keywords internal
+#' @rdname filter
+#' @aliases filter,dbR6
+#' @exportMethod filter
 
 
 dbR6_filter  <- function(...)  {

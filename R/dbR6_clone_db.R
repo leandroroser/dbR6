@@ -1,4 +1,6 @@
-#' dbR6_clone_db
+#' clone_db
+#' @name clone_db
+
 #' @example
 #' {
 #' data(mtcars2)
@@ -8,7 +10,10 @@
 #' my_db$add_table(mtcars, "mtcarsdb")
 #' new_db <- my_db$clone_db("cloned_in_disk")
 #' }
-#' @keywords internal
+#' @rdname clone_db
+#' @aliases clone_db,dbR6
+#' @exportMethod clone_db
+
 
 dbR6_clone_db  <- function(...)  {
 

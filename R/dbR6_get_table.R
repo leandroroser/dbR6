@@ -1,4 +1,6 @@
-#' dbR6_get_table
+
+#' get_table
+#' @name get_table
 #' @example
 #' {
 #' data(mtcars2)
@@ -7,7 +9,9 @@
 #' my_db$get_table("mtcars_db")
 #' my_db$get_table("mtcars_db", 1, 10)
 #' }
-#' @keywords internal
+#' @rdname get_table
+#' @aliases get_table,dbR6
+#' @exportMethod get_table
 
 dbR6_get_table <- function(...) {
 
