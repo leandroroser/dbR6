@@ -41,6 +41,7 @@ dbR6_set_color  <- function(...)  {
         }
 
       } else {
+        palette <- function(before, after, space) {
           add_space_color(before, after, space,
             crayon::bgCyan$white,
             crayon::bgCyan,
