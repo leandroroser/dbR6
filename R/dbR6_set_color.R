@@ -34,8 +34,6 @@ dbR6_set_color  <- function(...)  {
     if(!is.null(col_bg)) {
       if(col_bg == "TRUE") {
         palette <- function(before, after, space) {
-          bgCol <<- crayon::make_style("skyblue4", bg = TRUE)
-          topCol <<-  bgCol$black
           add_space_color(before, after, space,
             crayon::bgCyan$black,
             crayon::bgCyan,
@@ -43,9 +41,6 @@ dbR6_set_color  <- function(...)  {
         }
 
       } else {
-        palette <- function(before, after, space) {
-          bgCol <<- crayon::make_style("skyblue4", bg = TRUE)
-          topCol <<- bgCol$white
           add_space_color(before, after, space,
             crayon::bgCyan$white,
             crayon::bgCyan,

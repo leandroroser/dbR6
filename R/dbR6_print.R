@@ -49,10 +49,14 @@ dbR6_print <- function() {
     }
 
     if(attr(palette, "color") == "color") {
+      bgCol <- crayon::make_style("skyblue4", bg = TRUE)
+      topCol <- bgCol$white
       arrow_left <- crayon::bgMagenta(" <-> ")
       top <- topCol("                    dbR6 object                           \n\n")
       bottom <- "                                                                      \n"
     } else {
+      bgCol <- crayon::make_style("skyblue4", bg = TRUE)
+      topCol <-  bgCol$black
       arrow_left <- " <-> "
       top <-    "------------------------ dbR6 object ------------------------\n"
       bottom <- "-------------------------------------------------------------\n"
