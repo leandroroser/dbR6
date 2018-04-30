@@ -52,7 +52,7 @@ dbR6_print <- function() {
       bgCol <- crayon::make_style("skyblue4", bg = TRUE)
       topCol <- bgCol$white
       arrow_left <- crayon::bgMagenta(" <-> ")
-      top <- topCol("                    dbR6 object                           \n\n")
+      top <- paste0(topCol("                    dbR6 object                           "), "\n\n")
       bottom <- "                                                                      \n"
     } else {
       bgCol <- crayon::make_style("skyblue4", bg = TRUE)
