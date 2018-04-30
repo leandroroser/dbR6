@@ -16,7 +16,7 @@ dbR6_set_color  <- function(...)  {
     if(bg_color == "auto") {
       # detect EStudio session color (if using RStudio)
       this_col <- try(rstudioapi::getThemeInfo(), silent = TRUE)
-      if(class(this_col) == "try_error") {
+      if(class(this_col) == "try-error") {
         col_bg <- NULL
       } else {
         col_bg <- try(rstudioapi::getThemeInfo()$dark, silent = TRUE)
