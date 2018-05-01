@@ -14,12 +14,14 @@ add_space_color <- function(before, after, char_number, bc, sc, ac) {
   if(howmuch < 0) {
     stop(paste0("words length > space to fit (min: ", word_len, ")"))
   }
-  cat(bc(before), sc(paste(rep(" ", howmuch), collapse = "")), ac(after), sep = "")
+  cat(bc(before), sc(paste(rep(" ", howmuch), collapse = "")),
+      ac(after), sep = "")
 }
 
 #' generate a formatted number with corresponding units for plyr object
 aux_format_object_size <- function(x) {
-  units <- list(B = 1, KB = 1024, MB = 1024^2, GB = 1024^4, TB = 1024^4, PB = 1024^5, EB = 1024^6)
+  units <- list(B = 1, KB = 1024, MB = 1024^2,
+                GB = 1024^3, TB = 1024^4, PB = 1024^5, EB = 1024^6)
   temp <- x
   power_x <- 1
 
@@ -62,7 +64,8 @@ name_as_string <- function(...) {
 
 
 #' get_os
-#' @description Detects an OS and returns a string of c("windows", "linux", "osx")
+#' @description Detects an OS and returns a string
+#' of c("windows", "linux", "osx")
 #' @keywords internal
 
 get_os <- function(){

@@ -152,7 +152,8 @@ dbR6 <- R6::R6Class("dbR6",
 
 
     # Operations
-    rename_table= call_dbR6(dbR6_rename_table, alist(from =, to =)),
+    rename_table= call_dbR6(dbR6_rename_table,
+                            alist(from =, to =, overwrite = FALSE)),
     cbind = call_dbR6(dbR6_cbind,
                       alist(to=, using_what= "row_names", tables=,
                             join = c("left", "inner", "cross",

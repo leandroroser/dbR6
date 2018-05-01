@@ -4,6 +4,14 @@ self <- private <- NULL
 #'@keywords internal
 
 dbR6_rename_table <- function(...) {
+  if(data$exists_table(to)) {
+    if(overwrite) {
+      data$remove_table(to)
+    } else {
+      stop(paste0("The table ", to, " exists, but overwrite is FALSE"))
+    }
+  }
+
   self$send_statement(paste0("ALTER TABLE ", from, " RENAME TO ", to))
   index_names <- self$list_indices()
   from_index <- paste0(from, "_", "row_names")
