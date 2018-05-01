@@ -4,9 +4,9 @@ self <- private <- NULL
 #'@keywords internal
 
 dbR6_rename_table <- function(...) {
-  if(data$exists_table(to)) {
+  if(self$exists_table(to)) {
     if(overwrite) {
-      data$remove_table(to)
+      self$remove_table(to)
     } else {
       stop(paste0("The table ", to, " exists, but overwrite is FALSE"))
     }
