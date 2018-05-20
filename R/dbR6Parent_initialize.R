@@ -16,8 +16,8 @@ dbR6Parent_initialize <- function(...)  {
   if(filename != ":memory:") {
     if(length(grep("/", filename)) == 0) {
     parent_dir <- getwd()
-    data_name <- paste0(getwd(), "/", filename, ".sqlite")
-    metadata_name <-  paste0(getwd(), "/", filename, ".json.gz")
+    data_name <- file.path(getwd(), paste0(filename, ".sqlite"))
+    metadata_name <-  file.path(getwd(), paste0(filename, ".json.gz"))
 
     } else {
 

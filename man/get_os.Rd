@@ -7,6 +7,7 @@
 get_os()
 }
 \description{
-Detects an OS and returns a string of c("windows", "linux", "osx")
+Detects an OS and returns a string
+of c("windows", "linux", "osx")
 }
 \keyword{internal}

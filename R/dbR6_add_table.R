@@ -35,17 +35,24 @@ dbR6_add_table <- function(...) {
   to <- gsub("\\.", "_", to)
   }
 
+  if(class(from) == "data.frame") {
   RSQLite::dbWriteTable(self$get_where()$data, to, from,
                         overwrite = overwrite,
                         append = append,
-                        row.names = TRUE,
+                        row.names = row.names,
                         ...)
 
-  private$set_metadata()
-  if(index_row_names) {
+  } else if(class(from) == "tbl_dbi") {
+    copy_to(self$get_connection(), df = from, name = to,
+            overwrite = overwrite, temporary = FALSE, ...)
+  }
+
+  if(index_row_names && row.names) {
     self$create_index(to, column = "row_names",
                       index_name = paste0(substitute(to), "_", "row_names"),
                       overwrite = TRUE)
   }
+
+  private$set_metadata()
   invisible(self)
 }

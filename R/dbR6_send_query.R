@@ -10,7 +10,11 @@
 #' @keywords internal
 
 dbR6_send_query  <- function(...) {
+    if(as_tbl) {
+      dplyr::tbl(self$get_connection(), dplyr::sql(query))
+    } else {
     this_query <- RSQLite::dbSendQuery(self$get_where()$data, query)
     on.exit(RSQLite::dbClearResult(this_query))
     RSQLite::fetch(this_query)
+    }
 }
